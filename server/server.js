@@ -289,11 +289,18 @@ app.get('/login.html', (req, res, next) => {
   if (req.session && req.session.authenticated) {
     return res.redirect('/admin-crm.html');
   }
-  return sendPrivateFile('login.html', res, next);
+  return res.sendFile(path.join(PUBLIC_DIR, 'login.html'), next);
 });
 
 ['admin-crm.html', 'inscription-client.html', 'email-template.html'].forEach((file) => {
-  app.get(`/${file}`, requireAuthPage, (req, res, next) => sendPrivateFile(file, res, next));
+  app.get(`/${file}`, requireAuthPage, (req, res, next) => {
+    // Ces fichiers ont été déplacés dans /public pour le déploiement
+    return res.sendFile(path.join(PUBLIC_DIR, file), (err) => {
+      if (err && typeof next === 'function') {
+        next(err);
+      }
+    });
+  });
 });
 
 app.get('/private/:file(*)', requireAuth, (req, res, next) => {
