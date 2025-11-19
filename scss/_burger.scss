@@ -1,0 +1,42 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.burger-button {
+  width: 40px;
+  height: 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 8px;
+  border: none;
+  background: transparent;
+}
+
+.burger-bar {
+  width: 100%;
+  height: 3px;
+  border-radius: 3px;
+  background-color: $accent-gold;
+  @include transition(background-color $transition-fast, transform $transition-fast, opacity $transition-fast);
+  transform-origin: center;
+}
+
+.burger-button.is-open {
+  .burger-bar {
+    &:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
+
+    &:nth-child(2) {
+      opacity: 0;
+    }
+
+    &:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
+    }
+  }
+}
+

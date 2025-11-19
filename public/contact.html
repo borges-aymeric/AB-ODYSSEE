@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AB Odyssée - Contact</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+    .slogan-text {
+      font-family: 'Great Vibes', cursive !important;
+      font-weight: 400 !important;
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="min-h-screen bg-[#FCF9EF]">
+  <button id="scroll-progress-indicator" type="button" aria-label="Revenir en haut" title="Revenir en haut" aria-hidden="true" tabindex="-1">
+    <svg viewBox="0 0 64 64" role="presentation">
+      <circle class="indicator-circle-bg" cx="32" cy="32" r="26"></circle>
+      <circle class="indicator-circle-progress" cx="32" cy="32" r="26"></circle>
+    </svg>
+    <svg class="indicator-loop" viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <path id="indicator-loop-path" d="M32,32 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0"></path>
+      </defs>
+      <text>
+        <textPath href="#indicator-loop-path" startOffset="0%">
+          TOP • TOP • TOP • TOP • TOP • TOP • TOP • TOP •
+        </textPath>
+      </text>
+    </svg>
+    <span class="indicator-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <polyline points="12 4 12 20"></polyline>
+        <polyline points="6 10 12 4 18 10"></polyline>
+      </svg>
+    </span>
+  </button>
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
+    <nav class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center gap-3 group">
+          <img id="header-logo" src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/690e092a150929816e34c705/79e4f2ccc_image.png" alt="AB Odyssée Logo" class="h-12 w-auto rounded-md transition-transform duration-300 group-hover:scale-105"/>
+        </a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="index.html" class="nav-link nav-link-desktop text-sm font-medium">Accueil</a>
+          <a href="services.html" class="nav-link nav-link-desktop text-sm font-medium">Services</a>
+          <a href="about.html" class="nav-link nav-link-desktop text-sm font-medium">À propos</a>
+          <a href="contact.html" class="nav-link nav-link-desktop text-sm font-medium active">Contact</a>
+          <a href="contact.html" class="btn-odysee-desktop px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300">
+            Démarrer votre odyssée
+          </a>
+        </div>
+        <button id="mobile-menu-button" type="button" aria-label="Ouvrir le menu" class="burger-button md:hidden transition-colors duration-300">
+          <span class="burger-bar"></span>
+          <span class="burger-bar"></span>
+          <span class="burger-bar"></span>
+        </button>
+      </div>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden glass-effect border-t border-[#B6B4AC]/30">
+      <div class="px-6 py-4 space-y-3">
+        <a href="index.html" class="block py-2 text-sm font-medium text-[#616972]">Accueil</a>
+        <a href="services.html" class="block py-2 text-sm font-medium text-[#616972]">Services</a>
+        <a href="about.html" class="block py-2 text-sm font-medium text-[#616972]">À propos</a>
+        <a href="contact.html" class="block py-2 text-sm font-medium text-[#091A30]">Contact</a>
+        <a href="contact.html" class="block w-full text-center bg-[#091A30] hover:bg-[#050F1A] text-white px-4 py-2 rounded-md text-sm font-medium">
+          Démarrer votre odyssée
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="pt-40 pb-20 bg-gradient-to-br from-[#091A30] via-[#0D2440] to-[#091A30] text-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <h1 class="text-5xl md:text-6xl font-bold fade-in-up">Contactez-nous</h1>
+            <p class="text-xl text-white/80 mt-4 max-w-2xl fade-in-up" style="animation-delay: 0.1s;">
+              Prêt à démarrer votre odyssée ? Parlez-nous de votre projet.
+            </p>
+        </div>
+    </section>
+    
+    <section class="py-24 bg-white">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-12">
+          
+          <div class="fade-in-up">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#091A30] mb-8">Nos Coordonnées</h2>
+            <div class="space-y-8">
+              <div class="flex items-start gap-5">
+                <div class="flex-shrink-0 w-16 h-16 bg-[#B48A3C]/10 text-[#B48A3C] rounded-lg flex items-center justify-center group">
+                  <i data-lucide="map-pin" class="w-8 h-8 transition-transform duration-300 group-hover:rotate-[15deg]"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold text-[#091A30] mb-2">Nos Bureaux</h3>
+                  <p class="text-lg text-[#616972]">France & Moyen-Orient</p>
+                  <p class="text-lg text-[#616972]">Uniquement sur rendez-vous</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-5">
+                <div class="flex-shrink-0 w-16 h-16 bg-[#B48A3C]/10 text-[#B48A3C] rounded-lg flex items-center justify-center group">
+                  <i data-lucide="mail" class="w-8 h-8 transition-transform duration-300 group-hover:rotate-[15deg]"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold text-[#091A30] mb-2">Email</h3>
+                  <p class="text-lg text-[#616972]">contact@abodyssee.fr</p>
+                  <p class="text-lg text-[#616972]">Réponse sous 24h ouvrées</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-5">
+                <div class="flex-shrink-0 w-16 h-16 bg-[#B48A3C]/10 text-[#B48A3C] rounded-lg flex items-center justify-center group">
+                  <i data-lucide="calendar-clock" class="w-8 h-8 transition-transform duration-300 group-hover:rotate-[15deg]"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold text-[#091A30] mb-2">Disponibilités</h3>
+                  <p class="text-lg text-[#616972]">Lundi - Vendredi</p>
+                  <p class="text-lg text-[#616972]">9h00 - 18h00 (CET)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="service-card p-8 md:p-10 fade-in-up relative" style="animation-delay: 0.2s; border-top: 6px solid #B48A3C; border-radius: 24px;">
+            <div class="service-card-content">
+              <h2 class="service-card-title text-3xl md:text-4xl font-bold mb-6">Envoyez-nous un message</h2>
+              <form id="contact-form" class="space-y-6">
+                <div>
+                  <label for="name" class="block text-sm font-medium text-[#FCF9EF] mb-2">Nom complet</label>
+                  <input type="text" id="name" name="name" required class="mt-1 block w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-md shadow-sm text-[#FCF9EF] placeholder-white/50 focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C] focus:bg-white/15 transition-colors">
+                </div>
+                <div>
+                  <label for="email" class="block text-sm font-medium text-[#FCF9EF] mb-2">Email</label>
+                  <input type="email" id="email" name="email" required class="mt-1 block w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-md shadow-sm text-[#FCF9EF] placeholder-white/50 focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C] focus:bg-white/15 transition-colors">
+                </div>
+                <div>
+                  <label for="service" class="block text-sm font-medium text-[#FCF9EF] mb-2">Sujet / Service</label>
+                  <select id="service" name="service" class="mt-1 block w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-md shadow-sm text-[#FCF9EF] focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C] focus:bg-white/15 transition-colors">
+                    <option value="" class="text-[#091A30]">Choisir un service</option>
+                    <option value="Création de site web" class="text-[#091A30]">Création de site web</option>
+                    <option value="Identité de marque" class="text-[#091A30]">Identité de marque</option>
+                    <option value="Stratégie digitale" class="text-[#091A30]">Stratégie digitale</option>
+                    <option value="Diagnostic Web" class="text-[#091A30]">Diagnostic Web</option>
+                    <option value="Autre demande" class="text-[#091A30]">Autre demande</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="message" class="block text-sm font-medium text-[#FCF9EF] mb-2">Votre message</label>
+                  <textarea id="message" name="message" rows="4" required class="mt-1 block w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-md shadow-sm text-[#FCF9EF] placeholder-white/50 focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C] focus:bg-white/15 transition-colors resize-none"></textarea>
+                </div>
+                <div id="contact-message" class="hidden p-4 rounded-md"></div>
+                <div>
+                  <button type="submit" id="contact-submit-btn" class="w-full inline-flex items-center justify-center bg-[#B48A3C] hover:bg-[#D4B068] text-white font-semibold px-8 py-3 text-lg rounded-md transition-colors shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span id="contact-button-text">Démarrer votre odyssée</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-[#091A30] text-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        <div class="md:col-span-2">
+          <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/690e092a150929816e34c705/79e4f2ccc_image.png" alt="AB Odyssée Logo" class="h-16 w-auto mb-4 rounded-md"/>
+          <p class="text-[#B6B4AC] text-sm max-w-md">Nous accompagnons les TPE et PME dans leur développement en ligne avec des solutions sur-mesure et une approche humaine.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-4">Navigation</h3>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Accueil</a></li>
+            <li><a href="services.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Services</a></li>
+            <li><a href="about.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">À propos</a></li>
+            <li><a href="contact.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-4">Contact</h3>
+          <ul class="space-y-2 text-sm text-[#B6B4AC]">
+            <li>France & Moyen-Orient</li>
+            <li>contact@abodyssee.fr</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-4">Légal</h3>
+          <ul class="space-y-2">
+            <li><a href="mentions-legales.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Mentions Légales</a></li>
+            <li><a href="politique-confidentialite.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Politique de confidentialité</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-[#616972] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-sm text-[#B6B4AC]">© 2024 AB Odyssée. Tous droits réservés.</p>
+        <div id="visitor-counter-container" class="text-sm text-[#B6B4AC]">
+          </div>
+        <p class="slogan-text text-lg text-[#B48A3C]">La visibilité attire, l'inoubliable fidélise.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div id="cookie-banner" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-2xl bg-white text-[#091A30] shadow-2xl rounded-lg p-6 z-[9999] hidden">
+    <div class="flex flex-col gap-4">
+      <div>
+        <h3 class="text-lg font-semibold">Gestion des cookies</h3>
+        <p class="text-sm text-[#616972] mt-1">Nous utilisons des cookies pour améliorer votre expérience et analyser le trafic. Vous pouvez accepter ou refuser ces cookies à tout moment.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+        <button id="accept-cookies" class="inline-flex justify-center items-center bg-[#091A30] hover:bg-[#050F1A] text-white px-6 py-2 rounded-md text-sm font-semibold transition-colors">Accepter</button>
+        <button id="decline-cookies" class="inline-flex justify-center items-center border border-[#091A30] text-[#091A30] hover:bg-[#091A30]/5 px-6 py-2 rounded-md text-sm font-semibold transition-colors">Refuser</button>
+        <a href="politique-confidentialite.html" class="text-sm text-[#091A30] hover:text-[#B48A3C] underline sm:ml-auto">En savoir plus</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+    const header = document.getElementById('main-header');
+    const hasDarkHero = document.getElementById('hero-content') || document.querySelector('.bg-gradient-to-br');
+    if (!hasDarkHero && header) { header.classList.add('glass-effect', 'shadow-lg'); }
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('glass-effect', 'shadow-lg');
+        if(hasDarkHero) header.classList.remove('bg-transparent');
+      } else {
+        if (hasDarkHero) {
+          header.classList.remove('glass-effect', 'shadow-lg');
+          header.classList.add('bg-transparent');
+        }
+      }
+    });
+
+    const progressIndicator = document.getElementById('scroll-progress-indicator');
+    const progressCircle = progressIndicator?.querySelector('.indicator-circle-progress');
+
+    let circleCircumference = 0;
+    if (progressCircle) {
+      const radius = progressCircle.r.baseVal.value;
+      circleCircumference = 2 * Math.PI * radius;
+      progressCircle.style.strokeDasharray = `${circleCircumference} ${circleCircumference}`;
+      progressCircle.style.strokeDashoffset = circleCircumference;
+    }
+
+    const updateProgressIndicator = () => {
+      if (!progressIndicator) return;
+      const scrollTop = window.scrollY;
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollableHeight > 0 ? Math.min(1, Math.max(0, scrollTop / scrollableHeight)) : 0;
+
+      if (progressCircle) {
+        progressCircle.style.strokeDashoffset = circleCircumference * (1 - progress);
+      }
+
+      if (progress > 0.02) {
+        progressIndicator.classList.add('is-visible');
+        progressIndicator.setAttribute('aria-hidden', 'false');
+        progressIndicator.setAttribute('tabindex', '0');
+      } else {
+        progressIndicator.classList.remove('is-visible');
+        progressIndicator.setAttribute('aria-hidden', 'true');
+        progressIndicator.setAttribute('tabindex', '-1');
+      }
+    };
+
+    let indicatorTicking = false;
+    const requestIndicatorUpdate = () => {
+      if (!progressIndicator || indicatorTicking) return;
+      indicatorTicking = true;
+      requestAnimationFrame(() => {
+        updateProgressIndicator();
+        indicatorTicking = false;
+      });
+    };
+
+    updateProgressIndicator();
+    window.addEventListener('scroll', requestIndicatorUpdate, { passive: true });
+    window.addEventListener('resize', requestIndicatorUpdate);
+    window.addEventListener('orientationchange', requestIndicatorUpdate);
+    progressIndicator?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMobileMenu = () => {
+      if (!mobileMenu) return;
+      mobileMenu.classList.add('hidden');
+      mobileMenuButton?.classList.remove('is-open');
+    };
+    mobileMenuButton?.addEventListener('click', () => {
+      if (!mobileMenu) return;
+      const willOpen = mobileMenu.classList.contains('hidden');
+      mobileMenu.classList.toggle('hidden');
+      mobileMenuButton.classList.toggle('is-open', willOpen);
+    });
+    mobileMenu?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+    function initCookieBanner() {
+      const banner = document.getElementById('cookie-banner');
+      if (!banner) return;
+      const acceptBtn = document.getElementById('accept-cookies');
+      const declineBtn = document.getElementById('decline-cookies');
+      const storedConsent = localStorage.getItem('cookieConsent');
+      if (!storedConsent) {
+        requestAnimationFrame(() => banner.classList.remove('hidden'));
+      }
+      const handleChoice = (value) => {
+        localStorage.setItem('cookieConsent', value);
+        banner.classList.add('hidden');
+      };
+      acceptBtn?.addEventListener('click', () => handleChoice('accepted'));
+      declineBtn?.addEventListener('click', () => handleChoice('declined'));
+    }
+    const createScrollFade = (selector, { offset = 40, duration = 0.8, ease = "power2.out", start = "top 70%", end = "bottom 65%" } = {}) => {
+      gsap.utils.toArray(selector).forEach((el) => {
+        if (el.closest('#hero-content') || el.closest('section.bg-gradient-to-br')) {
+          return; // Déjà animé
+        }
+        
+        // Si l'élément est déjà visible, l'animer immédiatement
+        const rect = el.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        
+        if (isVisible) {
+          gsap.fromTo(el, { opacity: 0, y: offset }, { opacity: 1, y: 0, duration, ease });
+        } else {
+          const tween = gsap.fromTo(
+            el,
+            { opacity: 0, y: offset },
+            {
+              opacity: 1,
+              y: 0,
+              duration,
+              ease,
+              scrollTrigger: {
+                trigger: el,
+                start,
+                end,
+                toggleActions: "play none none none",
+                invalidateOnRefresh: true,
+                once: true
+              }
+            }
+          );
+        }
+      });
+    };
+    // Le compteur de visite n'est que sur la page d'accueil
+    const countElement = document.getElementById('visitor-count');
+    if (countElement) {
+      function updateVisitorCount() {
+        let baseCount = 10000; 
+        let currentCount = localStorage.getItem('visitorCount');
+        if (currentCount) {
+          currentCount = parseInt(currentCount, 10);
+        } else {
+          currentCount = baseCount + Math.floor(Math.random() * 50);
+        }
+        currentCount += 1;
+        localStorage.setItem('visitorCount', currentCount);
+        countElement.textContent = currentCount.toLocaleString('fr-FR');
+      }
+      updateVisitorCount();
+    }
+    
+    // Fonction pour afficher le contenu (fallback uniquement si GSAP ne charge pas)
+    function showContentFallback() {
+      const fadeElements = document.querySelectorAll('.fade-in-up');
+      fadeElements.forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+        el.style.visibility = 'visible';
+      });
+    }
+    
+    function initGSAPAnimations() {
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        setTimeout(initGSAPAnimations, 100);
+        return;
+      }
+      
+      try {
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // S'assurer que tous les éléments sont bien cachés avant l'animation
+        const fadeElements = document.querySelectorAll('.fade-in-up');
+        fadeElements.forEach(el => {
+          gsap.set(el, { opacity: 0, y: 40 });
+        });
+        
+        // Animation fade-in pour les éléments du hero
+        const heroSection = document.querySelector('section.bg-gradient-to-br');
+        if (heroSection) {
+          gsap.to("section.bg-gradient-to-br .fade-in-up", { opacity: 1, y: 0, duration: 0.9, stagger: 0.15, ease: "power2.out" });
+        }
+        
+        createScrollFade(".fade-in-up");
+      } catch (error) {
+        console.error('Erreur GSAP:', error);
+        setTimeout(showContentFallback, 500);
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        initCookieBanner();
+        
+        // S'assurer que le contenu reste caché jusqu'à ce que GSAP charge
+        const fadeElements = document.querySelectorAll('.fade-in-up');
+        fadeElements.forEach(el => {
+          // Forcer l'opacité à 0 si ce n'est pas déjà le cas
+          if (window.getComputedStyle(el).opacity !== '0') {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(40px)';
+          }
+        });
+        
+        let attempts = 0;
+        const maxAttempts = 30;
+        const checkGSAP = setInterval(() => {
+          attempts++;
+          if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            clearInterval(checkGSAP);
+            initGSAPAnimations();
+          } else if (attempts >= maxAttempts) {
+            clearInterval(checkGSAP);
+            showContentFallback();
+          }
+        }, 100);
+    });
+    
+    // Fallback de sécurité après 5 secondes si GSAP ne charge vraiment pas
+    setTimeout(() => {
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        showContentFallback();
+      }
+    }, 5000);
+
+    // Gestion du formulaire de contact
+    const contactForm = document.getElementById('contact-form');
+    const contactMessage = document.getElementById('contact-message');
+    const contactSubmitBtn = document.getElementById('contact-submit-btn');
+    const contactButtonText = document.getElementById('contact-button-text');
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        contactSubmitBtn.disabled = true;
+        contactButtonText.textContent = 'Envoi en cours...';
+        contactMessage.classList.add('hidden');
+        
+        const formData = {
+          name: document.getElementById('name').value,
+          email: document.getElementById('email').value,
+          service: document.getElementById('service').value || '',
+          message: document.getElementById('message').value
+        };
+
+        try {
+          const response = await fetch(window.location.origin + '/api/contact', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+
+          const data = await response.json();
+
+          contactMessage.classList.remove('hidden');
+          
+          if (response.ok) {
+            contactMessage.classList.add('bg-green-100', 'text-green-800', 'border', 'border-green-400');
+            contactMessage.innerHTML = '<div class="flex items-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i><span>Message envoyé avec succès ! Nous vous répondrons dans les plus brefs délais.</span></div>';
+            contactForm.reset();
+          } else {
+            contactMessage.classList.add('bg-red-100', 'text-red-800', 'border', 'border-red-400');
+            contactMessage.innerHTML = '<div class="flex items-center gap-2"><i data-lucide="alert-circle" class="w-5 h-5"></i><span>' + (data.error || 'Une erreur est survenue. Veuillez réessayer.') + '</span></div>';
+          }
+          
+          lucide.createIcons();
+          contactSubmitBtn.disabled = false;
+          contactButtonText.textContent = 'Démarrer votre odyssée';
+        } catch (error) {
+          contactMessage.classList.remove('hidden');
+          contactMessage.classList.add('bg-red-100', 'text-red-800', 'border', 'border-red-400');
+          contactMessage.innerHTML = '<div class="flex items-center gap-2"><i data-lucide="alert-circle" class="w-5 h-5"></i><span>Erreur de connexion. Assurez-vous que le serveur est démarré.</span></div>';
+          lucide.createIcons();
+          contactSubmitBtn.disabled = false;
+          contactButtonText.textContent = 'Démarrer votre odyssée';
+          console.error('Erreur:', error);
+        }
+      });
+
+    }
+  </script>
+</body>
+</html>

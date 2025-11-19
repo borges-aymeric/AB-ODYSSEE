@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AB Odyssée - Accueil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+    .slogan-text {
+      font-family: 'Great Vibes', cursive !important;
+      font-weight: 400 !important;
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="min-h-screen bg-[#FCF9EF]">
+  <button id="scroll-progress-indicator" type="button"  title="Revenir en haut" aria-hidden="true" tabindex="-1">
+    <svg viewBox="0 0 64 64" role="presentation">
+      ..
+      <circle class="indicator-circle-bg" cx="32" cy="32" r="26"></circle>
+      <circle class="indicator-circle-progress" cx="32" cy="32" r="26"></circle>
+    </svg>
+    <svg class="indicator-loop" viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <path id="indicator-loop-path" d="M32,32 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0"></path>
+      </defs>
+      <text>
+        <textPath href="#indicator-loop-path" startOffset="0%">
+          TOP • TOP • TOP • TOP • TOP • TOP • TOP • TOP •
+        </textPath>
+      </text>
+    </svg>
+    <span class="indicator-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <polyline points="12 4 12 20"></polyline>
+        <polyline points="6 10 12 4 18 10"></polyline>
+      </svg>
+    </span>
+  </button>
+  
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
+    <nav class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center gap-3 group">
+          <img id="header-logo" src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/690e092a150929816e34c705/79e4f2ccc_image.png" alt="AB Odyssée Logo" class="h-12 w-auto rounded-md transition-transform duration-300 group-hover:scale-105"/>
+        </a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="index.html" class="nav-link nav-link-desktop text-sm font-medium active">Accueil</a>
+          <a href="services.html" class="nav-link nav-link-desktop text-sm font-medium">Services</a>
+          <a href="about.html" class="nav-link nav-link-desktop text-sm font-medium">À propos</a>
+          <a href="contact.html" class="nav-link nav-link-desktop text-sm font-medium">Contact</a>
+          <a href="contact.html" class="btn-odysee-desktop px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300">
+            Démarrer votre odyssée
+          </a>
+        </div>
+        <button id="mobile-menu-button" type="button" aria-label="Ouvrir le menu" class="burger-button md:hidden transition-colors duration-300">
+          <span class="burger-bar"></span>
+          <span class="burger-bar"></span>
+          <span class="burger-bar"></span>
+        </button>
+      </div>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden glass-effect border-t border-[#B6B4AC]/30">
+      <div class="px-6 py-4 space-y-3">
+        <a href="index.html" class="block py-2 text-sm font-medium text-[#091A30]">Accueil</a>
+        <a href="services.html" class="block py-2 text-sm font-medium text-[#616972]">Services</a>
+        <a href="about.html" class="block py-2 text-sm font-medium text-[#616972]">À propos</a>
+        <a href="contact.html" class="block py-2 text-sm font-medium text-[#616972]">Contact</a>
+        <a href="contact.html" class="block w-full text-center bg-[#091A30] hover:bg-[#050F1A] text-white px-4 py-2 rounded-md text-sm font-medium">
+          Démarrer votre odyssée
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero-content" class="relative min-h-screen flex items-start md:items-center justify-center pt-28 md:pt-0 overflow-hidden bg-gradient-to-br from-[#091A30] via-[#0D2440] to-[#091A30]">
+      <div class="absolute inset-0 pointer-events-none">
+        <div id="hero-waves"></div>
+      </div>
+<div id="hero-content-inner" class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 text-center mt-5">
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-8 text-white/90 text-sm fade-in-up">
+          <i data-lucide="sparkles" class="w-4 h-4 text-[#B48A3C]"></i>
+          <span>Agence de communication digitale</span>
+        </div>
+        <h1 class="slogan-text text-5xl md:text-7xl text-white mb-6 leading-tight fade-in-up">
+          La visibilité attire,<br />
+          <span class="text-[#B48A3C]">l'inoubliable fidélise.</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto fade-in-up">
+          Nous accompagnons les TPE et PME dans leur développement en ligne avec des solutions sur-mesure et une approche humaine.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in-up">
+          <a href="contact.html" class="inline-flex items-center justify-center bg-[#B48A3C] hover:bg-[#9A7332] text-white font-semibold px-8 py-3 text-lg rounded-md">
+            Démarrer votre odyssée
+            <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+          </a>
+          <a href="services.html" class="inline-flex items-center justify-center border-2 border-white text-white hover:bg-white/10 px-8 py-3 text-lg rounded-md">
+            Découvrir nos services
+          </a>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-6 pt-4 fade-in-up">
+  <div class="text-center rounded-xl px-4 py-6"><div class="text-3xl md:text-4xl font-bold text-[#B48A3C] mb-2">2024</div><div class="text-sm text-white/70">Année de création</div></div>
+  <div class="text-center rounded-xl px-4 py-6"><div class="text-3xl md:text-4xl font-bold text-[#B48A3C] mb-2">100%</div><div class="text-sm text-white/70">TPE/PME satisfaites</div></div>
+  <div class="text-center rounded-xl px-4 py-6"><div class="text-3xl md:text-4xl font-bold text-[#B48A3C] mb-2">Sur mesure</div><div class="text-sm text-white/70">Approche personnalisée</div></div>
+  <div class="text-center rounded-xl px-4 py-6">
+    <div class="text-3xl md:text-4xl font-bold text-[#B48A3C] mb-2">Toute France</div>
+    <div class="text-sm text-white/70">Intervention nationale</div>
+  </div>
+</div>
+
+      </div>
+      <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex flex-col items-center">
+        <div class="scrolldown" aria-hidden="true">
+          <div class="chevrons">
+            <div class="chevrondown"></div>
+            <div class="chevrondown"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-24 bg-[#FCF9EF]">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <div class="inline-flex items-center gap-2 px-4 py-2 bg-[#091A30]/5 rounded-full mb-4 text-[#091A30] text-sm font-medium">
+            <i data-lucide="sparkles" class="w-4 h-4"></i><span>Nos expertises</span>
+          </div>
+          <h2 class="text-4xl md:text-5xl font-bold text-[#091A30] mb-6 fade-in-up">Des services pensés pour votre réussite</h2>
+          <p class="text-xl text-[#616972] max-w-3xl mx-auto fade-in-up">Nous vous proposons un accompagnement complet pour développer votre présence digitale et atteindre vos objectifs.</p>
+        </div>
+        
+        <div id="services-grid" class="grid md:grid-cols-2 gap-8">
+          <a href="services.html#sites-web" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 overflow-hidden relative">
+            <div class="p-8 relative z-10 service-card-content">
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #091A30;"><i data-lucide="globe" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
+              <h3 class="service-card-title text-2xl font-bold mb-3">Création de sites web</h3>
+              <p class="service-card-text">Sites vitrines et e-commerce sur mesure, optimisés pour la conversion et le référencement.</p>
+            </div>
+            <span class="service-card-corner" aria-hidden="true">
+              <span class="service-card-corner-arrow">
+                <span class="service-card-corner-arrow-icon"></span>
+              </span>
+            </span>
+          </a>
+          <a href="services.html#identite" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 overflow-hidden relative">
+            <div class="p-8 relative z-10 service-card-content">
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #B48A3C;"><i data-lucide="palette" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
+              <h3 class="service-card-title text-2xl font-bold mb-3">Identité de marque</h3>
+              <p class="service-card-text">Logo, charte graphique et storytelling pour une image professionnelle et mémorable.</p>
+            </div>
+            <span class="service-card-corner" aria-hidden="true">
+              <span class="service-card-corner-arrow">
+                <span class="service-card-corner-arrow-icon"></span>
+              </span>
+            </span>
+          </a>
+          <a href="services.html#strategie" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 overflow-hidden relative">
+            <div class="p-8 relative z-10 service-card-content">
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #091A30;"><i data-lucide="trending-up" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
+              <h3 class="service-card-title text-2xl font-bold mb-3">Stratégie digitale</h3>
+              <p class="service-card-text">Positionnement, réseaux sociaux et gestion de contenu B2B pour maximiser votre visibilité.</p>
+            </div>
+            <span class="service-card-corner" aria-hidden="true">
+              <span class="service-card-corner-arrow">
+                <span class="service-card-corner-arrow-icon"></span>
+              </span>
+            </span>
+          </a>
+          <a href="services.html#diagnostic" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 overflow-hidden relative">
+            <div class="p-8 relative z-10 service-card-content">
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #B48A3C;"><i data-lucide="search" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
+              <h3 class="service-card-title text-2xl font-bold mb-3">Diagnostic Web</h3>
+              <p class="service-card-text">Audit complet de votre présence en ligne avec recommandations personnalisées.</p>
+            </div>
+            <span class="service-card-corner" aria-hidden="true">
+              <span class="service-card-corner-arrow">
+                <span class="service-card-corner-arrow-icon"></span>
+              </span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+    
+    <section class="py-24 bg-[#FCF9EF]">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <div class="inline-flex items-center gap-2 px-4 py-2 bg-[#091A30]/5 rounded-full mb-4 text-[#091A30] text-sm font-medium fade-in-up">
+            <i data-lucide="compass" class="w-4 h-4"></i><span>Notre ADN</span>
+          </div>
+          <h2 class="text-4xl md:text-5xl font-bold text-[#091A30] mb-6 fade-in-up">Au cœur de notre odyssée</h2>
+          <p class="text-xl text-[#616972] max-w-3xl mx-auto fade-in-up">Trois piliers qui guident chacune de nos actions et collaborations.</p>
+        </div>
+        <div id="values-grid" class="grid md:grid-cols-3 gap-6 lg:gap-8">
+          <div class="value-card fade-in-up group relative">
+            <div class="relative z-10">
+              <div class="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#B48A3C]/15 to-[#B48A3C]/5 text-[#B48A3C] rounded-2xl mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-2">
+                <i data-lucide="target" class="w-10 h-10 transition-transform duration-300 group-hover:rotate-[15deg]"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-[#091A30] mb-3 text-center">Excellence</h3>
+              <p class="text-[#616972] text-center">Nous visons l'excellence dans chaque projet, avec une attention méticuleuse aux détails.</p>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-br from-[#B48A3C]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+          <div class="value-card fade-in-up group relative" style="animation-delay: 0.1s;">
+            <div class="relative z-10">
+              <div class="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#B48A3C]/15 to-[#B48A3C]/5 text-[#B48A3C] rounded-2xl mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-2">
+                <i data-lucide="compass" class="w-10 h-10 transition-transform duration-300 group-hover:rotate-[15deg]"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-[#091A30] mb-3 text-center">Accompagnement</h3>
+              <p class="text-[#616972] text-center">Nous vous guidons à chaque étape de votre odyssée digitale avec expertise et bienveillance.</p>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-br from-[#B48A3C]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+          <div class="value-card fade-in-up group relative" style="animation-delay: 0.2s;">
+            <div class="relative z-10">
+              <div class="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#B48A3C]/15 to-[#B48A3C]/5 text-[#B48A3C] rounded-2xl mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-2">
+                <i data-lucide="zap" class="w-10 h-10 transition-transform duration-300 group-hover:rotate-[15deg]"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-[#091A30] mb-3 text-center">Innovation</h3>
+              <p class="text-[#616972] text-center">Nous adoptons les meilleures pratiques et technologies pour vous donner un avantage compétitif.</p>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-br from-[#B48A3C]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="py-24 bg-[#FCF9EF] text-[#091A30] overflow-hidden">
+      <div id="testimonial-section" class="max-w-6xl mx-auto px-6 lg:px-8 text-center fade-in-up">
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-[#091A30]/5 rounded-full mb-4 text-[#091A30] text-sm font-medium mx-auto">
+          <i data-lucide="quote" class="w-4 h-4 text-[#B48A3C]"></i><span>Ils nous font confiance</span>
+        </div>
+        <h2 class="text-4xl md:text-5xl font-bold text-[#091A30] mb-6">Ce que disent nos clients</h2>
+        <p class="text-lg md:text-xl text-[#616972] max-w-3xl mx-auto">Une sélection de retours authentiques, diffusés en continu pour inspirer votre prochaine odyssée digitale.</p>
+        <div class="testimonial-marquee mt-12">
+          <div class="testimonial-track">
+            <article class="testimonial-card">
+              <div class="testimonial-stars">
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+              </div>
+              <p class="testimonial-quote">“AB Odyssée a transformé notre présence en ligne. Notre nouveau site e-commerce est superbe et nos ventes ont augmenté de 45 % en trois mois.”</p>
+              <div class="testimonial-author">
+                <strong>Sophie Martin</strong>
+                <span>Fondatrice • Boutique Le Jardin</span>
+              </div>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="testimonial-stars">
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+              </div>
+              <p class="testimonial-quote">“Une refonte de notre identité de marque réussie au-delà de nos attentes. L’équipe a su capturer l’essence de notre cabinet avec précision.”</p>
+              <div class="testimonial-author">
+                <strong>Alexandre Dubois</strong>
+                <span>Directeur • Cabinet Dubois & Associés</span>
+              </div>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="testimonial-stars">
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5 star-muted"></i>
+              </div>
+              <p class="testimonial-quote">“L’accompagnement stratégique nous a permis de structurer notre communication digitale. Notre visibilité a triplé en six mois.”</p>
+              <div class="testimonial-author">
+                <strong>Nadia El Mansouri</strong>
+                <span>CEO • TechStart Solutions</span>
+              </div>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="testimonial-stars">
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+              </div>
+              <p class="testimonial-quote">“Un partenaire fiable pour notre marketing digital. Leur réactivité et leurs conseils nous ont permis de gagner un temps précieux.”</p>
+              <div class="testimonial-author">
+                <strong>Claire Delaunay</strong>
+                <span>Responsable Marketing • Nova Industrie</span>
+              </div>
+            </article>
+
+            <!-- duplication for seamless marquee -->
+            <article class="testimonial-card">
+              <div class="testimonial-stars">
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+              </div>
+              <p class="testimonial-quote">“AB Odyssée a transformé notre présence en ligne. Notre nouveau site e-commerce est superbe et nos ventes ont augmenté de 45 % en trois mois.”</p>
+              <div class="testimonial-author">
+                <strong>Sophie Martin</strong>
+                <span>Fondatrice • Boutique Le Jardin</span>
+              </div>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="testimonial-stars">
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+              </div>
+              <p class="testimonial-quote">“Une refonte de notre identité de marque réussie au-delà de nos attentes. L’équipe a su capturer l’essence de notre cabinet avec précision.”</p>
+              <div class="testimonial-author">
+                <strong>Alexandre Dubois</strong>
+                <span>Directeur • Cabinet Dubois & Associés</span>
+              </div>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="testimonial-stars">
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5 star-muted"></i>
+              </div>
+              <p class="testimonial-quote">“L’accompagnement stratégique nous a permis de structurer notre communication digitale. Notre visibilité a triplé en six mois.”</p>
+              <div class="testimonial-author">
+                <strong>Nadia El Mansouri</strong>
+                <span>CEO • TechStart Solutions</span>
+              </div>
+            </article>
+
+            <article class="testimonial-card">
+              <div class="testimonial-stars">
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+                <i data-lucide="star" class="w-5 h-5"></i>
+              </div>
+              <p class="testimonial-quote">“Un partenaire fiable pour notre marketing digital. Leur réactivité et leurs conseils nous ont permis de gagner un temps précieux.”</p>
+              <div class="testimonial-author">
+                <strong>Claire Delaunay</strong>
+                <span>Responsable Marketing • Nova Industrie</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-[#091A30] text-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        <div class="md:col-span-2">
+          <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/690e092a150929816e34c705/79e4f2ccc_image.png" alt="AB Odyssée Logo" class="h-16 w-auto mb-4 rounded-md"/>
+          <p class="text-[#B6B4AC] text-sm max-w-md">Nous accompagnons les TPE et PME dans leur développement en ligne avec des solutions sur-mesure et une approche humaine.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-4">Navigation</h3>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Accueil</a></li>
+            <li><a href="services.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Services</a></li>
+            <li><a href="about.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">À propos</a></li>
+            <li><a href="contact.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-4">Contact</h3>
+          <ul class="space-y-2 text-sm text-[#B6B4AC]">
+            <li>France & Moyen-Orient</li>
+            <li>contact@abodyssee.fr</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-4">Légal</h3>
+          <ul class="space-y-2">
+            <li><a href="mentions-legales.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Mentions Légales</a></li>
+            <li><a href="politique-confidentialite.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Politique de confidentialité</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-[#616972] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-sm text-[#B6B4AC]">© 2024 AB Odyssée. Tous droits réservés.</p>
+        <div id="visitor-counter-container" class="text-sm text-[#B6B4AC]">
+          </div>
+         <p class="slogan-text text-lg text-[#B48A3C]">La visibilité attire, l'inoubliable fidélise.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div id="cookie-banner" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-2xl bg-white text-[#091A30] shadow-2xl rounded-lg p-6 z-[9999] hidden">
+    <div class="flex flex-col gap-4">
+      <div>
+        <h3 class="text-lg font-semibold">Gestion des cookies</h3>
+        <p class="text-sm text-[#616972] mt-1">Nous utilisons des cookies pour améliorer votre expérience et analyser le trafic. Vous pouvez accepter ou refuser ces cookies à tout moment.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+        <button id="accept-cookies" class="inline-flex justify-center items-center bg-[#091A30] hover:bg-[#050F1A] text-white px-6 py-2 rounded-md text-sm font-semibold transition-colors">Accepter</button>
+        <button id="decline-cookies" class="inline-flex justify-center items-center border border-[#091A30] text-[#091A30] hover:bg-[#091A30]/5 px-6 py-2 rounded-md text-sm font-semibold transition-colors">Refuser</button>
+        <a href="politique-confidentialite.html" class="text-sm text-[#091A30] hover:text-[#B48A3C] underline sm:ml-auto">En savoir plus</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 1. Rendu des icônes Lucide
+    lucide.createIcons();
+
+    // 2. Logique du Header (Intelligente)
+    const header = document.getElementById('main-header');
+    const hasDarkHero = document.getElementById('hero-content') || document.querySelector('.bg-gradient-to-br');
+    if (!hasDarkHero && header) { header.classList.add('glass-effect', 'shadow-lg'); }
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('glass-effect', 'shadow-lg');
+        if(hasDarkHero) header.classList.remove('bg-transparent');
+      } else {
+        if (hasDarkHero) {
+          header.classList.remove('glass-effect', 'shadow-lg');
+          header.classList.add('bg-transparent');
+        }
+      }
+    });
+
+    // 2.b Indicateur circulaire du scroll (global)
+    const progressIndicator = document.getElementById('scroll-progress-indicator');
+    const progressCircle = progressIndicator?.querySelector('.indicator-circle-progress');
+
+    let circleCircumference = 0;
+    if (progressCircle) {
+      const radius = progressCircle.r.baseVal.value;
+      circleCircumference = 2 * Math.PI * radius;
+      progressCircle.style.strokeDasharray = `${circleCircumference} ${circleCircumference}`;
+      progressCircle.style.strokeDashoffset = circleCircumference;
+    }
+
+    const updateProgressIndicator = () => {
+      if (!progressIndicator) return;
+      const scrollTop = window.scrollY;
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollableHeight > 0 ? Math.min(1, Math.max(0, scrollTop / scrollableHeight)) : 0;
+
+      if (progressCircle) {
+        progressCircle.style.strokeDashoffset = circleCircumference * (1 - progress);
+      }
+
+      if (progress > 0.02) {
+        progressIndicator.classList.add('is-visible');
+        progressIndicator.setAttribute('aria-hidden', 'false');
+        progressIndicator.setAttribute('tabindex', '0');
+      } else {
+        progressIndicator.classList.remove('is-visible');
+        progressIndicator.setAttribute('aria-hidden', 'true');
+        progressIndicator.setAttribute('tabindex', '-1');
+      }
+    };
+
+    let indicatorTicking = false;
+    const requestIndicatorUpdate = () => {
+      if (!progressIndicator || indicatorTicking) return;
+      indicatorTicking = true;
+      requestAnimationFrame(() => {
+        updateProgressIndicator();
+        indicatorTicking = false;
+      });
+    };
+
+    updateProgressIndicator();
+    window.addEventListener('scroll', requestIndicatorUpdate, { passive: true });
+    window.addEventListener('resize', requestIndicatorUpdate);
+    window.addEventListener('orientationchange', requestIndicatorUpdate);
+    progressIndicator?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // 3. Logique du Menu Mobile
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMobileMenu = () => {
+      if (!mobileMenu) return;
+      mobileMenu.classList.add('hidden');
+      mobileMenuButton?.classList.remove('is-open');
+    };
+    if (mobileMenuButton) {
+      mobileMenuButton.addEventListener('click', () => {
+        if (!mobileMenu) return;
+        const willOpen = mobileMenu.classList.contains('hidden');
+        mobileMenu.classList.toggle('hidden');
+        mobileMenuButton.classList.toggle('is-open', willOpen);
+      });
+    }
+    mobileMenu?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    // 4. Compteur de visites (Simulation)
+    function updateVisitorCount() {
+      let baseCount = 10000; 
+      let currentCount = localStorage.getItem('visitorCount');
+      if (currentCount) {
+        currentCount = parseInt(currentCount, 10);
+      } else {
+        currentCount = baseCount + Math.floor(Math.random() * 50);
+      }
+      currentCount += 1;
+      localStorage.setItem('visitorCount', currentCount);
+      
+      const countContainer = document.getElementById('visitor-counter-container');
+      if (countContainer) {
+        countContainer.innerHTML = `Visites: <span class="font-bold text-white">${currentCount.toLocaleString('fr-FR')}</span>`;
+      }
+    }
+    // S'assurer que l'élément existe avant d'appeler la fonction
+    if (document.getElementById('visitor-counter-container')) {
+      updateVisitorCount();
+    } 
+
+    function initCookieBanner() {
+      const banner = document.getElementById('cookie-banner');
+      if (!banner) return;
+      const acceptBtn = document.getElementById('accept-cookies');
+      const declineBtn = document.getElementById('decline-cookies');
+      const storedConsent = localStorage.getItem('cookieConsent');
+      if (!storedConsent) {
+        requestAnimationFrame(() => banner.classList.remove('hidden'));
+      }
+      const handleChoice = (value) => {
+        localStorage.setItem('cookieConsent', value);
+        banner.classList.add('hidden');
+      };
+      acceptBtn?.addEventListener('click', () => handleChoice('accepted'));
+      declineBtn?.addEventListener('click', () => handleChoice('declined'));
+    }
+
+    // 6. Animations GSAP
+    // Fonction pour afficher le contenu (fallback uniquement si GSAP ne charge pas)
+    function showContentFallback() {
+      const fadeElements = document.querySelectorAll('.fade-in-up');
+      fadeElements.forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+        el.style.visibility = 'visible';
+      });
+    }
+    
+    // Initialiser GSAP quand il est prêt
+    function initGSAPAnimations() {
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        // GSAP pas encore chargé, réessayer dans 100ms
+        setTimeout(initGSAPAnimations, 100);
+        return;
+      }
+      
+      try {
+        gsap.registerPlugin(ScrollTrigger);
+        
+        const heroSection = document.getElementById('hero-content');
+        const heroInner = document.getElementById('hero-content-inner');
+        
+        // S'assurer que tous les éléments sont bien cachés avant l'animation
+        const fadeElements = document.querySelectorAll('.fade-in-up');
+        fadeElements.forEach(el => {
+          gsap.set(el, { opacity: 0, y: 40 });
+        });
+        
+        // Animation fade-in pour les éléments du hero
+        if (heroSection) {
+          gsap.to("#hero-content .fade-in-up", {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.12,
+            ease: "power2.out"
+          });
+        }
+        
+        // Animations au scroll pour les autres éléments (pas dans hero)
+        const createScrollFade = (selector, { offset = 40, duration = 0.8, ease = "power2.out", start = "top 70%", end = "bottom 65%" } = {}) => {
+          gsap.utils.toArray(selector).forEach((el) => {
+            if (el.closest('#hero-content')) {
+              return; // Déjà animé
+            }
+            
+            gsap.to(el, {
+              opacity: 1,
+              y: 0,
+              duration,
+              ease,
+              scrollTrigger: {
+                trigger: el,
+                start,
+                end,
+                toggleActions: "play none none none",
+                invalidateOnRefresh: true,
+                once: true
+              }
+            });
+          });
+        };
+        
+        createScrollFade(".fade-in-up");
+        
+        // Animation du hero avec parallaxe
+        if (heroSection && heroInner) {
+          ScrollTrigger.matchMedia({
+            "(min-width: 1024px)": () => {
+              gsap.to(heroSection, {
+                opacity: 1,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: heroSection,
+                  start: "top top",
+                  end: "bottom 70%",
+                  scrub: false
+                }
+              });
+              gsap.to(heroInner, {
+                y: "12%",
+                opacity: 0,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: heroSection,
+                  start: "top top",
+                  end: "bottom 70%",
+                  scrub: 1
+                }
+              });
+            },
+            "(max-width: 1023px)": () => {
+              gsap.set(heroSection, { opacity: 1 });
+              gsap.to(heroInner, {
+                y: 0,
+                opacity: 1,
+                ease: "power1.out",
+                scrollTrigger: {
+                  trigger: heroSection,
+                  start: "top top",
+                  end: "bottom top",
+                  scrub: false
+                }
+              });
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Erreur GSAP:', error);
+        setTimeout(showContentFallback, 500);
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        initCookieBanner();
+        
+        // S'assurer que le contenu reste caché jusqu'à ce que GSAP charge
+        const fadeElements = document.querySelectorAll('.fade-in-up');
+        fadeElements.forEach(el => {
+          // Forcer l'opacité à 0 si ce n'est pas déjà le cas
+          if (window.getComputedStyle(el).opacity !== '0') {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(40px)';
+          }
+        });
+        
+        // Attendre que GSAP soit chargé (max 3 secondes)
+        let attempts = 0;
+        const maxAttempts = 30;
+        const checkGSAP = setInterval(() => {
+          attempts++;
+          if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            clearInterval(checkGSAP);
+            initGSAPAnimations();
+          } else if (attempts >= maxAttempts) {
+            clearInterval(checkGSAP);
+            showContentFallback();
+          }
+        }, 100);
+    });
+    
+    // Fallback de sécurité après 5 secondes si GSAP ne charge vraiment pas
+    setTimeout(() => {
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        showContentFallback();
+      }
+    }, 5000);
+
+    // Code Three.js pour les vagues du hero
+    const loadThree = (() => {
+            let loaderPromise = null;
+            // Utiliser uniquement unpkg.com qui est autorisé dans la CSP
+            const fallbackScripts = [
+                "https://unpkg.com/three@0.158.0/build/three.min.js",
+                "https://unpkg.com/three@0.152.0/build/three.min.js"
+            ];
+            return () => {
+                if (window.THREE) {
+                    return Promise.resolve(window.THREE);
+                }
+                if (!loaderPromise) {
+                    loaderPromise = new Promise((resolve, reject) => {
+                        const tryLoad = (index) => {
+                            if (index >= fallbackScripts.length) {
+                                reject(new Error('Impossible de charger Three.js depuis les CDN de secours.'));
+                                return;
+                            }
+                            const script = document.createElement('script');
+                            script.src = fallbackScripts[index];
+                            script.async = true;
+                            script.crossOrigin = 'anonymous';
+                            script.onload = () => {
+                                if (window.THREE) {
+                                    resolve(window.THREE);
+                                } else {
+                                    script.remove();
+                                    tryLoad(index + 1);
+                                }
+                            };
+                            script.onerror = () => {
+                                script.remove();
+                                tryLoad(index + 1);
+                            };
+                            document.head.appendChild(script);
+                        };
+                        tryLoad(0);
+                    });
+                }
+                return loaderPromise;
+            };
+        })();
+
+        const initHeroWaves = (opts = {}) => {
+            const {
+                meshResolution = { x: 160, y: 90 },
+                secondaryResolution = { x: 110, y: 60 },
+                amplitudeScale = 0.32
+            } = opts;
+            const container = document.getElementById('hero-waves');
+            if (!container || typeof THREE === 'undefined') {
+                return;
+            }
+
+            container.innerHTML = '';
+
+            const scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x031327, 0.18);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            if (renderer.outputColorSpace !== undefined && THREE.SRGBColorSpace) {
+                renderer.outputColorSpace = THREE.SRGBColorSpace;
+            } else if (renderer.outputEncoding !== undefined && THREE.sRGBEncoding) {
+                renderer.outputEncoding = THREE.sRGBEncoding;
+            }
+            renderer.shadowMap.enabled = false;
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+
+            const camera = new THREE.PerspectiveCamera(42, container.clientWidth / container.clientHeight, 0.1, 80);
+            camera.position.set(0, 0.48, 3.15);
+            camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+            const planeGeometry = new THREE.PlaneGeometry(10.8, 6.2, Math.max(20, meshResolution.x), Math.max(12, meshResolution.y));
+            const planeMaterial = new THREE.MeshPhongMaterial({
+                color: new THREE.Color('#1b8882'),
+                emissive: new THREE.Color('#132a46'),
+                specular: new THREE.Color('#588cc4'),
+                shininess: 28,
+                transparent: true,
+                opacity: 0.68,
+                side: THREE.DoubleSide,
+                blending: THREE.AdditiveBlending,
+                depthTest: true,
+                depthWrite: false
+            });
+            const waveMesh = new THREE.Mesh(planeGeometry, planeMaterial);
+            waveMesh.rotation.x = -1.46;
+            waveMesh.position.set(0, -1.25, -0.28);
+            scene.add(waveMesh);
+            const secondaryGeometry = new THREE.PlaneGeometry(11.4, 6.6, Math.max(16, secondaryResolution.x), Math.max(10, secondaryResolution.y));
+            const secondaryMaterial = new THREE.MeshPhongMaterial({
+                color: new THREE.Color('#143d6b'),
+                emissive: new THREE.Color('#0b2036'),
+                specular: new THREE.Color('#35619a'),
+                shininess: 22,
+                transparent: true,
+                opacity: 0.42,
+                side: THREE.DoubleSide,
+                blending: THREE.AdditiveBlending,
+                depthTest: true,
+                depthWrite: false
+            });
+            const secondaryMesh = new THREE.Mesh(secondaryGeometry, secondaryMaterial);
+            secondaryMesh.rotation.x = -1.36;
+            secondaryMesh.position.set(0, -1.45, -0.62);
+            scene.add(secondaryMesh);
+            renderer.domElement.style.position = 'absolute';
+            renderer.domElement.style.inset = '0';
+            renderer.domElement.style.pointerEvents = 'none';
+            renderer.domElement.style.opacity = '1';
+            renderer.domElement.style.mixBlendMode = 'normal';
+
+            const ambient = new THREE.AmbientLight(0x1f4d83, 0.25);
+            scene.add(ambient);
+            const hemiLight = new THREE.HemisphereLight(0x1d4d85, 0x020813, 0.82);
+            scene.add(hemiLight);
+            const dirLight = new THREE.DirectionalLight(0x4aa7ff, 0.62);
+            dirLight.position.set(-2.2, 4.2, 3.4);
+            scene.add(dirLight);
+            const backLight = new THREE.PointLight(0x0b3a6d, 0.45, 7);
+            backLight.position.set(2.6, -2.8, 2.6);
+            scene.add(backLight);
+
+            const positionAttribute = planeGeometry.attributes.position;
+            const basePositions = positionAttribute.array.slice();
+            const secondaryPositionAttribute = secondaryGeometry.attributes.position;
+            const secondaryBasePositions = secondaryPositionAttribute.array.slice();
+            const clock = new THREE.Clock();
+
+            const animate = () => {
+                const elapsed = clock.getElapsedTime();
+                const amplitudePrimary = amplitudeScale;
+                const amplitudeSecondary = amplitudeScale * 0.55;
+                for (let i = 0; i < positionAttribute.count; i++) {
+                    const ix = i * 3;
+                    const x = basePositions[ix];
+                    const y = basePositions[ix + 1];
+                    const waveA = Math.sin(x * 1.45 + elapsed * 1.05);
+                    const waveB = Math.cos(y * 1.8 + elapsed * 1.35);
+                    const waveC = Math.sin((x + y) * 0.65 + elapsed * 0.9);
+                    const waveD = Math.cos((x - y) * 0.85 + elapsed * 0.6);
+
+                    positionAttribute.array[ix + 2] = amplitudePrimary * ((waveA * 0.68) + (waveB * 0.52) + (waveC * 0.38) + (waveD * 0.24));
+                }
+                positionAttribute.needsUpdate = true;
+                planeGeometry.computeVertexNormals();
+
+                for (let i = 0; i < secondaryPositionAttribute.count; i++) {
+                    const idx = i * 3;
+                    const x = secondaryBasePositions[idx];
+                    const y = secondaryBasePositions[idx + 1];
+                    const sWaveA = Math.sin(x * 0.95 + elapsed * 0.6);
+                    const sWaveB = Math.cos(y * 1.1 + elapsed * 0.75);
+                    secondaryPositionAttribute.array[idx + 2] = amplitudeSecondary * ((sWaveA * 0.52) + (sWaveB * 0.46));
+                }
+                secondaryPositionAttribute.needsUpdate = true;
+                secondaryGeometry.computeVertexNormals();
+
+                renderer.render(scene, camera);
+                requestAnimationFrame(animate);
+            };
+
+            const handleResize = () => {
+                const { clientWidth, clientHeight } = container;
+                const width = clientWidth || window.innerWidth;
+                const height = clientHeight || window.innerHeight;
+                if (!width || !height) {
+                    return;
+                }
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+                renderer.setSize(width, height);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            };
+
+            handleResize();
+            requestAnimationFrame(handleResize);
+            window.addEventListener('resize', handleResize, { passive: true });
+            window.addEventListener('orientationchange', handleResize);
+            requestAnimationFrame(animate);
+            console.info('[hero-waves] Three.js waves initialised');
+        };
+
+    // Initialiser les vagues du hero
+    loadThree()
+        .then(() => {
+            initHeroWaves({
+            meshResolution: { x: 140, y: 80 },
+            secondaryResolution: { x: 90, y: 50 },
+            amplitudeScale: 0.22
+            });
+        })
+        .catch((error) => {
+            console.error('[hero-waves] Impossible de démarrer les vagues Three.js', error);
+        });
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "ab-odyssee",
+  "version": "1.0.0",
+  "description": "AB Odyssée website",
+  "scripts": {
+    "sass": "sass scss/main.scss public/css/main.css",
+    "sass:watch": "sass --watch scss/main.scss public/css/main.css",
+    "sass:prod": "sass scss/main.scss public/css/main.css --style compressed",
+    "start": "node server/server.js",
+    "dev": "node server/server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "express-session": "^1.17.3",
+    "nodemailer": "^7.0.10",
+    "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}

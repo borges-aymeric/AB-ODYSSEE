@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AB Odyssée - Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+    .slogan-text {
+      font-family: 'Great Vibes', cursive !important;
+      font-weight: 400 !important;
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: block; height: 0; width: 0;">
+    <defs>
+      <filter id="goo">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur>
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"></feColorMatrix>
+        <feBlend in="SourceGraphic" in2="goo"></feBlend>
+      </filter>
+    </defs>
+  </svg>
+</head>
+<body class="min-h-screen bg-[#FCF9EF]">
+  <button id="scroll-progress-indicator" type="button" aria-label="Revenir en haut" title="Revenir en haut" aria-hidden="true" tabindex="-1">
+    <svg viewBox="0 0 64 64" role="presentation">
+      <circle class="indicator-circle-bg" cx="32" cy="32" r="26"></circle>
+      <circle class="indicator-circle-progress" cx="32" cy="32" r="26"></circle>
+    </svg>
+    <svg class="indicator-loop" viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <path id="indicator-loop-path" d="M32,32 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0"></path>
+      </defs>
+      <text>
+        <textPath href="#indicator-loop-path" startOffset="0%">
+          TOP • TOP • TOP • TOP • TOP • TOP • TOP • TOP •
+        </textPath>
+      </text>
+    </svg>
+    <span class="indicator-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <polyline points="12 4 12 20"></polyline>
+        <polyline points="6 10 12 4 18 10"></polyline>
+      </svg>
+    </span>
+  </button>
+  
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent">
+    <nav class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center gap-3 group">
+          <img id="header-logo" src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/690e092a150929816e34c705/79e4f2ccc_image.png" alt="AB Odyssée Logo" class="h-12 w-auto rounded-md transition-transform duration-300 group-hover:scale-105"/>
+        </a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="index.html" class="nav-link nav-link-desktop text-sm font-medium">Accueil</a>
+          <a href="services.html" class="nav-link nav-link-desktop text-sm font-medium active">Services</a>
+          <a href="about.html" class="nav-link nav-link-desktop text-sm font-medium">À propos</a>
+          <a href="contact.html" class="nav-link nav-link-desktop text-sm font-medium">Contact</a>
+          <a href="contact.html" class="btn-odysee-desktop px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300">
+            Démarrer votre odyssée
+          </a>
+        </div>
+        <button id="mobile-menu-button" type="button" aria-label="Ouvrir le menu" class="burger-button md:hidden transition-colors duration-300">
+          <span class="burger-bar"></span>
+          <span class="burger-bar"></span>
+          <span class="burger-bar"></span>
+        </button>
+      </div>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden glass-effect border-t border-[#B6B4AC]/30">
+      <div class="px-6 py-4 space-y-3">
+        <a href="index.html" class="block py-2 text-sm font-medium text-[#616972]">Accueil</a>
+        <a href="services.html" class="block py-2 text-sm font-medium text-[#091A30]">Services</a>
+        <a href="about.html" class="block py-2 text-sm font-medium text-[#616972]">À propos</a>
+        <a href="contact.html" class="block py-2 text-sm font-medium text-[#616972]">Contact</a>
+        <a href="contact.html" class="block w-full text-center bg-[#091A30] hover:bg-[#050F1A] text-white px-4 py-2 rounded-md text-sm font-medium">
+          Démarrer votre odyssée
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative">
+    <section id="services-hero" class="pt-40 pb-20 bg-gradient-to-br from-[#091A30] via-[#0D2440] to-[#091A30] text-white relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <h1 class="text-5xl md:text-6xl font-bold fade-in-up">Nos Services</h1>
+            <p class="text-xl text-white/80 mt-4 max-w-2xl fade-in-up" style="animation-delay: 0.1s;">
+              Des solutions sur-mesure pour votre odyssée digitale. Nous transformons vos idées en réalité numérique.
+            </p>
+        </div>
+    </section>
+    
+    <section class="py-24 bg-[#FCF9EF] relative">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div id="services-grid" class="grid md:grid-cols-2 gap-8">
+          <a href="#sites-web" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 relative">
+            <div class="p-8 relative z-10 service-card-content">
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #091A30;"><i data-lucide="globe" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
+              <h3 class="service-card-title text-2xl font-bold mb-3">Création de sites web</h3>
+              <p class="service-card-text">Sites vitrines et e-commerce sur mesure, optimisés pour la conversion et le référencement.</p>
+            </div>
+            <span class="service-card-corner" aria-hidden="true">
+              <span class="service-card-corner-arrow">
+                <span class="service-card-corner-arrow-icon"></span>
+              </span>
+            </span>
+          </a>
+          <a href="#identite" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 relative">
+            <div class="p-8 relative z-10 service-card-content">
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #B48A3C;"><i data-lucide="palette" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
+              <h3 class="service-card-title text-2xl font-bold mb-3">Identité de marque</h3>
+              <p class="service-card-text">Logo, charte graphique et storytelling pour une image professionnelle et mémorable.</p>
+            </div>
+            <span class="service-card-corner" aria-hidden="true">
+              <span class="service-card-corner-arrow">
+                <span class="service-card-corner-arrow-icon"></span>
+              </span>
+            </span>
+          </a>
+          <a href="#strategie" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 relative">
+            <div class="p-8 relative z-10 service-card-content">
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #091A30;"><i data-lucide="trending-up" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
+              <h3 class="service-card-title text-2xl font-bold mb-3">Stratégie digitale</h3>
+              <p class="service-card-text">Positionnement, réseaux sociaux et gestion de contenu B2B pour maximiser votre visibilité.</p>
+            </div>
+            <span class="service-card-corner" aria-hidden="true">
+              <span class="service-card-corner-arrow">
+                <span class="service-card-corner-arrow-icon"></span>
+              </span>
+            </span>
+          </a>
+          <a href="#diagnostic" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 relative">
+            <div class="p-8 relative z-10 service-card-content">
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #B48A3C;"><i data-lucide="search" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
+              <h3 class="service-card-title text-2xl font-bold mb-3">Diagnostic Web</h3>
+              <p class="service-card-text">Audit complet de votre présence en ligne avec recommandations personnalisées.</p>
+            </div>
+            <span class="service-card-corner" aria-hidden="true">
+              <span class="service-card-corner-arrow">
+                <span class="service-card-corner-arrow-icon"></span>
+              </span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-24" style="background: linear-gradient(to bottom, #FCF9EF 0%, white 15%);">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold text-[#091A30] mb-6 fade-in-up">Notre Approche</h2>
+          <p class="text-xl text-[#616972] max-w-3xl mx-auto fade-in-up">En 3 étapes simples vers votre succès.</p>
+        </div>
+        <div id="values-grid" class="grid md:grid-cols-3 gap-6 lg:gap-8">
+          <div class="value-card fade-in-up group relative">
+            <span class="absolute bottom-0 left-0 text-8xl md:text-9xl font-bold pointer-events-none pl-4 pb-4" style="-webkit-text-stroke: 2px rgba(9, 26, 48, 0.15); -webkit-text-fill-color: transparent; z-index: 0; line-height: 1;">1</span>
+            <div class="relative z-10">
+              <div class="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#091A30]/10 to-[#091A30]/5 text-[#091A30] rounded-2xl mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-2 relative">
+                <i data-lucide="headphones" class="w-10 h-10 transition-transform duration-300 group-hover:rotate-[15deg] relative z-10"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-[#091A30] mb-3 text-center">Écoute & Analyse</h3>
+              <p class="text-[#616972] text-center">Nous commençons par comprendre vos besoins, votre marché et vos objectifs.</p>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-br from-[#091A30]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
+          </div>
+          <div class="value-card fade-in-up group relative" style="animation-delay: 0.1s;">
+            <span class="absolute bottom-0 left-0 text-8xl md:text-9xl font-bold pointer-events-none pl-4 pb-4" style="-webkit-text-stroke: 2px rgba(180, 138, 60, 0.15); -webkit-text-fill-color: transparent; z-index: 0; line-height: 1;">2</span>
+            <div class="relative z-10">
+              <div class="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#B48A3C]/15 to-[#B48A3C]/5 text-[#B48A3C] rounded-2xl mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-2 relative">
+                <i data-lucide="lightbulb" class="w-10 h-10 transition-transform duration-300 group-hover:rotate-[15deg] relative z-10"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-[#091A30] mb-3 text-center">Création & Stratégie</h3>
+              <p class="text-[#616972] text-center">Nous concevons la solution sur-mesure et la stratégie de déploiement.</p>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-br from-[#B48A3C]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
+          </div>
+          <div class="value-card fade-in-up group relative" style="animation-delay: 0.2s;">
+            <span class="absolute bottom-0 left-0 text-8xl md:text-9xl font-bold pointer-events-none pl-4 pb-4" style="-webkit-text-stroke: 2px rgba(9, 26, 48, 0.15); -webkit-text-fill-color: transparent; z-index: 0; line-height: 1;">3</span>
+            <div class="relative z-10">
+              <div class="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#091A30]/10 to-[#091A30]/5 text-[#091A30] rounded-2xl mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-2 relative">
+                <i data-lucide="rocket" class="w-10 h-10 transition-transform duration-300 group-hover:rotate-[15deg] relative z-10"></i>
+              </div>
+              <h3 class="text-2xl font-bold text-[#091A30] mb-3 text-center">Lancement & Suivi</h3>
+              <p class="text-[#616972] text-center">Nous lançons votre projet et analysons les performances pour l'optimiser.</p>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-br from-[#091A30]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section id="details-services" class="py-24 bg-white scroll-mt-24"> <div class="max-w-7xl mx-auto px-6 lg:px-8 space-y-20">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold text-[#091A30] mb-6 fade-in-up">Détail de nos services</h2>
+          <p class="text-xl text-[#616972] max-w-3xl mx-auto fade-in-up">Plongez dans les spécificités de chaque expertise.</p>
+        </div>
+        
+        <div id="sites-web" class="scroll-mt-32 grid md:grid-cols-2 gap-12 items-center fade-in-up">
+          <div>
+            <img src="https://images.unsplash.com/photo-1605379399642-870262d3d051?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" alt="Création de sites web - Code sur un ordinateur portable" class="rounded-lg shadow-2xl object-cover w-full h-full aspect-video">
+          </div>
+          <div>
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-[#091A30]/5 rounded-full mb-4 text-[#091A30] text-sm font-medium">
+              <i data-lucide="globe" class="w-4 h-4"></i>
+              <span>Création de sites web</span>
+            </div>
+            <h3 class="text-3xl font-bold text-[#091A30] mb-6">Des sites qui convertissent</h3>
+            <div class="space-y-4 text-[#616972]">
+              <p>Votre site web est votre principal commercial, disponible 24/7. Nous créons des expériences utilisateurs fluides, du site vitrine élégant à la plateforme e-commerce robuste.</p>
+              <ul class="list-disc list-inside space-y-2">
+                <li>Design responsive (adapté mobile, tablette, ordinateur)</li>
+                <li>Optimisation SEO technique dès la conception</li>
+                <li>Hébergement sécurisé et maintenance</li>
+                <li>Intégration de systèmes de paiement</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="identite" class="scroll-mt-32 grid md:grid-cols-2 gap-12 items-center fade-in-up">
+          <div class="md:order-2">
+            <img src="https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YnJhbmRpbmd8fHx8fHwxNzE5ODU1MDYy&ixlib=rb-4.0.3&q=80&w=1080" alt="Identité de marque - Palette de couleurs et logos" class="rounded-lg shadow-2xl object-cover w-full h-full aspect-video">
+          </div>
+          <div class="md:order-1">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-[#B48A3C]/5 rounded-full mb-4 text-[#B48A3C] text-sm font-medium">
+              <i data-lucide="palette" class="w-4 h-4"></i>
+              <span>Identité de marque</span>
+            </div>
+            <h3 class="text-3xl font-bold text-[#091A30] mb-6">Une image inoubliable</h3>
+            <div class="space-y-4 text-[#616972]">
+              <p>Une bonne marque ne se voit pas, elle se ressent. Nous traduisons votre ADN en une identité visuelle et un discours qui créent une connexion émotionnelle durable avec vos clients.</p>
+              <ul class="list-disc list-inside space-y-2">
+                <li>Création de logo et univers de marque</li>
+                <li>Charte graphique complète (typographie, couleurs)</li>
+                <li>Storytelling et définition du "ton de voix"</li>
+                <li>Conception de supports (cartes de visite, brochures)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="strategie" class="scroll-mt-32 grid md:grid-cols-2 gap-12 items-center fade-in-up">
+          <div>
+            <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8c3RyYXRlZ3l8fHx8fHwxNzE5ODU1MDg2&ixlib=rb-4.0.3&q=80&w=1080" alt="Stratégie digitale - Tableau avec graphiques et post-its" class="rounded-lg shadow-2xl object-cover w-full h-full aspect-video">
+          </div>
+          <div>
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-[#091A30]/5 rounded-full mb-4 text-[#091A30] text-sm font-medium">
+              <i data-lucide="trending-up" class="w-4 h-4"></i>
+              <span>Stratégie digitale</span>
+            </div>
+            <h3 class="text-3xl font-bold text-[#091A30] mb-6">Maximiser votre visibilité</h3>
+            <div class="space-y-4 text-[#616972]">
+              <p>Être en ligne ne suffit pas. Il faut être vu par les bonnes personnes. Nous bâtissons une stratégie B2B/B2C pour attirer, convertir et fidéliser votre audience cible.</p>
+              <ul class="list-disc list-inside space-y-2">
+                <li>Audit de positionnement et analyse concurrentielle</li>
+                <li>Gestion de réseaux sociaux (LinkedIn, Instagram...)</li>
+                <li>Marketing de contenu (blog, newsletter)</li>
+                <li>Campagnes publicitaires (Google Ads, Meta Ads)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="diagnostic" class="scroll-mt-32 grid md:grid-cols-2 gap-12 items-center fade-in-up">
+          <div class="md:order-2">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YXVkaXR8fHx8fHwxNzE5ODU1MTEw&ixlib=rb-4.0.3&q=80&w=1080" alt="Diagnostic Web - Analyse de données sur écran" class="rounded-lg shadow-2xl object-cover w-full h-full aspect-video">
+          </div>
+          <div class="md:order-1">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-[#B48A3C]/5 rounded-full mb-4 text-[#B48A3C] text-sm font-medium">
+              <i data-lucide="search" class="w-4 h-4"></i>
+              <span>Diagnostic Web</span>
+            </div>
+            <h3 class="text-3xl font-bold text-[#091A30] mb-6">Comprendre pour mieux agir</h3>
+            <div class="space-y-4 text-[#616972]">
+              <p>Vous avez déjà un site mais il ne performe pas ? Nous passons au peigne fin votre écosystème digital pour identifier les points de friction et les opportunités manquées.</p>
+              <ul class="list-disc list-inside space-y-2">
+                <li>Audit SEO complet (technique, contenu, popularité)</li>
+                <li>Analyse de l'expérience utilisateur (UX/UI)</li>
+                <li>Rapport de performance et de vitesse</li>
+                <li>Plan d'action concret avec recommandations priorisées</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="py-24 bg-white">
+      <div class="max-w-4xl mx-auto px-6 lg:px-8">
+        <div class="service-card p-12 md:p-16 fade-in-up relative text-center" style="overflow: visible !important;">
+          <div class="service-card-content">
+            <h2 class="service-card-title text-4xl md:text-5xl font-bold mb-6">Vous avez un projet ?</h2>
+            
+            <!-- Trait doré animé -->
+            <div class="flex justify-center mb-6 relative h-16 -mt-2 w-full overflow-visible">
+              <svg id="animated-line" width="600" height="60" viewBox="0 0 600 60" class="overflow-visible w-full max-w-[600px]">
+                <path 
+                  id="orange-line-path" 
+                  d="M 0 30 Q 80 15, 150 30 Q 220 45, 300 30 Q 380 15, 450 30 Q 520 45, 600 30" 
+                  stroke="#B48A3C" 
+                  stroke-width="3.5" 
+                  fill="none" 
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  style="filter: drop-shadow(0 2px 3px rgba(180, 138, 60, 0.4));"
+                />
+                <path 
+                  d="M 0 30 Q 80 15, 150 30 Q 220 45, 300 30 Q 380 15, 450 30 Q 520 45, 600 30" 
+                  stroke="#B48A3C" 
+                  stroke-width="2" 
+                  fill="none" 
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  opacity="0.7"
+                />
+              </svg>
+            </div>
+
+            <p class="service-card-text text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+              Prêt à transformer votre vision en réalité digitale ?<br>
+              Échangeons ensemble sur vos objectifs et créons une stratégie sur mesure pour faire décoller votre projet.
+            </p>
+            
+            <a href="contact.html" class="c-button c-button--gooey inline-flex items-center justify-center font-semibold px-8 py-4 text-lg rounded-md shadow-lg hover:shadow-xl">
+              Démarrer votre odyssée
+              <div class="c-button__blobs">
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-[#091A30] text-white relative" style="z-index: 10; position: relative;">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        <div class="md:col-span-2">
+          <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/690e092a150929816e34c705/79e4f2ccc_image.png" alt="AB Odyssée Logo" class="h-16 w-auto mb-4 rounded-md"/>
+          <p class="text-[#B6B4AC] text-sm max-w-md">Nous accompagnons les TPE et PME dans leur développement en ligne avec des solutions sur-mesure et une approche humaine.</p>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-4">Navigation</h3>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Accueil</a></li>
+            <li><a href="services.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Services</a></li>
+            <li><a href="about.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">À propos</a></li>
+            <li><a href="contact.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-4">Contact</h3>
+          <ul class="space-y-2 text-sm text-[#B6B4AC]">
+            <li>France & Moyen-Orient</li>
+            <li>contact@abodyssee.fr</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold mb-4">Légal</h3>
+          <ul class="space-y-2">
+            <li><a href="mentions-legales.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Mentions Légales</a></li>
+            <li><a href="politique-confidentialite.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Politique de confidentialité</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-[#616972] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-sm text-[#B6B4AC]">© 2024 AB Odyssée. Tous droits réservés.</p>
+        <p class="slogan-text text-lg text-[#B48A3C]">La visibilité attire, l'inoubliable fidélise.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div id="cookie-banner" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-2xl bg-white text-[#091A30] shadow-2xl rounded-lg p-6 z-[9999] hidden">
+    <div class="flex flex-col gap-4">
+      <div>
+        <h3 class="text-lg font-semibold">Gestion des cookies</h3>
+        <p class="text-sm text-[#616972] mt-1">Nous utilisons des cookies pour améliorer votre expérience et analyser le trafic. Vous pouvez accepter ou refuser ces cookies à tout moment.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+        <button id="accept-cookies" class="inline-flex justify-center items-center bg-[#091A30] hover:bg-[#050F1A] text-white px-6 py-2 rounded-md text-sm font-semibold transition-colors">Accepter</button>
+        <button id="decline-cookies" class="inline-flex justify-center items-center border border-[#091A30] text-[#091A30] hover:bg-[#091A30]/5 px-6 py-2 rounded-md text-sm font-semibold transition-colors">Refuser</button>
+        <a href="politique-confidentialite.html" class="text-sm text-[#091A30] hover:text-[#B48A3C] underline sm:ml-auto">En savoir plus</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+    const header = document.getElementById('main-header');
+    const hasDarkHero = document.getElementById('hero-content') || document.querySelector('.bg-gradient-to-br');
+    if (!hasDarkHero && header) { header.classList.add('glass-effect', 'shadow-lg'); }
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('glass-effect', 'shadow-lg');
+        if(hasDarkHero) header.classList.remove('bg-transparent');
+      } else {
+        if (hasDarkHero) {
+          header.classList.remove('glass-effect', 'shadow-lg');
+          header.classList.add('bg-transparent');
+        }
+      }
+    });
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMobileMenu = () => {
+      if (!mobileMenu) return;
+      mobileMenu.classList.add('hidden');
+      mobileMenuButton?.classList.remove('is-open');
+    };
+    if (mobileMenuButton) {
+      mobileMenuButton.addEventListener('click', () => {
+        if (!mobileMenu) return;
+        const willOpen = mobileMenu.classList.contains('hidden');
+        mobileMenu.classList.toggle('hidden');
+        mobileMenuButton.classList.toggle('is-open', willOpen);
+      });
+    }
+    mobileMenu?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    const progressIndicator = document.getElementById('scroll-progress-indicator');
+    const progressCircle = progressIndicator?.querySelector('.indicator-circle-progress');
+
+    let circleCircumference = 0;
+    if (progressCircle) {
+      const radius = progressCircle.r.baseVal.value;
+      circleCircumference = 2 * Math.PI * radius;
+      progressCircle.style.strokeDasharray = `${circleCircumference} ${circleCircumference}`;
+      progressCircle.style.strokeDashoffset = circleCircumference;
+    }
+
+    const updateProgressIndicator = () => {
+      if (!progressIndicator) return;
+      const scrollTop = window.scrollY;
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollableHeight > 0 ? Math.min(1, Math.max(0, scrollTop / scrollableHeight)) : 0;
+
+      if (progressCircle) {
+        progressCircle.style.strokeDashoffset = circleCircumference * (1 - progress);
+      }
+
+      if (progress > 0.02) {
+        progressIndicator.classList.add('is-visible');
+        progressIndicator.setAttribute('aria-hidden', 'false');
+        progressIndicator.setAttribute('tabindex', '0');
+      } else {
+        progressIndicator.classList.remove('is-visible');
+        progressIndicator.setAttribute('aria-hidden', 'true');
+        progressIndicator.setAttribute('tabindex', '-1');
+      }
+    };
+
+    let indicatorTicking = false;
+    const requestIndicatorUpdate = () => {
+      if (!progressIndicator || indicatorTicking) return;
+      indicatorTicking = true;
+      requestAnimationFrame(() => {
+        updateProgressIndicator();
+        indicatorTicking = false;
+      });
+    };
+
+    updateProgressIndicator();
+    window.addEventListener('scroll', requestIndicatorUpdate, { passive: true });
+    window.addEventListener('resize', requestIndicatorUpdate);
+    window.addEventListener('orientationchange', requestIndicatorUpdate);
+    progressIndicator?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    function initCookieBanner() {
+      const banner = document.getElementById('cookie-banner');
+      if (!banner) return;
+      const acceptBtn = document.getElementById('accept-cookies');
+      const declineBtn = document.getElementById('decline-cookies');
+      const storedConsent = localStorage.getItem('cookieConsent');
+      if (!storedConsent) {
+        requestAnimationFrame(() => banner.classList.remove('hidden'));
+      }
+      const handleChoice = (value) => {
+        localStorage.setItem('cookieConsent', value);
+        banner.classList.add('hidden');
+      };
+      acceptBtn?.addEventListener('click', () => handleChoice('accepted'));
+      declineBtn?.addEventListener('click', () => handleChoice('declined'));
+    }
+    const createScrollFade = (selector, { offset = 40, duration = 0.8, ease = "power2.out", start = "top 70%", end = "bottom 65%" } = {}) => {
+      gsap.utils.toArray(selector).forEach((el) => {
+        if (el.closest('#hero-content') || el.closest('#services-hero') || el.classList.contains('service-card')) {
+          return; // Déjà animé ou sera animé séparément
+        }
+        
+        // Si l'élément est déjà visible, l'animer immédiatement
+        const rect = el.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        
+        if (isVisible) {
+          gsap.fromTo(el, { opacity: 0, y: offset }, { opacity: 1, y: 0, duration, ease, force3D: true });
+        } else {
+          const tween = gsap.fromTo(
+            el,
+            { opacity: 0, y: offset },
+            {
+              opacity: 1,
+              y: 0,
+              duration,
+              ease,
+              force3D: true,
+              scrollTrigger: {
+                trigger: el,
+                start,
+                end,
+                toggleActions: "play none none none",
+                invalidateOnRefresh: true,
+                once: true
+              }
+            }
+          );
+        }
+      });
+    };
+    // Fonction pour afficher le contenu (fallback uniquement si GSAP ne charge pas)
+    function showContentFallback() {
+      const fadeElements = document.querySelectorAll('.fade-in-up');
+      fadeElements.forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+        el.style.visibility = 'visible';
+      });
+    }
+    
+    function initGSAPAnimations() {
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        setTimeout(initGSAPAnimations, 100);
+        return;
+      }
+      
+      try {
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // S'assurer que tous les éléments sont bien cachés avant l'animation
+        const fadeElements = document.querySelectorAll('.fade-in-up');
+        fadeElements.forEach(el => {
+          gsap.set(el, { opacity: 0, y: 40 });
+        });
+        
+        // Animation fade-in pour les éléments du hero
+        const hero = document.getElementById('services-hero');
+        if (hero) {
+          gsap.to("#services-hero .fade-in-up", { opacity: 1, y: 0, duration: 0.9, stagger: 0.15, ease: "power2.out" });
+        }
+        
+        createScrollFade(".fade-in-up");
+        
+        // Animation du trait orange au scroll
+        const orangeLine = document.getElementById('orange-line-path');
+        const orangeLineUnder = document.querySelector('#animated-line path:last-child');
+        if (orangeLine) {
+          const pathLength = orangeLine.getTotalLength();
+          orangeLine.style.strokeDasharray = pathLength;
+          orangeLine.style.strokeDashoffset = pathLength;
+          if (orangeLineUnder) {
+            orangeLineUnder.style.strokeDasharray = pathLength;
+            orangeLineUnder.style.strokeDashoffset = pathLength;
+          }
+          
+          gsap.to([orangeLine, orangeLineUnder], {
+            strokeDashoffset: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: orangeLine.closest('section'),
+              start: "top 80%",
+              end: "top 20%",
+              scrub: 1,
+              once: false
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Erreur GSAP:', error);
+        // Fallback seulement en cas d'erreur
+        setTimeout(showContentFallback, 500);
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        initCookieBanner();
+        
+        // S'assurer que le contenu reste caché jusqu'à ce que GSAP charge
+        const fadeElements = document.querySelectorAll('.fade-in-up');
+        fadeElements.forEach(el => {
+          // Forcer l'opacité à 0 si ce n'est pas déjà le cas
+          if (window.getComputedStyle(el).opacity !== '0') {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(40px)';
+          }
+        });
+        
+        let attempts = 0;
+        const maxAttempts = 30;
+        const checkGSAP = setInterval(() => {
+          attempts++;
+          if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+            clearInterval(checkGSAP);
+            initGSAPAnimations();
+          } else if (attempts >= maxAttempts) {
+            // GSAP n'a pas chargé après 3 secondes, afficher le contenu
+            clearInterval(checkGSAP);
+            showContentFallback();
+          }
+        }, 100);
+    });
+    
+    // Fallback de sécurité après 5 secondes si GSAP ne charge vraiment pas
+    setTimeout(() => {
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        showContentFallback();
+      }
+    }, 5000);
+    
+    // Gérer le scroll vers les ancres après que tout soit chargé
+    window.addEventListener('load', () => {
+      // Attendre que toutes les images soient chargées et que GSAP soit initialisé
+      setTimeout(() => {
+        if (window.location.hash) {
+          const hash = window.location.hash.substring(1);
+          const targetElement = document.getElementById(hash);
+          
+          if (targetElement) {
+            const headerHeight = 80; // Hauteur du header fixe
+            const elementTop = targetElement.offsetTop;
+            const offsetPosition = elementTop - headerHeight - 32; // 32px de marge supplémentaire
+            
+            // Scroll vers l'élément avec offset pour le header
+            window.scrollTo({
+              top: Math.max(0, offsetPosition),
+              behavior: 'smooth'
+            });
+          }
+        }
+      }, 600);
+    });
+  </script>
+</body>
+</html>

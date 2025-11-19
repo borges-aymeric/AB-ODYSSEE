@@ -1,0 +1,107 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+#scroll-progress-indicator {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 60px;
+  height: 60px;
+  border-radius: 9999px;
+  background: rgba(9, 26, 48, 0.85);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 18px 30px -16px rgba(6, 17, 30, 0.65);
+  @include flex-center;
+  color: $accent-gold;
+  @include transition(opacity $transition-fast, transform $transition-fast, background-color $transition-fast);
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  z-index: $z-indicator;
+
+  &.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+
+    &:hover {
+      transform: translateY(-4px);
+    }
+  }
+
+  svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .indicator-circle-bg {
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 4;
+    fill: transparent;
+  }
+
+  .indicator-circle-progress {
+    stroke: currentColor;
+    stroke-width: 4;
+    stroke-linecap: round;
+    fill: transparent;
+    stroke-dasharray: 100 100;
+    stroke-dashoffset: 100;
+    @include transition(stroke-dashoffset 0.2s ease);
+  }
+
+  .indicator-icon {
+    position: relative;
+    z-index: 2;
+    width: 22px;
+    height: 22px;
+    @include flex-center;
+    color: #ffffff;
+    transform: rotate(45deg);
+    @include transition(transform $transition-fast, color $transition-fast);
+
+    svg {
+      width: 100%;
+      height: 100%;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.8px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  }
+
+  &:hover .indicator-icon {
+    color: $accent-gold;
+    transform: rotate(90deg);
+  }
+
+  .indicator-loop {
+    position: absolute;
+    inset: -12px;
+    width: calc(100% + 24px);
+    height: calc(100% + 24px);
+    transform-origin: center;
+    opacity: 0;
+    pointer-events: none;
+    @include transition(opacity $transition-fast);
+    overflow: visible;
+    z-index: 1;
+    animation: indicator-loop-spin 10s linear infinite;
+
+    text {
+      fill: $accent-gold;
+      font-size: 0.5rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+    }
+  }
+
+  &:hover .indicator-loop {
+    opacity: 1;
+  }
+}
+

@@ -1,0 +1,38 @@
+@use 'variables' as *;
+
+:root {
+  --primary-dark: #{$primary-dark};
+  --accent-gold: #{$accent-gold};
+  --beige-light: #{$beige-light};
+  --grey-blue: #{$grey-blue};
+  --primary-darker: #{$primary-darker};
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+// Polices personnalisées
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+.slogan-text {
+  font-family: 'Great Vibes', cursive;
+  font-weight: 400;
+}
+
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.testimonial-slide {
+  transition: opacity 0.5s ease-in-out;
+}
+

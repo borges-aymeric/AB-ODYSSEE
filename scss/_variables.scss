@@ -1,0 +1,23 @@
+// Variables SCSS
+$primary-dark: #091A30;
+$primary-darker: #050F1A;
+$accent-gold: #B48A3C;
+$accent-gold-hover: #D4B068;
+$beige-light: #FCF9EF;
+$grey-blue: #616972;
+
+// Gradients
+$service-card-gradient: linear-gradient(150deg, #0A1730 8%, #132A50 50%, #264572 92%);
+$corner-gradient: linear-gradient(145deg, #0A1730, #132A50);
+
+// Transitions
+$transition-fast: 0.3s ease;
+$transition-medium: 0.45s ease;
+$transition-slow: 0.6s ease;
+
+// Z-index layers
+$z-base: 1;
+$z-overlay: 5;
+$z-header: 50;
+$z-indicator: 999;
+

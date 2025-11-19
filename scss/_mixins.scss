@@ -1,0 +1,29 @@
+// Mixins SCSS
+
+@mixin glass-effect {
+  backdrop-filter: blur(12px);
+  background: rgba(252, 249, 239, 0.9);
+  border: 1px solid rgba(252, 249, 239, 0.3);
+}
+
+@mixin transition($properties...) {
+  transition: $properties;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin text-shadow($opacity: 0.45) {
+  text-shadow: 0 12px 24px rgba(0, 0, 0, $opacity);
+}
+

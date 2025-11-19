@@ -1,0 +1,12 @@
+// Main SCSS file - imports all partials
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'base';
+@use 'header';
+@use 'service-card';
+@use 'testimonials';
+@use 'burger';
+@use 'scroll-indicator';
+@use 'hero';
+@use 'animations';
+

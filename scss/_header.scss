@@ -1,0 +1,102 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.glass-effect {
+  @include glass-effect;
+}
+
+.nav-link {
+  position: relative;
+  @include transition(color $transition-fast);
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: $accent-gold;
+    @include transition(width $transition-fast);
+  }
+
+  &:hover::after,
+  &.active::after {
+    width: 100%;
+  }
+}
+
+// Header styles pour pages avec héros sombre
+#main-header:not(.glass-effect) {
+  #header-logo {
+    filter: none;
+    @include transition(filter $transition-fast);
+  }
+
+  .nav-link-desktop {
+    color: $accent-gold;
+
+    &:hover {
+      color: white;
+    }
+
+    &.active {
+      color: white;
+
+      &::after {
+        background: white;
+      }
+    }
+  }
+
+  .btn-odysee-desktop {
+    background-color: $accent-gold;
+    color: $primary-dark;
+
+    &:hover {
+      background-color: $accent-gold-hover;
+    }
+  }
+
+  .burger-bar {
+    background-color: white;
+  }
+}
+
+// Header styles après scroll (ou sur page claire)
+#main-header.glass-effect {
+  #header-logo {
+    filter: none;
+    @include transition(filter $transition-fast);
+  }
+
+  .nav-link-desktop {
+    color: $grey-blue;
+
+    &:hover {
+      color: $primary-dark;
+    }
+
+    &.active {
+      color: $primary-dark;
+
+      &::after {
+        background: $accent-gold;
+      }
+    }
+  }
+
+  .btn-odysee-desktop {
+    background-color: $primary-dark;
+    color: white;
+
+    &:hover {
+      background-color: $primary-darker;
+    }
+  }
+
+  .burger-bar {
+    background-color: $primary-dark;
+  }
+}
+

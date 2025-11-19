@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AB Odyssée - Mentions Légales</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+    .slogan-text {
+      font-family: 'Great Vibes', cursive !important;
+      font-weight: 400 !important;
+    }
+    .legal-section-icon {
+      width: 3.25rem;
+      height: 3.25rem;
+      min-width: 3.25rem;
+      min-height: 3.25rem;
+      border-radius: 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="min-h-screen bg-[#FCF9EF]">
+  <button id="scroll-progress-indicator" type="button" aria-label="Revenir en haut" title="Revenir en haut" aria-hidden="true" tabindex="-1">
+    <svg viewBox="0 0 64 64" role="presentation">
+      <circle class="indicator-circle-bg" cx="32" cy="32" r="26"></circle>
+      <circle class="indicator-circle-progress" cx="32" cy="32" r="26"></circle>
+    </svg>
+    <svg class="indicator-loop" viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <path id="indicator-loop-path" d="M32,32 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0"></path>
+      </defs>
+      <text>
+        <textPath href="#indicator-loop-path" startOffset="0%">
+          TOP • TOP • TOP • TOP • TOP • TOP • TOP • TOP •
+        </textPath>
+      </text>
+    </svg>
+    <span class="indicator-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <polyline points="12 4 12 20"></polyline>
+        <polyline points="6 10 12 4 18 10"></polyline>
+      </svg>
+    </span>
+  </button>
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-effect shadow-lg">
+    <nav class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center gap-3 group">
+          <img id="header-logo" src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/690e092a150929816e34c705/79e4f2ccc_image.png" alt="AB Odyssée Logo" class="h-12 w-auto rounded-md transition-transform duration-300 group-hover:scale-105"/>
+        </a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="index.html" class="nav-link nav-link-desktop text-sm font-medium text-[#616972] hover:text-[#091A30]">Accueil</a>
+          <a href="services.html" class="nav-link nav-link-desktop text-sm font-medium text-[#616972] hover:text-[#091A30]">Services</a>
+          <a href="about.html" class="nav-link nav-link-desktop text-sm font-medium text-[#616972] hover:text-[#091A30]">À propos</a>
+          <a href="contact.html" class="nav-link nav-link-desktop text-sm font-medium text-[#616972] hover:text-[#091A30]">Contact</a>
+          <a href="contact.html" class="btn-odysee-desktop bg-[#091A30] hover:bg-[#050F1A] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300">
+            Démarrer votre odyssée
+          </a>
+        </div>
+        <button id="mobile-menu-button" type="button" aria-label="Ouvrir le menu" class="burger-button md:hidden transition-colors duration-300">
+          <span class="burger-bar"></span>
+          <span class="burger-bar"></span>
+          <span class="burger-bar"></span>
+        </button>
+      </div>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden glass-effect border-t border-[#B6B4AC]/30">
+      <div class="px-6 py-4 space-y-3">
+        <a href="index.html" class="block py-2 text-sm font-medium text-[#616972]">Accueil</a>
+        <a href="services.html" class="block py-2 text-sm font-medium text-[#616972]">Services</a>
+        <a href="about.html" class="block py-2 text-sm font-medium text-[#616972]">À propos</a>
+        <a href="contact.html" class="block py-2 text-sm font-medium text-[#616972]">Contact</a>
+        <a href="contact.html" class="block w-full text-center bg-[#091A30] hover:bg-[#050F1A] text-white px-4 py-2 rounded-md text-sm font-medium">
+          Démarrer votre odyssée
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+    <section class="pt-40 pb-20 bg-[#FCF9EF]">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <h1 class="text-5xl md:text-6xl font-bold text-[#091A30] fade-in-up">Mentions Légales</h1>
+            <p class="text-xl text-[#616972] mt-4 max-w-2xl fade-in-up" style="animation-delay: 0.1s;">
+              Informations relatives à l'éditeur et à l'hébergeur du site.
+            </p>
+        </div>
+    </section>
+    
+    <section class="py-24 bg-white">
+      <div class="max-w-4xl mx-auto px-6 lg:px-8 space-y-12">
+        
+        <!-- Section 1: Éditeur du Site -->
+        <div class="fade-in-up bg-gradient-to-br from-[#FCF9EF] to-white rounded-2xl p-8 md:p-10 border border-[#E8E5D8] shadow-sm">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="legal-section-icon bg-[#091A30]">
+              <i data-lucide="building-2" class="w-6 h-6 text-white"></i>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold text-[#091A30]">1. Éditeur du Site</h2>
+          </div>
+          <div class="space-y-4 text-[#616972]">
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">Raison sociale</span>
+                <span class="text-base">AB ODYSSÉE</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">Forme juridique</span>
+                <span class="text-base">[ex: SAS, SARL, Entreprise Individuelle...]</span>
+              </div>
+              <div class="flex flex-col md:col-span-2">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">Adresse du siège social</span>
+                <span class="text-base">[Votre adresse complète]</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">Capital social</span>
+                <span class="text-base">[Montant du capital social, ex: 1 000 €]</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">Adresse e-mail</span>
+                <a href="mailto:contact@abodyssee.fr" class="text-base text-[#B48A3C] hover:text-[#091A30] transition-colors">contact@abodyssee.fr</a>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">Téléphone</span>
+                <span class="text-base">[Votre numéro de téléphone]</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">SIREN</span>
+                <span class="text-base">[Votre numéro SIREN]</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">RCS</span>
+                <span class="text-base">[Votre numéro RCS, ex: Paris B 123 456 789]</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">Numéro de TVA intracommunautaire</span>
+                <span class="text-base">[Si applicable]</span>
+              </div>
+              <div class="flex flex-col md:col-span-2">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">Directeur de la publication</span>
+                <span class="text-base">[Votre Nom Prénom], en sa qualité de [Votre fonction, ex: Gérant]</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Hébergement du Site -->
+        <div class="fade-in-up bg-gradient-to-br from-[#FCF9EF] to-white rounded-2xl p-8 md:p-10 border border-[#E8E5D8] shadow-sm">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="legal-section-icon bg-[#B48A3C]">
+              <i data-lucide="server" class="w-6 h-6 text-white"></i>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold text-[#091A30]">2. Hébergement du Site</h2>
+          </div>
+          <div class="space-y-4 text-[#616972]">
+            <p class="text-base mb-4">Ce site est hébergé par :</p>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">Nom de l'hébergeur</span>
+                <span class="text-base">[Nom de votre hébergeur, ex: OVH, Netlify, Vercel...]</span>
+              </div>
+              <div class="flex flex-col md:col-span-2">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">Adresse</span>
+                <span class="text-base">[Adresse de l'hébergeur]</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">Téléphone</span>
+                <span class="text-base">[Numéro de téléphone de l'hébergeur]</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Propriété Intellectuelle -->
+        <div class="fade-in-up bg-gradient-to-br from-[#FCF9EF] to-white rounded-2xl p-8 md:p-10 border border-[#E8E5D8] shadow-sm">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="legal-section-icon bg-[#091A30]">
+              <i data-lucide="copyright" class="w-6 h-6 text-white"></i>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold text-[#091A30]">3. Propriété Intellectuelle</h2>
+          </div>
+          <div class="text-[#616972] text-base leading-relaxed">
+            <p>L'ensemble de ce site (contenus, textes, images, vidéos, logos) constitue une œuvre protégée par la législation en vigueur sur le droit d'auteur et la propriété intellectuelle. Sauf autorisation écrite préalable, toute reproduction, représentation, adaptation, traduction et/ou modification, partielle ou intégrale, est interdite.</p>
+          </div>
+        </div>
+
+        <!-- Section 4: Crédits -->
+        <div class="fade-in-up bg-gradient-to-br from-[#FCF9EF] to-white rounded-2xl p-8 md:p-10 border border-[#E8E5D8] shadow-sm">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="legal-section-icon bg-[#B48A3C]">
+              <i data-lucide="award" class="w-6 h-6 text-white"></i>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold text-[#091A30]">4. Crédits</h2>
+          </div>
+          <div class="space-y-4 text-[#616972]">
+            <div class="grid md:grid-cols-2 gap-4">
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">Conception et réalisation</span>
+                <span class="text-base font-medium text-[#091A30]">AB Odyssée</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-semibold text-[#091A30] mb-1">Crédits photos</span>
+                <span class="text-base">[ex: Unsplash, Adobe Stock, Prénom Nom Photographe...]</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-[#091A30] text-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        <div class="md:col-span-2">
+          <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/690e092a150929816e34c705/79e4f2ccc_image.png" alt="AB Odyssée Logo" class="h-16 w-auto mb-4 rounded-md"/>
+          <p class="text-[#B6B4AC] text-sm max-w-md">Nous accompagnons les TPE et PME dans leur développement en ligne avec des solutions sur-mesure et une approche humaine.</p>
+        </div>
+        
+        <div>
+          <h3 class="font-semibold mb-4">Navigation</h3>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Accueil</a></li>
+            <li><a href="services.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Services</a></li>
+            <li><a href="about.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">À propos</a></li>
+            <li><a href="contact.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="font-semibold mb-4">Contact</h3>
+          <ul class="space-y-2 text-sm text-[#B6B4AC]">
+            <li>France & Moyen-Orient</li>
+            <li>contact@abodyssee.fr</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-semibold mb-4">Légal</h3>
+          <ul class="space-y-2">
+            <li><a href="mentions-legales.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Mentions Légales</a></li>
+            <li><a href="politique-confidentialite.html" class="text-[#B6B4AC] hover:text-[#B48A3C] text-sm transition-colors">Politique de confidentialité</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-[#616972] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-sm text-[#B6B4AC]">© 2024 AB Odyssée. Tous droits réservés.</p>
+        <p class="text-sm text-[#B48A3C] font-medium">Revenez visibles. Restez inoubliables.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div id="cookie-banner" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-2xl bg-white text-[#091A30] shadow-2xl rounded-lg p-6 z-[9999] hidden">
+    <div class="flex flex-col gap-4">
+      <div>
+        <h3 class="text-lg font-semibold">Gestion des cookies</h3>
+        <p class="text-sm text-[#616972] mt-1">Nous utilisons des cookies pour améliorer votre expérience et analyser le trafic. Vous pouvez accepter ou refuser ces cookies à tout moment.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+        <button id="accept-cookies" class="inline-flex justify-center items-center bg-[#091A30] hover:bg-[#050F1A] text-white px-6 py-2 rounded-md text-sm font-semibold transition-colors">Accepter</button>
+        <button id="decline-cookies" class="inline-flex justify-center items-center border border-[#091A30] text-[#091A30] hover:bg-[#091A30]/5 px-6 py-2 rounded-md text-sm font-semibold transition-colors">Refuser</button>
+        <a href="politique-confidentialite.html" class="text-sm text-[#091A30] hover:text-[#B48A3C] underline sm:ml-auto">En savoir plus</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+    const header = document.getElementById('main-header');
+    const hasDarkHero = null; /* PAS de héros sombre sur cette page */
+    if (!hasDarkHero && header) { header.classList.add('glass-effect', 'shadow-lg'); }
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('glass-effect', 'shadow-lg');
+      }
+    });
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMobileMenu = () => {
+      if (!mobileMenu) return;
+      mobileMenu.classList.add('hidden');
+      mobileMenuButton?.classList.remove('is-open');
+    };
+    if (mobileMenuButton) {
+      mobileMenuButton.addEventListener('click', () => {
+        if (!mobileMenu) return;
+        const willOpen = mobileMenu.classList.contains('hidden');
+        mobileMenu.classList.toggle('hidden');
+        mobileMenuButton.classList.toggle('is-open', willOpen);
+      });
+    }
+    mobileMenu?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+
+    const progressIndicator = document.getElementById('scroll-progress-indicator');
+    const progressCircle = progressIndicator?.querySelector('.indicator-circle-progress');
+
+    let circleCircumference = 0;
+    if (progressCircle) {
+      const radius = progressCircle.r.baseVal.value;
+      circleCircumference = 2 * Math.PI * radius;
+      progressCircle.style.strokeDasharray = `${circleCircumference} ${circleCircumference}`;
+      progressCircle.style.strokeDashoffset = circleCircumference;
+    }
+
+    const updateProgressIndicator = () => {
+      if (!progressIndicator) return;
+      const scrollTop = window.scrollY;
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollableHeight > 0 ? Math.min(1, Math.max(0, scrollTop / scrollableHeight)) : 0;
+
+      if (progressCircle) {
+        progressCircle.style.strokeDashoffset = circleCircumference * (1 - progress);
+      }
+
+      if (progress > 0.02) {
+        progressIndicator.classList.add('is-visible');
+        progressIndicator.setAttribute('aria-hidden', 'false');
+        progressIndicator.setAttribute('tabindex', '0');
+      } else {
+        progressIndicator.classList.remove('is-visible');
+        progressIndicator.setAttribute('aria-hidden', 'true');
+        progressIndicator.setAttribute('tabindex', '-1');
+      }
+    };
+
+    let indicatorTicking = false;
+    const requestIndicatorUpdate = () => {
+      if (!progressIndicator || indicatorTicking) return;
+      indicatorTicking = true;
+      requestAnimationFrame(() => {
+        updateProgressIndicator();
+        indicatorTicking = false;
+      });
+    };
+
+    updateProgressIndicator();
+    window.addEventListener('scroll', requestIndicatorUpdate, { passive: true });
+    window.addEventListener('resize', requestIndicatorUpdate);
+    window.addEventListener('orientationchange', requestIndicatorUpdate);
+    progressIndicator?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    function initCookieBanner() {
+      const banner = document.getElementById('cookie-banner');
+      if (!banner) return;
+      const acceptBtn = document.getElementById('accept-cookies');
+      const declineBtn = document.getElementById('decline-cookies');
+      const storedConsent = localStorage.getItem('cookieConsent');
+      if (!storedConsent) {
+        requestAnimationFrame(() => banner.classList.remove('hidden'));
+      }
+      const handleChoice = (value) => {
+        localStorage.setItem('cookieConsent', value);
+        banner.classList.add('hidden');
+      };
+      acceptBtn?.addEventListener('click', () => handleChoice('accepted'));
+      declineBtn?.addEventListener('click', () => handleChoice('declined'));
+    }
+    const createScrollFade = (selector, { offset = 40, duration = 0.8, ease = "power2.out", start = "top 70%", end = "bottom 65%" } = {}) => {
+      gsap.utils.toArray(selector).forEach((el) => {
+        if (el.closest('#hero-content')) {
+          return;
+        }
+        const tween = gsap.fromTo(
+          el,
+          { opacity: 0, y: offset },
+          {
+            opacity: 1,
+            y: 0,
+            duration,
+            ease,
+            scrollTrigger: {
+              trigger: el,
+              start,
+              end,
+              toggleActions: "play none none none",
+              invalidateOnRefresh: true,
+              once: true
+            }
+          }
+        );
+        if (ScrollTrigger.isInViewport(el)) {
+          tween.progress(1);
+        }
+      });
+    };
+    
+    // --- Animations GSAP pour cette page ---
+    document.addEventListener('DOMContentLoaded', () => {
+        gsap.registerPlugin(ScrollTrigger);
+        initCookieBanner();
+        // Animation de fondu simple au chargement
+        createScrollFade(".fade-in-up");
+    });
+  </script>
+</body>
+</html>
