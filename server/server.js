@@ -15,6 +15,9 @@ const PORT = process.env.PORT || 3000;
 const PUBLIC_DIR = path.join(__dirname, '../public');
 const PRIVATE_DIR = path.join(__dirname, '../private');
 
+// Derrière un proxy (Render, Heroku, etc.), faire confiance au proxy
+app.set('trust proxy', 1);
+
 // Configuration CORS pour permettre les sessions
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const corsOptions = {
