@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AB Odyssée - CRM Administration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="min-h-screen bg-[#FCF9EF]">
+  <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-effect shadow-lg">
+    <nav class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <a href="index.html" class="flex items-center gap-3 group">
+          <img id="header-logo" src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/690e092a150929816e34c705/79e4f2ccc_image.png" alt="AB Odyssée Logo" class="h-12 w-auto rounded-md transition-transform duration-300 group-hover:scale-105"/>
+        </a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="index.html" class="nav-link nav-link-desktop text-sm font-medium">Accueil</a>
+          <a href="inscription-client.html" class="nav-link nav-link-desktop text-sm font-medium">Nouveau Client</a>
+          <button id="logout-btn" 
+            class="inline-flex items-center justify-center border-2 border-red-500 text-red-500 hover:bg-red-50 px-4 py-2 rounded-md text-sm transition-colors">
+            <i data-lucide="log-out" class="w-4 h-4 mr-2"></i>
+            Déconnexion
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="pt-32 pb-20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+      <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h1 class="text-4xl md:text-5xl font-bold text-[#091A30] mb-2">CRM - Gestion Clients</h1>
+          <p class="text-lg text-[#616972]">Gérez vos clients et leurs échanges</p>
+        </div>
+        <a href="inscription-client.html" 
+          class="inline-flex items-center justify-center bg-[#B48A3C] hover:bg-[#9A7332] text-white font-semibold px-6 py-3 rounded-md transition-colors shadow-lg hover:shadow-xl">
+          <i data-lucide="user-plus" class="w-5 h-5 mr-2"></i>
+          Nouveau Client
+        </a>
+      </div>
+
+      <!-- Statistiques -->
+      <div id="statistics" class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white border border-[#B6B4AC]/20 rounded-2xl shadow-lg p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-[#616972] mb-1">Total</p>
+              <p class="text-3xl font-bold text-[#091A30]" id="total-clients">0</p>
+            </div>
+            <div class="w-16 h-16 bg-[#091A30]/10 rounded-full flex items-center justify-center">
+              <i data-lucide="users" class="w-8 h-8 text-[#091A30]"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white border border-[#B6B4AC]/20 rounded-2xl shadow-lg p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-[#616972] mb-1">Clients</p>
+              <p class="text-3xl font-bold text-green-600" id="total-clients-actifs">0</p>
+            </div>
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+              <i data-lucide="user-check" class="w-8 h-8 text-green-600"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white border border-[#B6B4AC]/20 rounded-2xl shadow-lg p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-[#616972] mb-1">Prospects</p>
+              <p class="text-3xl font-bold text-orange-600" id="total-prospects">0</p>
+            </div>
+            <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
+              <i data-lucide="user-search" class="w-8 h-8 text-orange-600"></i>
+            </div>
+          </div>
+        </div>
+        <div class="bg-white border border-[#B6B4AC]/20 rounded-2xl shadow-lg p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm text-[#616972] mb-1">Total Échanges</p>
+              <p class="text-3xl font-bold text-[#B48A3C]" id="total-echanges">0</p>
+            </div>
+            <div class="w-16 h-16 bg-[#B48A3C]/10 rounded-full flex items-center justify-center">
+              <i data-lucide="message-circle" class="w-8 h-8 text-[#B48A3C]"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtres et recherche -->
+      <div class="bg-white border border-[#B6B4AC]/20 rounded-2xl shadow-lg p-6 mb-8">
+        <div class="grid md:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-[#091A30] mb-2">Rechercher</label>
+            <input type="text" id="search-input" placeholder="Nom, email, service..."
+              class="w-full px-4 py-2 bg-white border border-[#B6B4AC]/30 rounded-md text-[#091A30] placeholder-[#616972] focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C]">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-[#091A30] mb-2">Filtrer par service</label>
+            <select id="filter-service" 
+              class="w-full px-4 py-2 bg-white border border-[#B6B4AC]/30 rounded-md text-[#091A30] focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C]">
+              <option value="">Tous les services</option>
+              <option value="Création de site web">Création de site web</option>
+              <option value="Identité de marque">Identité de marque</option>
+              <option value="Stratégie digitale">Stratégie digitale</option>
+              <option value="Diagnostic Web">Diagnostic Web</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-[#091A30] mb-2">Filtrer par type</label>
+            <select id="filter-type" 
+              class="w-full px-4 py-2 bg-white border border-[#B6B4AC]/30 rounded-md text-[#091A30] focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C]">
+              <option value="">Tous les types</option>
+              <option value="client">Clients</option>
+              <option value="prospect">Prospects</option>
+            </select>
+          </div>
+          <div class="flex items-end">
+            <button id="refresh-btn" 
+              class="w-full inline-flex items-center justify-center border-2 border-[#091A30] text-[#091A30] hover:bg-[#091A30]/5 px-4 py-2 rounded-md transition-colors">
+              <i data-lucide="refresh-cw" class="w-4 h-4 mr-2"></i>
+              Actualiser
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Liste des clients -->
+      <div id="clients-container" class="space-y-4">
+        <div class="text-center py-12">
+          <i data-lucide="loader" class="w-12 h-12 text-[#616972] mx-auto animate-spin"></i>
+          <p class="text-[#616972] mt-4">Chargement des clients...</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal pour voir un client -->
+  <div id="client-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="sticky top-0 bg-white border-b border-[#B6B4AC]/30 p-6 flex justify-between items-center">
+        <h2 class="text-2xl font-bold text-[#091A30]" id="modal-title">Détails du client</h2>
+        <button id="close-modal" class="text-[#616972] hover:text-[#091A30]">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div class="p-6" id="modal-content">
+        <!-- Contenu chargé dynamiquement -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal pour éditer un client -->
+  <div id="edit-client-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="sticky top-0 bg-white border-b border-[#B6B4AC]/30 p-6 flex justify-between items-center">
+        <h2 class="text-2xl font-bold text-[#091A30]" id="edit-modal-title">Modifier le client</h2>
+        <button id="close-edit-modal" class="text-[#616972] hover:text-[#091A30]">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <form id="edit-client-form" class="p-6">
+        <input type="hidden" id="edit-client-id" name="client_id">
+        
+        <div class="space-y-6">
+          <!-- Informations du client -->
+          <div>
+            <h3 class="text-lg font-semibold text-[#091A30] mb-4 flex items-center gap-2">
+              <i data-lucide="user" class="w-5 h-5"></i>
+              Informations
+            </h3>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div>
+                <label for="edit-nom" class="block text-sm font-medium text-[#091A30] mb-2">
+                  Nom <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="edit-nom" name="nom" required
+                  class="w-full px-4 py-2 bg-white border border-[#B6B4AC]/30 rounded-md text-[#091A30] focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C]">
+              </div>
+              <div>
+                <label for="edit-prenom" class="block text-sm font-medium text-[#091A30] mb-2">
+                  Prénom <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="edit-prenom" name="prenom" required
+                  class="w-full px-4 py-2 bg-white border border-[#B6B4AC]/30 rounded-md text-[#091A30] focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C]">
+              </div>
+              <div>
+                <label for="edit-email" class="block text-sm font-medium text-[#091A30] mb-2">
+                  Email <span class="text-red-500">*</span>
+                </label>
+                <input type="email" id="edit-email" name="email" required
+                  class="w-full px-4 py-2 bg-white border border-[#B6B4AC]/30 rounded-md text-[#091A30] focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C]">
+              </div>
+              <div>
+                <label for="edit-telephone" class="block text-sm font-medium text-[#091A30] mb-2">
+                  Téléphone
+                </label>
+                <input type="tel" id="edit-telephone" name="telephone" maxlength="10" inputmode="numeric"
+                  class="w-full px-4 py-2 bg-white border border-[#B6B4AC]/30 rounded-md text-[#091A30] focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C]">
+              </div>
+              <div>
+                <label for="edit-siret" class="block text-sm font-medium text-[#091A30] mb-2">
+                  SIRET
+                </label>
+                <input type="text" id="edit-siret" name="siret"
+                  class="w-full px-4 py-2 bg-white border border-[#B6B4AC]/30 rounded-md text-[#091A30] focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C]">
+              </div>
+              <div>
+                <label for="edit-tva" class="block text-sm font-medium text-[#091A30] mb-2">
+                  TVA Intracommunautaire
+                </label>
+                <input type="text" id="edit-tva" name="tva_intracommunautaire"
+                  class="w-full px-4 py-2 bg-white border border-[#B6B4AC]/30 rounded-md text-[#091A30] focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C]">
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-[#091A30] mb-2">
+                  Type <span class="text-red-500">*</span>
+                </label>
+                <div class="grid grid-cols-2 gap-4">
+                  <label class="option-card flex items-center gap-3 p-4 bg-white border-2 border-[#B6B4AC]/30 rounded-md cursor-pointer hover:border-[#B48A3C] transition-colors">
+                    <input type="radio" name="edit-type" value="prospect" id="edit-type-prospect"
+                      class="w-4 h-4 text-[#B48A3C] border-[#B6B4AC]/30">
+                    <div>
+                      <span class="font-medium text-[#091A30] block">Prospect</span>
+                      <span class="text-xs text-[#616972]">En cours de prospection</span>
+                    </div>
+                  </label>
+                  <label class="option-card flex items-center gap-3 p-4 bg-white border-2 border-[#B6B4AC]/30 rounded-md cursor-pointer hover:border-[#B48A3C] transition-colors">
+                    <input type="radio" name="edit-type" value="client" id="edit-type-client"
+                      class="w-4 h-4 text-[#B48A3C] border-[#B6B4AC]/30">
+                    <div>
+                      <span class="font-medium text-[#091A30] block">Client</span>
+                      <span class="text-xs text-[#616972]">Client actif</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-[#091A30] mb-2">
+                  Services demandés <span class="text-red-500">*</span>
+                  <span class="text-xs text-[#616972] font-normal">(Sélectionnez un ou plusieurs services)</span>
+                </label>
+                <div class="space-y-2 p-4 bg-white border border-[#B6B4AC]/30 rounded-md">
+                  <label class="service-option flex items-center gap-3 cursor-pointer hover:bg-[#091A30]/5 p-2 rounded transition-colors">
+                    <input type="checkbox" name="edit-services" value="Création de site web" 
+                      class="w-4 h-4 text-[#B48A3C] border-[#B6B4AC]/30 rounded">
+                    <span class="text-[#091A30]">Création de site web</span>
+                  </label>
+                  <label class="service-option flex items-center gap-3 cursor-pointer hover:bg-[#091A30]/5 p-2 rounded transition-colors">
+                    <input type="checkbox" name="edit-services" value="Identité de marque" 
+                      class="w-4 h-4 text-[#B48A3C] border-[#B6B4AC]/30 rounded">
+                    <span class="text-[#091A30]">Identité de marque</span>
+                  </label>
+                  <label class="service-option flex items-center gap-3 cursor-pointer hover:bg-[#091A30]/5 p-2 rounded transition-colors">
+                    <input type="checkbox" name="edit-services" value="Stratégie digitale" 
+                      class="w-4 h-4 text-[#B48A3C] border-[#B6B4AC]/30 rounded">
+                    <span class="text-[#091A30]">Stratégie digitale</span>
+                  </label>
+                  <label class="service-option flex items-center gap-3 cursor-pointer hover:bg-[#091A30]/5 p-2 rounded transition-colors">
+                    <input type="checkbox" name="edit-services" value="Diagnostic Web" 
+                      class="w-4 h-4 text-[#B48A3C] border-[#B6B4AC]/30 rounded">
+                    <span class="text-[#091A30]">Diagnostic Web</span>
+                  </label>
+                  <label class="service-option flex items-center gap-3 cursor-pointer hover:bg-[#091A30]/5 p-2 rounded transition-colors">
+                    <input type="checkbox" name="edit-services" value="Autre" 
+                      class="w-4 h-4 text-[#B48A3C] border-[#B6B4AC]/30 rounded">
+                    <span class="text-[#091A30]">Autre</span>
+                  </label>
+                </div>
+                <div id="edit-services-error" class="hidden text-red-500 text-xs mt-1">Veuillez sélectionner au moins un service.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="edit-client-message" class="hidden p-4 rounded-md mt-6"></div>
+
+        <div class="flex gap-4 mt-6 pt-6 border-t border-[#B6B4AC]/30">
+          <button type="submit" 
+            class="flex-1 inline-flex items-center justify-center bg-[#B48A3C] hover:bg-[#9A7332] text-white font-semibold px-6 py-3 rounded-md transition-colors">
+            <i data-lucide="save" class="w-5 h-5 mr-2"></i>
+            Enregistrer les modifications
+          </button>
+          <button type="button" id="cancel-edit-client"
+            class="inline-flex items-center justify-center border-2 border-[#091A30] text-[#091A30] hover:bg-[#091A30]/5 px-6 py-3 rounded-md transition-colors">
+            Annuler
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal pour ajouter/modifier un échange -->
+  <div id="echange-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg max-w-2xl w-full">
+      <div class="border-b border-[#B6B4AC]/30 p-6 flex justify-between items-center">
+        <h2 class="text-2xl font-bold text-[#091A30]" id="echange-modal-title">Nouvel échange</h2>
+        <button id="close-echange-modal" class="text-[#616972] hover:text-[#091A30]">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <form id="echange-form" class="p-6 space-y-4">
+        <input type="hidden" id="echange-id" name="echange_id">
+        <input type="hidden" id="echange-client-id" name="client_id">
+        
+        <div>
+          <label class="block text-sm font-medium text-[#091A30] mb-2">Type d'échange <span class="text-red-500">*</span></label>
+          <select id="echange-type" name="type" required
+            class="w-full px-4 py-2 bg-white border border-[#B6B4AC]/30 rounded-md text-[#091A30] focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C]">
+            <option value="">Choisir un type</option>
+            <option value="Appel téléphonique">Appel téléphonique</option>
+            <option value="Email">Email</option>
+            <option value="Réunion">Réunion</option>
+            <option value="Note interne">Note interne</option>
+            <option value="Devis">Devis</option>
+            <option value="Facture">Facture</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-[#091A30] mb-2">Sujet</label>
+          <input type="text" id="echange-sujet" name="sujet"
+            class="w-full px-4 py-2 bg-white border border-[#B6B4AC]/30 rounded-md text-[#091A30] focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C]">
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium text-[#091A30] mb-2">Contenu <span class="text-red-500">*</span></label>
+          <textarea id="echange-contenu" name="contenu" rows="6" required
+            class="w-full px-4 py-2 bg-white border border-[#B6B4AC]/30 rounded-md text-[#091A30] focus:ring-2 focus:ring-[#B48A3C] focus:border-[#B48A3C] resize-none"></textarea>
+        </div>
+        
+        <div id="echange-message" class="hidden p-4 rounded-md"></div>
+        
+        <div class="flex gap-4">
+          <button type="submit" 
+            class="flex-1 inline-flex items-center justify-center bg-[#B48A3C] hover:bg-[#9A7332] text-white font-semibold px-6 py-3 rounded-md transition-colors">
+            <i data-lucide="save" class="w-5 h-5 mr-2"></i>
+            Enregistrer
+          </button>
+          <button type="button" id="cancel-echange"
+            class="inline-flex items-center justify-center border-2 border-[#091A30] text-[#091A30] hover:bg-[#091A30]/5 px-6 py-3 rounded-md transition-colors">
+            Annuler
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="bg-[#091A30] text-white mt-20">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+      <div class="text-center">
+        <p class="text-[#B6B4AC] text-sm">© 2024 AB Odyssée. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/private/js/auth-check.js"></script>
+  <script src="/private/js/admin-crm.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
+
