@@ -689,19 +689,33 @@ const emailConfig = {
 };
 
 // Créer le transporteur email
-let transporter;
-try {
-  transporter = nodemailer.createTransport({
-    host: emailConfig.host,
-    port: emailConfig.port,
-    secure: emailConfig.secure,
-    auth: emailConfig.auth.user && emailConfig.auth.pass ? emailConfig.auth : undefined,
-    family: Number(process.env.SMTP_FAMILY || 4) // forcer IPv4 si nécessaire
-  });
-} catch (error) {
-  console.warn('⚠️  Configuration email non disponible. Les emails ne seront pas envoyés.');
-  console.warn('   Configurez SMTP_USER et SMTP_PASS dans les variables d\'environnement.');
-}
+let transporter = nodemailer.createTransport({
+  host: emailConfig.host,
+  port: emailConfig.port,
+  secure: emailConfig.secure, // true pour 465, false pour autres
+  auth: {
+      user: emailConfig.auth.user,
+      pass: emailConfig.auth.pass,
+  },
+  // Force IPv4 pour éviter les problèmes de résolution IPv6 sur Render/Docker
+  family: 4, 
+  // Optionnel : parfois nécessaire pour éviter les erreurs de certificat auto-signé
+  tls: {
+      rejectUnauthorized: false 
+  }
+});
+
+// 👇 C'est ici que la magie opère pour le debug
+transporter.verify(function (error, success) {
+  if (error) {
+      console.error("❌ Erreur de connexion SMTP au démarrage :");
+      console.error(error);
+      // Si vous voyez 'ETIMEDOUT' ici dans les logs Render, 
+      // c'est confirmé : Google bloque l'IP du serveur.
+  } else {
+      console.log("✅ Serveur SMTP prêt à envoyer des emails");
+  }
+});
 
 // Fonction pour générer le template HTML de l'email
 function generateEmailTemplate(data) {
