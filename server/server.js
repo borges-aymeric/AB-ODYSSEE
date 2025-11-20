@@ -96,16 +96,47 @@ app.use(express.static(PUBLIC_DIR));
 
 // Initialisation de la base de données
 const dbPath = path.join(__dirname, 'crm.db');
-const db = new sqlite3.Database(dbPath, (err) => {
+console.log('📁 Chemin de la base de données:', dbPath);
+
+// Ouvrir la base de données en mode persistant (pas en mémoire)
+// Mode: OPEN_READWRITE | OPEN_CREATE pour s'assurer que le fichier est créé et accessible en écriture
+const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
   if (err) {
-    console.error('Erreur de connexion à la base de données:', err.message);
+    console.error('❌ Erreur de connexion à la base de données:', err.message);
+    console.error('   Chemin:', dbPath);
   } else {
+    console.log('✅ Base de données connectée avec succès:', dbPath);
+    // Activer le mode WAL pour de meilleures performances et la persistance
+    db.run('PRAGMA journal_mode = WAL;', (err) => {
+      if (err) {
+        console.warn('⚠️  Impossible d\'activer le mode WAL:', err.message);
+      } else {
+        console.log('✅ Mode WAL activé pour la persistance');
+      }
+    });
+    // Activer les clés étrangères
+    db.run('PRAGMA foreign_keys = ON;', (err) => {
+      if (err) {
+        console.warn('⚠️  Impossible d\'activer les clés étrangères:', err.message);
+      }
+    });
     initDatabase();
   }
 });
 
 // Initialisation des tables
 function initDatabase() {
+  console.log('🔧 Initialisation de la base de données...');
+  
+  // Vérifier d'abord combien de clients existent déjà
+  db.get('SELECT COUNT(*) as count FROM clients', [], (err, row) => {
+    if (err) {
+      console.log('ℹ️  Table clients n\'existe pas encore ou erreur:', err.message);
+    } else {
+      console.log(`📊 Nombre de clients existants dans la base: ${row.count}`);
+    }
+  });
+  
   db.serialize(() => {
     // Table des clients
     db.run(`CREATE TABLE IF NOT EXISTS clients (
@@ -123,8 +154,9 @@ function initDatabase() {
       date_modification DATETIME DEFAULT CURRENT_TIMESTAMP
     )`, (err) => {
       if (err) {
-        console.error('Erreur lors de la création de la table clients:', err.message);
+        console.error('❌ Erreur lors de la création de la table clients:', err.message);
       } else {
+        console.log('✅ Table clients initialisée');
         // Migration : ajouter la colonne type si elle n'existe pas (pour les anciennes bases)
         db.all("PRAGMA table_info(clients)", (pragmaErr, columns) => {
           if (pragmaErr) {
@@ -191,7 +223,9 @@ function initDatabase() {
       FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
     )`, (err) => {
       if (err) {
-        console.error('Erreur lors de la création de la table echanges:', err.message);
+        console.error('❌ Erreur lors de la création de la table echanges:', err.message);
+      } else {
+        console.log('✅ Table echanges initialisée');
       }
     });
 
@@ -205,10 +239,18 @@ function initDatabase() {
       derniere_connexion DATETIME
     )`, (err) => {
       if (err) {
-        console.error('Erreur lors de la création de la table admins:', err.message);
+        console.error('❌ Erreur lors de la création de la table admins:', err.message);
       } else {
+        console.log('✅ Table admins initialisée');
         // Créer les comptes par défaut si nécessaire
         ensureDefaultAccounts();
+      }
+    });
+    
+    // Vérifier le nombre total de clients après l'initialisation
+    db.get('SELECT COUNT(*) as count FROM clients', [], (err, row) => {
+      if (!err && row) {
+        console.log(`✅ Initialisation terminée - ${row.count} client(s) dans la base de données`);
       }
     });
   });
@@ -430,17 +472,21 @@ app.post('/api/clients', requireAuth, (req, res) => {
 
   const createdBy = req.session.user?.username || 'admin';
 
+  console.log('📝 Création d\'un nouveau client:', { nom, prenom, email, type: validType });
+
   db.run(
     `INSERT INTO clients (nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [nom, prenom, telephone || null, email, siret || null, tva_intracommunautaire || null, servicesText, validType, createdBy],
     function(err) {
       if (err) {
+        console.error('❌ Erreur lors de la création du client:', err.message);
         if (err.message.includes('UNIQUE constraint failed')) {
           return res.status(409).json({ error: 'Un client avec cet email existe déjà.' });
         }
         return res.status(500).json({ error: err.message });
       }
+      console.log('✅ Client créé avec succès - ID:', this.lastID);
       res.status(201).json({ 
         id: this.lastID, 
         message: 'Client créé avec succès.',
@@ -454,8 +500,10 @@ app.post('/api/clients', requireAuth, (req, res) => {
 app.get('/api/clients', requireAuth, (req, res) => {
   db.all('SELECT id, nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by, date_creation, date_modification FROM clients ORDER BY date_creation DESC', [], (err, rows) => {
     if (err) {
+      console.error('❌ Erreur lors de la récupération des clients:', err.message);
       return res.status(500).json({ error: err.message });
     }
+    console.log(`📊 Récupération de ${rows.length} client(s) depuis la base de données`);
     // S'assurer que tous les clients ont un type
     rows.forEach(row => {
       if (!row.type) {
@@ -866,12 +914,48 @@ app.listen(PORT, () => {
 });
 
 // Fermeture propre de la base de données
-process.on('SIGINT', () => {
-  db.close((err) => {
-    if (err) {
-      console.error(err.message);
-    }
-    console.log('Connexion à la base de données fermée.');
-    process.exit(0);
+function closeDatabase() {
+  return new Promise((resolve, reject) => {
+    // Vérifier que toutes les opérations sont terminées
+    db.run('PRAGMA wal_checkpoint(FULL);', (err) => {
+      if (err) {
+        console.warn('⚠️  Erreur lors du checkpoint WAL:', err.message);
+      } else {
+        console.log('✅ Checkpoint WAL effectué - données sauvegardées');
+      }
+      
+      // Fermer la base de données
+      db.close((closeErr) => {
+        if (closeErr) {
+          console.error('❌ Erreur lors de la fermeture de la base de données:', closeErr.message);
+          reject(closeErr);
+        } else {
+          console.log('✅ Connexion à la base de données fermée proprement.');
+          resolve();
+        }
+      });
+    });
   });
+}
+
+process.on('SIGINT', async () => {
+  console.log('\n🛑 Arrêt du serveur en cours...');
+  try {
+    await closeDatabase();
+    process.exit(0);
+  } catch (err) {
+    console.error('❌ Erreur lors de la fermeture:', err);
+    process.exit(1);
+  }
+});
+
+process.on('SIGTERM', async () => {
+  console.log('\n🛑 Arrêt du serveur en cours...');
+  try {
+    await closeDatabase();
+    process.exit(0);
+  } catch (err) {
+    console.error('❌ Erreur lors de la fermeture:', err);
+    process.exit(1);
+  }
 });
