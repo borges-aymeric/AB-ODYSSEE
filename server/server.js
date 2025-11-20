@@ -128,15 +128,6 @@ const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CR
 function initDatabase() {
   console.log('🔧 Initialisation de la base de données...');
   
-  // Vérifier d'abord combien de clients existent déjà
-  db.get('SELECT COUNT(*) as count FROM clients', [], (err, row) => {
-    if (err) {
-      console.log('ℹ️  Table clients n\'existe pas encore ou erreur:', err.message);
-    } else {
-      console.log(`📊 Nombre de clients existants dans la base: ${row.count}`);
-    }
-  });
-  
   db.serialize(() => {
     // Table des clients
     db.run(`CREATE TABLE IF NOT EXISTS clients (
@@ -249,7 +240,9 @@ function initDatabase() {
     
     // Vérifier le nombre total de clients après l'initialisation
     db.get('SELECT COUNT(*) as count FROM clients', [], (err, row) => {
-      if (!err && row) {
+      if (err) {
+        console.log('ℹ️  Impossible de compter les clients:', err.message);
+      } else {
         console.log(`✅ Initialisation terminée - ${row.count} client(s) dans la base de données`);
       }
     });
@@ -370,8 +363,11 @@ app.get('/api/auth/status', (req, res) => {
 app.post('/api/auth/login', loginLimiter, async (req, res) => {
   const { username, password } = req.body;
 
+  console.log('🔐 Tentative de connexion pour:', username);
+
   // Validation stricte des entrées
   if (!username || !password) {
+    console.log('❌ Validation échouée: champs manquants');
     return res.status(400).json({ error: 'Nom d\'utilisateur et mot de passe requis.' });
   }
 
@@ -393,10 +389,12 @@ app.post('/api/auth/login', loginLimiter, async (req, res) => {
 
   db.get('SELECT * FROM admins WHERE username = ?', [cleanUsername], async (err, admin) => {
     if (err) {
+      console.error('❌ Erreur lors de la requête à la base de données:', err.message);
       return res.status(500).json({ error: 'Erreur serveur.' });
     }
 
     if (!admin) {
+      console.log('❌ Utilisateur non trouvé:', cleanUsername);
       // Délai artificiel pour éviter l'énumération des utilisateurs
       await new Promise(resolve => setTimeout(resolve, 500));
       return res.status(401).json({ error: 'Identifiants incorrects.' });
@@ -419,6 +417,8 @@ app.post('/api/auth/login', loginLimiter, async (req, res) => {
         username: admin.username,
         email: admin.email
       };
+
+      console.log('✅ Connexion réussie pour:', admin.username);
 
       res.json({ 
         message: 'Connexion réussie.',
