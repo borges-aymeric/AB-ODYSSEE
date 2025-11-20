@@ -4,20 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AB Odyssée - Services</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
-    .slogan-text {
-      font-family: 'Great Vibes', cursive !important;
-      font-weight: 400 !important;
-    }
-  </style>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://unpkg.com/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <link rel="stylesheet" href="css/main.css">
   <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: block; height: 0; width: 0;">
     <defs>
@@ -101,7 +91,7 @@
     <section class="py-24 bg-[#FCF9EF] relative">
       <div class="max-w-7xl mx-auto px-6 lg:px-8">
         <div id="services-grid" class="grid md:grid-cols-2 gap-8">
-          <a href="#sites-web" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 relative">
+          <a href="#sites-web" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 overflow-hidden relative">
             <div class="p-8 relative z-10 service-card-content">
               <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #091A30;"><i data-lucide="globe" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
               <h3 class="service-card-title text-2xl font-bold mb-3">Création de sites web</h3>
@@ -113,7 +103,7 @@
               </span>
             </span>
           </a>
-          <a href="#identite" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 relative">
+          <a href="#identite" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 overflow-hidden relative">
             <div class="p-8 relative z-10 service-card-content">
               <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #B48A3C;"><i data-lucide="palette" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
               <h3 class="service-card-title text-2xl font-bold mb-3">Identité de marque</h3>
@@ -125,7 +115,7 @@
               </span>
             </span>
           </a>
-          <a href="#strategie" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 relative">
+          <a href="#strategie" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 overflow-hidden relative">
             <div class="p-8 relative z-10 service-card-content">
               <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #091A30;"><i data-lucide="trending-up" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
               <h3 class="service-card-title text-2xl font-bold mb-3">Stratégie digitale</h3>
@@ -137,7 +127,7 @@
               </span>
             </span>
           </a>
-          <a href="#diagnostic" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 relative">
+          <a href="#diagnostic" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 overflow-hidden relative">
             <div class="p-8 relative z-10 service-card-content">
               <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #B48A3C;"><i data-lucide="search" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
               <h3 class="service-card-title text-2xl font-bold mb-3">Diagnostic Web</h3>
@@ -377,7 +367,7 @@
       </div>
       <div class="border-t border-[#616972] pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <p class="text-sm text-[#B6B4AC]">© 2024 AB Odyssée. Tous droits réservés.</p>
-        <p class="slogan-text text-lg text-[#B48A3C]">La visibilité attire, l'inoubliable fidélise.</p>
+        <p class="text-sm text-[#B48A3C] font-medium">Revenez visibles. Restez inoubliables.</p>
       </div>
     </div>
   </footer>
@@ -499,70 +489,41 @@
     }
     const createScrollFade = (selector, { offset = 40, duration = 0.8, ease = "power2.out", start = "top 70%", end = "bottom 65%" } = {}) => {
       gsap.utils.toArray(selector).forEach((el) => {
-        if (el.closest('#hero-content') || el.closest('#services-hero') || el.classList.contains('service-card')) {
-          return; // Déjà animé ou sera animé séparément
+        if (el.closest('#hero-content')) {
+          return;
         }
-        
-        // Si l'élément est déjà visible, l'animer immédiatement
-        const rect = el.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-        
-        if (isVisible) {
-          gsap.fromTo(el, { opacity: 0, y: offset }, { opacity: 1, y: 0, duration, ease, force3D: true });
-        } else {
-          const tween = gsap.fromTo(
-            el,
-            { opacity: 0, y: offset },
-            {
-              opacity: 1,
-              y: 0,
-              duration,
-              ease,
-              force3D: true,
-              scrollTrigger: {
-                trigger: el,
-                start,
-                end,
-                toggleActions: "play none none none",
-                invalidateOnRefresh: true,
-                once: true
-              }
+        const tween = gsap.fromTo(
+          el,
+          { opacity: 0, y: offset },
+          {
+            opacity: 1,
+            y: 0,
+            duration,
+            ease,
+            scrollTrigger: {
+              trigger: el,
+              start,
+              end,
+              toggleActions: "play none none none",
+              invalidateOnRefresh: true,
+              once: true
             }
-          );
+          }
+        );
+        if (ScrollTrigger.isInViewport(el)) {
+          tween.progress(1);
         }
       });
     };
-    // Fonction pour afficher le contenu (fallback uniquement si GSAP ne charge pas)
-    function showContentFallback() {
-      const fadeElements = document.querySelectorAll('.fade-in-up');
-      fadeElements.forEach(el => {
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
-        el.style.visibility = 'visible';
-      });
-    }
-    
-    function initGSAPAnimations() {
-      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-        setTimeout(initGSAPAnimations, 100);
-        return;
-      }
-      
-      try {
+    document.addEventListener('DOMContentLoaded', () => {
         gsap.registerPlugin(ScrollTrigger);
-        
-        // S'assurer que tous les éléments sont bien cachés avant l'animation
-        const fadeElements = document.querySelectorAll('.fade-in-up');
-        fadeElements.forEach(el => {
-          gsap.set(el, { opacity: 0, y: 40 });
-        });
-        
-        // Animation fade-in pour les éléments du hero
-        const hero = document.getElementById('services-hero');
+        initCookieBanner();
+        const hero = document.getElementById('hero-content');
         if (hero) {
-          gsap.to("#services-hero .fade-in-up", { opacity: 1, y: 0, duration: 0.9, stagger: 0.15, ease: "power2.out" });
+            gsap.to("#hero-content", { y: "24%", opacity: 0, ease: "none", scrollTrigger: { trigger: "#hero-content", start: "top top", end: "bottom 65%", scrub: 1 } });
+            gsap.fromTo("#hero-content .fade-in-up", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9, stagger: 0.15, ease: "power2.out" });
         }
-        
+
         createScrollFade(".fade-in-up");
         
         // Animation du trait orange au scroll
@@ -589,47 +550,7 @@
             }
           });
         }
-      } catch (error) {
-        console.error('Erreur GSAP:', error);
-        // Fallback seulement en cas d'erreur
-        setTimeout(showContentFallback, 500);
-      }
-    }
-    
-    document.addEventListener('DOMContentLoaded', () => {
-        initCookieBanner();
-        
-        // S'assurer que le contenu reste caché jusqu'à ce que GSAP charge
-        const fadeElements = document.querySelectorAll('.fade-in-up');
-        fadeElements.forEach(el => {
-          // Forcer l'opacité à 0 si ce n'est pas déjà le cas
-          if (window.getComputedStyle(el).opacity !== '0') {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(40px)';
-          }
-        });
-        
-        let attempts = 0;
-        const maxAttempts = 30;
-        const checkGSAP = setInterval(() => {
-          attempts++;
-          if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-            clearInterval(checkGSAP);
-            initGSAPAnimations();
-          } else if (attempts >= maxAttempts) {
-            // GSAP n'a pas chargé après 3 secondes, afficher le contenu
-            clearInterval(checkGSAP);
-            showContentFallback();
-          }
-        }, 100);
     });
-    
-    // Fallback de sécurité après 5 secondes si GSAP ne charge vraiment pas
-    setTimeout(() => {
-      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-        showContentFallback();
-      }
-    }, 5000);
     
     // Gérer le scroll vers les ancres après que tout soit chargé
     window.addEventListener('load', () => {
