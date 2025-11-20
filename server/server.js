@@ -695,7 +695,8 @@ try {
     host: emailConfig.host,
     port: emailConfig.port,
     secure: emailConfig.secure,
-    auth: emailConfig.auth.user && emailConfig.auth.pass ? emailConfig.auth : undefined
+    auth: emailConfig.auth.user && emailConfig.auth.pass ? emailConfig.auth : undefined,
+    family: Number(process.env.SMTP_FAMILY || 4) // forcer IPv4 si nécessaire
   });
 } catch (error) {
   console.warn('⚠️  Configuration email non disponible. Les emails ne seront pas envoyés.');
