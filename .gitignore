@@ -11,7 +11,8 @@ build/
 .env.*
 
 # Private assets (should stay local)
-private/
+# Note: private/ est maintenant versionné car nécessaire pour le déploiement
+# Ne pas commiter de secrets dans private/
 server/crm.db
 
 # Logs & runtime files
