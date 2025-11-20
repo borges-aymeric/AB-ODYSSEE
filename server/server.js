@@ -288,22 +288,25 @@ function sendPrivateFile(filePath, res, next) {
   });
 }
 
+// Route pour la page de login (pas besoin d'authentification)
 app.get('/login.html', (req, res, next) => {
   if (req.session && req.session.authenticated) {
     return res.redirect('/admin-crm.html');
   }
-  return res.sendFile(path.join(PUBLIC_DIR, 'login.html'), next);
+  return sendPrivateFile('login.html', res, next);
 });
 
+// Routes pour les pages protégées (nécessitent une authentification)
 ['admin-crm.html', 'inscription-client.html', 'email-template.html'].forEach((file) => {
   app.get(`/${file}`, requireAuthPage, (req, res, next) => {
-    // Ces fichiers ont été déplacés dans /public pour le déploiement
-    return res.sendFile(path.join(PUBLIC_DIR, file), (err) => {
-      if (err && typeof next === 'function') {
-        next(err);
-      }
-    });
+    return sendPrivateFile(file, res, next);
   });
+});
+
+// Route pour servir les fichiers JS depuis private/js (accessibles sans authentification car nécessaires pour le chargement des pages)
+app.get('/js/:file(*)', (req, res, next) => {
+  const requestedFile = req.params.file || '';
+  return sendPrivateFile(`js/${requestedFile}`, res, next);
 });
 
 app.get('/private/:file(*)', requireAuth, (req, res, next) => {
