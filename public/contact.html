@@ -452,6 +452,16 @@
     const contactSubmitBtn = document.getElementById('contact-submit-btn');
     const contactButtonText = document.getElementById('contact-button-text');
 
+    const apiBaseUrl = (() => {
+      const origin = window.location.origin;
+      const isLocal = origin.includes('localhost') || origin.includes('127.0.0.1');
+      const isRender = origin.includes('onrender.com');
+      if (isLocal || isRender) {
+        return origin;
+      }
+      return 'https://ab-odyssee.onrender.com';
+    })();
+
     if (contactForm) {
       contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -468,7 +478,7 @@
         };
 
         try {
-          const response = await fetch(window.location.origin + '/api/contact', {
+          const response = await fetch(`${apiBaseUrl}/api/contact`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
