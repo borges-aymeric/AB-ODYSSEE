@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const rateLimit = require('express-rate-limit');
-const nodemailer = require('nodemailer');
+const Brevo = require('@getbrevo/brevo');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -677,45 +677,21 @@ app.get('/api/clients/:id/complet', requireAuth, (req, res) => {
   });
 });
 
-// Configuration de l'email (utilise les variables d'environnement ou des valeurs par défaut)
-const emailConfig = {
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: process.env.SMTP_PORT || 587,
-  secure: process.env.SMTP_SECURE === 'true' || false,
-  auth: {
-    user: process.env.SMTP_USER || 'aymeric.borges18.06@gmail.com',
-    pass: process.env.SMTP_PASS || '' // À configurer avec un mot de passe d'application Gmail
-  }
-};
+// Configuration de l'API Brevo (anciennement Sendinblue)
+const brevoApiKey = process.env.BREVO_API_KEY || '';
+const brevoEmailRecipient = process.env.CONTACT_EMAIL_TO || process.env.SMTP_USER || 'contact@abodyssee.fr';
+const brevoSenderEmail = process.env.CONTACT_EMAIL_FROM || brevoEmailRecipient;
+const brevoSenderName = process.env.CONTACT_EMAIL_FROM_NAME || 'AB Odyssée';
 
-// Créer le transporteur email
-let transporter = nodemailer.createTransport({
-  host: emailConfig.host,
-  port: emailConfig.port,
-  secure: emailConfig.secure, // true pour 465, false pour autres
-  auth: {
-      user: emailConfig.auth.user,
-      pass: emailConfig.auth.pass,
-  },
-  // Force IPv4 pour éviter les problèmes de résolution IPv6 sur Render/Docker
-  family: 4, 
-  // Optionnel : parfois nécessaire pour éviter les erreurs de certificat auto-signé
-  tls: {
-      rejectUnauthorized: false 
-  }
-});
+let brevoClient = null;
 
-// 👇 C'est ici que la magie opère pour le debug
-transporter.verify(function (error, success) {
-  if (error) {
-      console.error("❌ Erreur de connexion SMTP au démarrage :");
-      console.error(error);
-      // Si vous voyez 'ETIMEDOUT' ici dans les logs Render, 
-      // c'est confirmé : Google bloque l'IP du serveur.
-  } else {
-      console.log("✅ Serveur SMTP prêt à envoyer des emails");
-  }
-});
+if (brevoApiKey) {
+  brevoClient = new Brevo.TransactionalEmailsApi();
+  brevoClient.setApiKey(Brevo.TransactionalEmailsApiApiKeys.apiKey, brevoApiKey);
+  console.log('✅ API Brevo prête à envoyer des emails');
+} else {
+  console.warn('⚠️  BREVO_API_KEY non configurée. Les emails ne seront pas envoyés.');
+}
 
 // Fonction pour générer le template HTML de l'email
 function generateEmailTemplate(data) {
@@ -834,41 +810,49 @@ app.post('/api/contact', async (req, res) => {
     return res.status(400).json({ error: 'Format d\'email invalide.' });
   }
 
-  // Si le transporteur email n'est pas configuré, retourner une erreur
-  if (!transporter || !emailConfig.auth.pass) {
-    console.log('📧 Email non envoyé (SMTP non configuré):');
+  // Si l'API Brevo n'est pas configurée, retourner une erreur
+  if (!brevoClient) {
+    console.log('📧 Email non envoyé (API Brevo non configurée):');
     console.log('   Nom:', name);
     console.log('   Email:', email);
     console.log('   Service:', service || 'Non spécifié');
     console.log('   Message:', message);
-    console.log('   ⚠️  Pour activer l\'envoi d\'emails, configurez SMTP_PASS dans le fichier .env');
+    console.log('   ⚠️  Pour activer l\'envoi d\'emails, configurez BREVO_API_KEY dans les variables d\'environnement.');
     console.log('   📖 Consultez SETUP-EMAIL-RAPIDE.md pour les instructions');
     return res.status(503).json({ 
       error: 'Service d\'email non configuré.',
-      details: 'Le message a été reçu mais l\'email n\'a pas pu être envoyé. Configurez SMTP_PASS dans le fichier .env (voir SETUP-EMAIL-RAPIDE.md)'
+      details: 'Le message a été reçu mais l\'email n\'a pas pu être envoyé. Configurez BREVO_API_KEY (voir SETUP-EMAIL-RAPIDE.md).'
     });
   }
 
   try {
     const emailHtml = generateEmailTemplate({ name, email, service, message });
 
-    const mailOptions = {
-      from: `"AB Odyssée Contact" <${emailConfig.auth.user}>`,
-      to: emailConfig.auth.user, // Envoyer à l'adresse configurée
-      replyTo: email, // Permettre de répondre directement au client
+    await brevoClient.sendTransacEmail({
+      sender: {
+        email: brevoSenderEmail,
+        name: brevoSenderName
+      },
+      to: [
+        {
+          email: brevoEmailRecipient
+        }
+      ],
+      replyTo: {
+        email,
+        name
+      },
       subject: `Nouveau message depuis le site AB Odyssée${service ? ` - ${service}` : ''}`,
-      html: emailHtml,
-      text: `Nouveau message depuis AB Odyssée\n\nNom: ${name}\nEmail: ${email}\n${service ? `Service: ${service}\n` : ''}Message:\n${message}`
-    };
-
-    await transporter.sendMail(mailOptions);
+      htmlContent: emailHtml,
+      textContent: `Nouveau message depuis AB Odyssée\n\nNom: ${name}\nEmail: ${email}\n${service ? `Service: ${service}\n` : ''}Message:\n${message}`
+    });
     
     res.json({ 
       message: 'Message envoyé avec succès !',
       success: true
     });
   } catch (error) {
-    console.error('Erreur lors de l\'envoi de l\'email:', error);
+    console.error('Erreur lors de l\'envoi de l\'email via Brevo:', error);
     res.status(500).json({ 
       error: 'Erreur lors de l\'envoi de l\'email. Veuillez réessayer plus tard.',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined
