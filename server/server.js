@@ -258,7 +258,7 @@ function requireAuthPage(req, res, next) {
   if (req.session && req.session.authenticated && req.session.user) {
     return next();
   }
-  return res.redirect('/login.html');
+  return res.redirect('/admin-secret-login-8934');
 }
 
 function sendPrivateFile(filePath, res, next) {
@@ -288,8 +288,8 @@ function sendPrivateFile(filePath, res, next) {
   });
 }
 
-// Route pour la page de login (pas besoin d'authentification)
-app.get('/login.html', (req, res, next) => {
+// Route secrète pour la page de login (URL non devinable pour la sécurité)
+app.get('/admin-secret-login-8934', (req, res, next) => {
   if (req.session && req.session.authenticated) {
     return res.redirect('/admin-crm.html');
   }

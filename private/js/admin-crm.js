@@ -707,7 +707,7 @@ async function setupLogout() {
         });
         
         if (response.ok) {
-          window.location.href = '/login.html';
+          window.location.href = '/admin-secret-login-8934';
         } else {
           alert('Erreur lors de la déconnexion.');
         }

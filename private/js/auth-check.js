@@ -12,13 +12,13 @@
     const data = await response.json();
     
     if (!data.authenticated) {
-      // Rediriger vers la page de connexion
-      window.location.href = '/login.html';
+      // Rediriger vers la page de connexion (URL secrète)
+      window.location.href = '/admin-secret-login-8934';
     }
   } catch (error) {
     console.error('Erreur de vérification d\'authentification:', error);
-    // En cas d'erreur, rediriger vers la page de connexion
-    window.location.href = '/login.html';
+    // En cas d'erreur, rediriger vers la page de connexion (URL secrète)
+    window.location.href = '/admin-secret-login-8934';
   }
 })();
 
