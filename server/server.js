@@ -2,13 +2,14 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const rateLimit = require('express-rate-limit');
 const Brevo = require('@getbrevo/brevo');
+const dbModule = require('./db');
+const { initDatabase, dbInterface, adaptSQL, columnExists } = dbModule;
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -95,190 +96,133 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static(PUBLIC_DIR));
 
 // Initialisation de la base de données
-const dbPath = path.join(__dirname, 'crm.db');
-console.log('📁 Chemin de la base de données:', dbPath);
+let db = null;
 
-// Ouvrir la base de données en mode persistant (pas en mémoire)
-// Mode: OPEN_READWRITE | OPEN_CREATE pour s'assurer que le fichier est créé et accessible en écriture
-const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
-  if (err) {
-    console.error('❌ Erreur de connexion à la base de données:', err.message);
-    console.error('   Chemin:', dbPath);
-  } else {
-    console.log('✅ Base de données connectée avec succès:', dbPath);
-    // Activer le mode WAL pour de meilleures performances et la persistance
-    db.run('PRAGMA journal_mode = WAL;', (err) => {
-      if (err) {
-        console.warn('⚠️  Impossible d\'activer le mode WAL:', err.message);
-      } else {
-        console.log('✅ Mode WAL activé pour la persistance');
-      }
-    });
-    // Activer les clés étrangères
-    db.run('PRAGMA foreign_keys = ON;', (err) => {
-      if (err) {
-        console.warn('⚠️  Impossible d\'activer les clés étrangères:', err.message);
-      }
-    });
-    initDatabase();
+// Initialiser la base de données de manière asynchrone
+(async () => {
+  try {
+    db = await initDatabase();
+    await initDatabaseTables();
+  } catch (err) {
+    console.error('❌ Erreur lors de l\'initialisation de la base de données:', err);
+    process.exit(1);
   }
-});
+})();
 
 // Initialisation des tables
-function initDatabase() {
+async function initDatabaseTables() {
   console.log('🔧 Initialisation de la base de données...');
   
-  db.serialize(() => {
+  try {
     // Table des clients
-    db.run(`CREATE TABLE IF NOT EXISTS clients (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      nom TEXT NOT NULL,
-      prenom TEXT NOT NULL,
-      telephone TEXT,
-      email TEXT NOT NULL UNIQUE,
-      siret TEXT,
-      tva_intracommunautaire TEXT,
-      service_demande TEXT NOT NULL,
-      type TEXT NOT NULL DEFAULT 'prospect',
-      created_by TEXT DEFAULT 'admin',
-      date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
-      date_modification DATETIME DEFAULT CURRENT_TIMESTAMP
-    )`, (err) => {
-      if (err) {
-        console.error('❌ Erreur lors de la création de la table clients:', err.message);
-      } else {
-        console.log('✅ Table clients initialisée');
-        // Migration : ajouter la colonne type si elle n'existe pas (pour les anciennes bases)
-        db.all("PRAGMA table_info(clients)", (pragmaErr, columns) => {
-          if (pragmaErr) {
-            console.error('Erreur lors de la vérification des colonnes:', pragmaErr.message);
-            return;
-          }
-          const hasTypeColumn = columns.some(col => col.name === 'type');
-          const hasCreatedByColumn = columns.some(col => col.name === 'created_by');
-          
-          if (!hasTypeColumn) {
-            // SQLite ne supporte pas NOT NULL dans ALTER TABLE ADD COLUMN, on utilise d'abord sans
-            db.run(`ALTER TABLE clients ADD COLUMN type TEXT DEFAULT 'prospect'`, (alterErr) => {
-              if (alterErr) {
-                console.error('Erreur lors de l\'ajout de la colonne type:', alterErr.message);
-              } else {
-                // Mettre à jour tous les clients existants sans type
-                db.run(`UPDATE clients SET type = 'prospect' WHERE type IS NULL OR type = ''`, (updateErr) => {
-                  if (updateErr) {
-                    console.error('Erreur lors de la mise à jour des types:', updateErr.message);
-                  }
-                });
-              }
-            });
-          } else {
-            // La colonne existe déjà, vérifier et mettre à jour les valeurs NULL
-            db.run(`UPDATE clients SET type = 'prospect' WHERE type IS NULL OR type = ''`, (updateErr) => {
-              if (updateErr) {
-                console.error('Erreur lors de la mise à jour des types existants:', updateErr.message);
-              }
-            });
-          }
-
-          if (!hasCreatedByColumn) {
-            db.run(`ALTER TABLE clients ADD COLUMN created_by TEXT DEFAULT 'admin'`, (alterErr) => {
-              if (alterErr) {
-                console.error('Erreur lors de l\'ajout de la colonne created_by:', alterErr.message);
-              } else {
-                db.run(`UPDATE clients SET created_by = 'admin' WHERE created_by IS NULL OR created_by = ''`, (updateErr) => {
-                  if (updateErr) {
-                    console.error('Erreur lors de la mise à jour des created_by:', updateErr.message);
-                  }
-                });
-              }
-            });
-          } else {
-            db.run(`UPDATE clients SET created_by = 'admin' WHERE created_by IS NULL OR created_by = ''`, (updateErr) => {
-              if (updateErr) {
-                console.error('Erreur lors de la mise à jour des created_by existants:', updateErr.message);
-              }
-            });
-          }
-        });
+    const clientsTableSQL = adaptSQL(`CREATE TABLE IF NOT EXISTS clients (
+      id SERIAL PRIMARY KEY,
+      nom VARCHAR(255) NOT NULL,
+      prenom VARCHAR(255) NOT NULL,
+      telephone VARCHAR(255),
+      email VARCHAR(255) NOT NULL UNIQUE,
+      siret VARCHAR(255),
+      tva_intracommunautaire VARCHAR(255),
+      service_demande VARCHAR(255) NOT NULL,
+      type VARCHAR(50) NOT NULL DEFAULT 'prospect',
+      created_by VARCHAR(255) DEFAULT 'admin',
+      date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      date_modification TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`);
+    
+    await db.run(clientsTableSQL);
+    console.log('✅ Table clients initialisée');
+    
+    // Migration : ajouter la colonne type si elle n'existe pas
+    const hasTypeColumn = await columnExists('clients', 'type');
+    if (!hasTypeColumn) {
+      try {
+        await db.run(adaptSQL(`ALTER TABLE clients ADD COLUMN type VARCHAR(50) DEFAULT 'prospect'`));
+        await db.run(adaptSQL(`UPDATE clients SET type = 'prospect' WHERE type IS NULL OR type = ''`));
+      } catch (alterErr) {
+        console.error('Erreur lors de l\'ajout de la colonne type:', alterErr.message);
       }
-    });
+    } else {
+      await db.run(adaptSQL(`UPDATE clients SET type = 'prospect' WHERE type IS NULL OR type = ''`));
+    }
+
+    // Migration : ajouter la colonne created_by si elle n'existe pas
+    const hasCreatedByColumn = await columnExists('clients', 'created_by');
+    if (!hasCreatedByColumn) {
+      try {
+        await db.run(adaptSQL(`ALTER TABLE clients ADD COLUMN created_by VARCHAR(255) DEFAULT 'admin'`));
+        await db.run(adaptSQL(`UPDATE clients SET created_by = 'admin' WHERE created_by IS NULL OR created_by = ''`));
+      } catch (alterErr) {
+        console.error('Erreur lors de l\'ajout de la colonne created_by:', alterErr.message);
+      }
+    } else {
+      await db.run(adaptSQL(`UPDATE clients SET created_by = 'admin' WHERE created_by IS NULL OR created_by = ''`));
+    }
 
     // Table des échanges
-    db.run(`CREATE TABLE IF NOT EXISTS echanges (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+    const echangesTableSQL = adaptSQL(`CREATE TABLE IF NOT EXISTS echanges (
+      id SERIAL PRIMARY KEY,
       client_id INTEGER NOT NULL,
-      type TEXT NOT NULL,
-      sujet TEXT,
+      type VARCHAR(255) NOT NULL,
+      sujet VARCHAR(255),
       contenu TEXT NOT NULL,
-      date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
+      date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
-    )`, (err) => {
-      if (err) {
-        console.error('❌ Erreur lors de la création de la table echanges:', err.message);
-      } else {
-        console.log('✅ Table echanges initialisée');
-      }
-    });
+    )`);
+    
+    await db.run(echangesTableSQL);
+    console.log('✅ Table echanges initialisée');
 
     // Table des administrateurs
-    db.run(`CREATE TABLE IF NOT EXISTS admins (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      username TEXT NOT NULL UNIQUE,
-      password_hash TEXT NOT NULL,
-      email TEXT,
-      date_creation DATETIME DEFAULT CURRENT_TIMESTAMP,
-      derniere_connexion DATETIME
-    )`, (err) => {
-      if (err) {
-        console.error('❌ Erreur lors de la création de la table admins:', err.message);
-      } else {
-        console.log('✅ Table admins initialisée');
-        // Créer les comptes par défaut si nécessaire
-        ensureDefaultAccounts();
-      }
-    });
+    const adminsTableSQL = adaptSQL(`CREATE TABLE IF NOT EXISTS admins (
+      id SERIAL PRIMARY KEY,
+      username VARCHAR(255) NOT NULL UNIQUE,
+      password_hash VARCHAR(255) NOT NULL,
+      email VARCHAR(255),
+      date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      derniere_connexion TIMESTAMP
+    )`);
+    
+    await db.run(adminsTableSQL);
+    console.log('✅ Table admins initialisée');
+    
+    // Créer les comptes par défaut si nécessaire
+    await ensureDefaultAccounts();
     
     // Vérifier le nombre total de clients après l'initialisation
-    db.get('SELECT COUNT(*) as count FROM clients', [], (err, row) => {
-      if (err) {
-        console.log('ℹ️  Impossible de compter les clients:', err.message);
-      } else {
-        console.log(`✅ Initialisation terminée - ${row.count} client(s) dans la base de données`);
-      }
-    });
-  });
+    const row = await db.get('SELECT COUNT(*) as count FROM clients');
+    console.log(`✅ Initialisation terminée - ${row.count} client(s) dans la base de données`);
+  } catch (err) {
+    console.error('❌ Erreur lors de l\'initialisation des tables:', err.message);
+    throw err;
+  }
 }
 
 // Créer les comptes par défaut
-function ensureDefaultAccounts() {
+async function ensureDefaultAccounts() {
   const defaultAccounts = [
     { username: 'admin', password: 'Admin123!', email: 'admin@abodyssee.fr' },
     { username: 'commercial', password: 'Commercial123!', email: 'commercial@abodyssee.fr' }
   ];
 
-  defaultAccounts.forEach((account) => {
-    db.get('SELECT id FROM admins WHERE username = ?', [account.username], async (err, row) => {
-      if (err) {
-        console.error(`Erreur lors de la vérification du compte ${account.username}:`, err.message);
-        return;
-      }
-
+  for (const account of defaultAccounts) {
+    try {
+      const row = await db.get(adaptSQL('SELECT id FROM admins WHERE username = ?'), [account.username]);
+      
       if (!row) {
         const hashedPassword = await bcrypt.hash(account.password, 10);
-        db.run(
-          'INSERT INTO admins (username, password_hash, email) VALUES (?, ?, ?)',
-          [account.username, hashedPassword, account.email],
-          function(insertErr) {
-            if (insertErr) {
-              console.error(`Erreur lors de la création du compte ${account.username}:`, insertErr.message);
-            } else {
-              console.log(`⚠️  COMPTE "${account.username}" CRÉÉ - Username: ${account.username} / Password: ${account.password} ⚠️`);
-            }
-          }
-        );
+        let insertSQL = adaptSQL('INSERT INTO admins (username, password_hash, email) VALUES (?, ?, ?)');
+        // Pour PostgreSQL, ajouter RETURNING id
+        if (dbModule.dbType === 'postgresql' || process.env.DATABASE_URL) {
+          insertSQL = insertSQL.replace(/;$/, ' RETURNING id');
+        }
+        const result = await db.run(insertSQL, [account.username, hashedPassword, account.email]);
+        console.log(`⚠️  COMPTE "${account.username}" CRÉÉ - Username: ${account.username} / Password: ${account.password} ⚠️`);
       }
-    });
-  });
+    } catch (err) {
+      console.error(`Erreur lors de la gestion du compte ${account.username}:`, err.message);
+    }
+  }
 }
 
 // Middleware d'authentification
@@ -387,11 +331,8 @@ app.post('/api/auth/login', loginLimiter, async (req, res) => {
 
   const cleanUsername = username.trim();
 
-  db.get('SELECT * FROM admins WHERE username = ?', [cleanUsername], async (err, admin) => {
-    if (err) {
-      console.error('❌ Erreur lors de la requête à la base de données:', err.message);
-      return res.status(500).json({ error: 'Erreur serveur.' });
-    }
+  try {
+    const admin = await db.get(adaptSQL('SELECT * FROM admins WHERE username = ?'), [cleanUsername]);
 
     if (!admin) {
       console.log('❌ Utilisateur non trouvé:', cleanUsername);
@@ -400,36 +341,34 @@ app.post('/api/auth/login', loginLimiter, async (req, res) => {
       return res.status(401).json({ error: 'Identifiants incorrects.' });
     }
 
-    try {
-      const isValid = await bcrypt.compare(password, admin.password_hash);
-      
-      if (!isValid) {
-        return res.status(401).json({ error: 'Identifiants incorrects.' });
-      }
-
-      // Mettre à jour la dernière connexion
-      db.run('UPDATE admins SET derniere_connexion = CURRENT_TIMESTAMP WHERE id = ?', [admin.id]);
-
-      // Créer la session
-      req.session.authenticated = true;
-      req.session.user = {
-        id: admin.id,
-        username: admin.username,
-        email: admin.email
-      };
-
-      console.log('✅ Connexion réussie pour:', admin.username);
-
-      res.json({ 
-        message: 'Connexion réussie.',
-        user: req.session.user
-      });
-    } catch (error) {
-      console.error('Erreur lors de la vérification du mot de passe:', error);
-      // Ne pas révéler d'informations sur l'erreur
-      return res.status(500).json({ error: 'Erreur serveur.' });
+    const isValid = await bcrypt.compare(password, admin.password_hash);
+    
+    if (!isValid) {
+      return res.status(401).json({ error: 'Identifiants incorrects.' });
     }
-  });
+
+    // Mettre à jour la dernière connexion
+    await db.run(adaptSQL('UPDATE admins SET derniere_connexion = CURRENT_TIMESTAMP WHERE id = ?'), [admin.id]);
+
+    // Créer la session
+    req.session.authenticated = true;
+    req.session.user = {
+      id: admin.id,
+      username: admin.username,
+      email: admin.email
+    };
+
+    console.log('✅ Connexion réussie pour:', admin.username);
+
+    res.json({ 
+      message: 'Connexion réussie.',
+      user: req.session.user
+    });
+  } catch (error) {
+    console.error('Erreur lors de la vérification du mot de passe:', error);
+    // Ne pas révéler d'informations sur l'erreur
+    return res.status(500).json({ error: 'Erreur serveur.' });
+  }
 });
 
 // Déconnexion
@@ -446,7 +385,7 @@ app.post('/api/auth/logout', (req, res) => {
 // Routes API pour les clients - PROTÉGÉES
 
 // Créer un nouveau client
-app.post('/api/clients', requireAuth, (req, res) => {
+app.post('/api/clients', requireAuth, async (req, res) => {
   const { nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type } = req.body;
 
   if (!nom || !prenom || !email || !service_demande) {
@@ -474,35 +413,33 @@ app.post('/api/clients', requireAuth, (req, res) => {
 
   console.log('📝 Création d\'un nouveau client:', { nom, prenom, email, type: validType });
 
-  db.run(
-    `INSERT INTO clients (nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [nom, prenom, telephone || null, email, siret || null, tva_intracommunautaire || null, servicesText, validType, createdBy],
-    function(err) {
-      if (err) {
-        console.error('❌ Erreur lors de la création du client:', err.message);
-        if (err.message.includes('UNIQUE constraint failed')) {
-          return res.status(409).json({ error: 'Un client avec cet email existe déjà.' });
-        }
-        return res.status(500).json({ error: err.message });
-      }
-      console.log('✅ Client créé avec succès - ID:', this.lastID);
-      res.status(201).json({ 
-        id: this.lastID, 
-        message: 'Client créé avec succès.',
-        client: { id: this.lastID, nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande }
-      });
+  try {
+    let insertSQL = adaptSQL(`INSERT INTO clients (nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+    if (dbModule.dbType === 'postgresql') {
+      insertSQL = insertSQL.replace(/;$/, ' RETURNING id');
     }
-  );
+    const result = await db.run(insertSQL, [nom, prenom, telephone || null, email, siret || null, tva_intracommunautaire || null, servicesText, validType, createdBy]);
+    
+    console.log('✅ Client créé avec succès - ID:', result.lastID);
+    res.status(201).json({ 
+      id: result.lastID, 
+      message: 'Client créé avec succès.',
+      client: { id: result.lastID, nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande }
+    });
+  } catch (err) {
+    console.error('❌ Erreur lors de la création du client:', err.message);
+    if (err.message.includes('UNIQUE constraint') || err.message.includes('duplicate key')) {
+      return res.status(409).json({ error: 'Un client avec cet email existe déjà.' });
+    }
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 // Obtenir tous les clients
-app.get('/api/clients', requireAuth, (req, res) => {
-  db.all('SELECT id, nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by, date_creation, date_modification FROM clients ORDER BY date_creation DESC', [], (err, rows) => {
-    if (err) {
-      console.error('❌ Erreur lors de la récupération des clients:', err.message);
-      return res.status(500).json({ error: err.message });
-    }
+app.get('/api/clients', requireAuth, async (req, res) => {
+  try {
+    const rows = await db.all(adaptSQL('SELECT id, nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by, date_creation, date_modification FROM clients ORDER BY date_creation DESC'), []);
     console.log(`📊 Récupération de ${rows.length} client(s) depuis la base de données`);
     // S'assurer que tous les clients ont un type
     rows.forEach(row => {
@@ -511,25 +448,28 @@ app.get('/api/clients', requireAuth, (req, res) => {
       }
     });
     res.json(rows);
-  });
+  } catch (err) {
+    console.error('❌ Erreur lors de la récupération des clients:', err.message);
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 // Obtenir un client par ID
-app.get('/api/clients/:id', requireAuth, (req, res) => {
+app.get('/api/clients/:id', requireAuth, async (req, res) => {
   const id = req.params.id;
-  db.get('SELECT * FROM clients WHERE id = ?', [id], (err, row) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
+  try {
+    const row = await db.get(adaptSQL('SELECT * FROM clients WHERE id = ?'), [id]);
     if (!row) {
       return res.status(404).json({ error: 'Client non trouvé.' });
     }
     res.json(row);
-  });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 // Mettre à jour un client
-app.put('/api/clients/:id', requireAuth, (req, res) => {
+app.put('/api/clients/:id', requireAuth, async (req, res) => {
   const id = req.params.id;
   const { nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type } = req.body;
 
@@ -556,173 +496,160 @@ app.put('/api/clients/:id', requireAuth, (req, res) => {
 
   const updateParams = [nom, prenom, telephone || null, email, siret || null, tva_intracommunautaire || null, servicesText, validType, id];
   
-  db.run(
-    `UPDATE clients 
-     SET nom = ?, prenom = ?, telephone = ?, email = ?, siret = ?, tva_intracommunautaire = ?, service_demande = ?, type = ?, date_modification = CURRENT_TIMESTAMP
-     WHERE id = ?`,
-    updateParams,
-    function(err) {
-      if (err) {
-        console.error('Erreur UPDATE:', err);
-        return res.status(500).json({ error: err.message });
-      }
-      if (this.changes === 0) {
-        return res.status(404).json({ error: 'Client non trouvé.' });
-      }
-      
-      // Vérifier immédiatement après l'UPDATE
-      db.get('SELECT id, nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by, date_creation, date_modification FROM clients WHERE id = ?', [id], (err, row) => {
-        if (err) {
-          console.error('Erreur SELECT après UPDATE:', err);
-          return res.status(500).json({ error: err.message });
-        }
-        if (!row) {
-          console.error('Client non trouvé après UPDATE');
-          return res.status(404).json({ error: 'Client non trouvé après la mise à jour.' });
-        }
-        
-        // S'assurer que le type est bien présent
-        if (!row.type) {
-          row.type = validType;
-          // Forcer la mise à jour avec le type
-          db.run('UPDATE clients SET type = ? WHERE id = ?', [validType, id], (updateErr) => {
-            if (updateErr) {
-              console.error('Erreur lors de la mise à jour forcée du type:', updateErr.message);
-            }
-          });
-        }
-        
-        res.json({ 
-          message: 'Client mis à jour avec succès.',
-          client: row
-        });
-      });
+  try {
+    const result = await db.run(
+      adaptSQL(`UPDATE clients 
+       SET nom = ?, prenom = ?, telephone = ?, email = ?, siret = ?, tva_intracommunautaire = ?, service_demande = ?, type = ?, date_modification = CURRENT_TIMESTAMP
+       WHERE id = ?`),
+      updateParams
+    );
+    
+    if (result.changes === 0) {
+      return res.status(404).json({ error: 'Client non trouvé.' });
     }
-  );
+    
+    // Vérifier immédiatement après l'UPDATE
+    const row = await db.get(adaptSQL('SELECT id, nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by, date_creation, date_modification FROM clients WHERE id = ?'), [id]);
+    
+    if (!row) {
+      console.error('Client non trouvé après UPDATE');
+      return res.status(404).json({ error: 'Client non trouvé après la mise à jour.' });
+    }
+    
+    // S'assurer que le type est bien présent
+    if (!row.type) {
+      row.type = validType;
+      // Forcer la mise à jour avec le type
+      await db.run(adaptSQL('UPDATE clients SET type = ? WHERE id = ?'), [validType, id]);
+    }
+    
+    res.json({ 
+      message: 'Client mis à jour avec succès.',
+      client: row
+    });
+  } catch (err) {
+    console.error('Erreur UPDATE:', err);
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 // Supprimer un client
-app.delete('/api/clients/:id', requireAuth, (req, res) => {
+app.delete('/api/clients/:id', requireAuth, async (req, res) => {
   const id = req.params.id;
-  db.run('DELETE FROM clients WHERE id = ?', [id], function(err) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    if (this.changes === 0) {
+  try {
+    const result = await db.run(adaptSQL('DELETE FROM clients WHERE id = ?'), [id]);
+    if (result.changes === 0) {
       return res.status(404).json({ error: 'Client non trouvé.' });
     }
     res.json({ message: 'Client supprimé avec succès.' });
-  });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 // Routes API pour les échanges - PROTÉGÉES
 
 // Créer un nouvel échange
-app.post('/api/echanges', requireAuth, (req, res) => {
+app.post('/api/echanges', requireAuth, async (req, res) => {
   const { client_id, type, sujet, contenu } = req.body;
 
   if (!client_id || !type || !contenu) {
     return res.status(400).json({ error: 'Les champs client_id, type et contenu sont obligatoires.' });
   }
 
-  db.run(
-    `INSERT INTO echanges (client_id, type, sujet, contenu)
-     VALUES (?, ?, ?, ?)`,
-    [client_id, type, sujet || null, contenu],
-    function(err) {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      res.status(201).json({ 
-        id: this.lastID, 
-        message: 'Échange créé avec succès.',
-        echange: { id: this.lastID, client_id, type, sujet, contenu }
-      });
+  try {
+    let insertSQL = adaptSQL(`INSERT INTO echanges (client_id, type, sujet, contenu)
+     VALUES (?, ?, ?, ?)`);
+    if (dbModule.dbType === 'postgresql') {
+      insertSQL = insertSQL.replace(/;$/, ' RETURNING id');
     }
-  );
+    const result = await db.run(insertSQL, [client_id, type, sujet || null, contenu]);
+    res.status(201).json({ 
+      id: result.lastID, 
+      message: 'Échange créé avec succès.',
+      echange: { id: result.lastID, client_id, type, sujet, contenu }
+    });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 // Obtenir tous les échanges d'un client
-app.get('/api/clients/:id/echanges', requireAuth, (req, res) => {
+app.get('/api/clients/:id/echanges', requireAuth, async (req, res) => {
   const clientId = req.params.id;
-  db.all('SELECT * FROM echanges WHERE client_id = ? ORDER BY date_creation DESC', [clientId], (err, rows) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
+  try {
+    const rows = await db.all(adaptSQL('SELECT * FROM echanges WHERE client_id = ? ORDER BY date_creation DESC'), [clientId]);
     res.json(rows);
-  });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 // Obtenir tous les échanges
-app.get('/api/echanges', requireAuth, (req, res) => {
-  db.all(`
-    SELECT e.*, c.nom as client_nom, c.prenom as client_prenom, c.email as client_email
-    FROM echanges e
-    JOIN clients c ON e.client_id = c.id
-    ORDER BY e.date_creation DESC
-  `, [], (err, rows) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
+app.get('/api/echanges', requireAuth, async (req, res) => {
+  try {
+    const rows = await db.all(adaptSQL(`
+      SELECT e.*, c.nom as client_nom, c.prenom as client_prenom, c.email as client_email
+      FROM echanges e
+      JOIN clients c ON e.client_id = c.id
+      ORDER BY e.date_creation DESC
+    `), []);
     res.json(rows);
-  });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 // Mettre à jour un échange
-app.put('/api/echanges/:id', requireAuth, (req, res) => {
+app.put('/api/echanges/:id', requireAuth, async (req, res) => {
   const id = req.params.id;
   const { type, sujet, contenu } = req.body;
 
-  db.run(
-    `UPDATE echanges 
-     SET type = ?, sujet = ?, contenu = ?
-     WHERE id = ?`,
-    [type, sujet || null, contenu, id],
-    function(err) {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      if (this.changes === 0) {
-        return res.status(404).json({ error: 'Échange non trouvé.' });
-      }
-      res.json({ message: 'Échange mis à jour avec succès.' });
+  try {
+    const result = await db.run(
+      adaptSQL(`UPDATE echanges 
+       SET type = ?, sujet = ?, contenu = ?
+       WHERE id = ?`),
+      [type, sujet || null, contenu, id]
+    );
+    if (result.changes === 0) {
+      return res.status(404).json({ error: 'Échange non trouvé.' });
     }
-  );
+    res.json({ message: 'Échange mis à jour avec succès.' });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 // Supprimer un échange
-app.delete('/api/echanges/:id', requireAuth, (req, res) => {
+app.delete('/api/echanges/:id', requireAuth, async (req, res) => {
   const id = req.params.id;
-  db.run('DELETE FROM echanges WHERE id = ?', [id], function(err) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    if (this.changes === 0) {
+  try {
+    const result = await db.run(adaptSQL('DELETE FROM echanges WHERE id = ?'), [id]);
+    if (result.changes === 0) {
       return res.status(404).json({ error: 'Échange non trouvé.' });
     }
     res.json({ message: 'Échange supprimé avec succès.' });
-  });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 // Route pour obtenir un client avec tous ses échanges
-app.get('/api/clients/:id/complet', requireAuth, (req, res) => {
+app.get('/api/clients/:id/complet', requireAuth, async (req, res) => {
   const id = req.params.id;
   
-  db.get('SELECT * FROM clients WHERE id = ?', [id], (err, client) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
+  try {
+    const client = await db.get(adaptSQL('SELECT * FROM clients WHERE id = ?'), [id]);
     if (!client) {
       return res.status(404).json({ error: 'Client non trouvé.' });
     }
 
-    db.all('SELECT * FROM echanges WHERE client_id = ? ORDER BY date_creation DESC', [id], (err, echanges) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      res.json({ ...client, echanges });
-    });
-  });
+    const echanges = await db.all(adaptSQL('SELECT * FROM echanges WHERE client_id = ? ORDER BY date_creation DESC'), [id]);
+    res.json({ ...client, echanges });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 });
 
 // Configuration de l'API Brevo (anciennement Sendinblue)
@@ -914,17 +841,16 @@ app.listen(PORT, () => {
 });
 
 // Fermeture propre de la base de données
-function closeDatabase() {
-  return new Promise((resolve, reject) => {
-    // Vérifier que toutes les opérations sont terminées
-    db.run('PRAGMA wal_checkpoint(FULL);', (err) => {
-      if (err) {
-        console.warn('⚠️  Erreur lors du checkpoint WAL:', err.message);
-      } else {
-        console.log('✅ Checkpoint WAL effectué - données sauvegardées');
-      }
-      
-      // Fermer la base de données
+async function closeDatabase() {
+  try {
+    if ((dbModule.dbType === 'sqlite' || !process.env.DATABASE_URL) && db) {
+      // Vérifier que toutes les opérations sont terminées (SQLite uniquement)
+      await db.run('PRAGMA wal_checkpoint(FULL);');
+      console.log('✅ Checkpoint WAL effectué - données sauvegardées');
+    }
+    
+    // Fermer la base de données
+    await new Promise((resolve, reject) => {
       db.close((closeErr) => {
         if (closeErr) {
           console.error('❌ Erreur lors de la fermeture de la base de données:', closeErr.message);
@@ -935,7 +861,10 @@ function closeDatabase() {
         }
       });
     });
-  });
+  } catch (err) {
+    console.warn('⚠️  Erreur lors de la fermeture:', err.message);
+    throw err;
+  }
 }
 
 process.on('SIGINT', async () => {

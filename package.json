@@ -19,6 +19,7 @@
     "express-rate-limit": "^7.1.5",
     "express-session": "^1.17.3",
     "nodemailer": "^7.0.10",
+    "pg": "^8.11.3",
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
