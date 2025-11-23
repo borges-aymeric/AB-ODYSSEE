@@ -91,7 +91,7 @@ const dbInterface = {
   // Obtenir le type de base de données
   getType: function() {
     return dbType;
-  }
+  },
 
   // Fermer la connexion
   close: function(callback) {
