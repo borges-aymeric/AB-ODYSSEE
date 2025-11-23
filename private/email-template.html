@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f5f5f5;">
+  <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #f5f5f5;">
+    <tr>
+      <td style="padding: 20px 0;">
+        <table role="presentation" style="width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+          <!-- Header -->
+          <tr>
+            <td style="background: linear-gradient(135deg, #091A30 0%, #0D2440 50%, #091A30 100%); padding: 40px 30px; text-align: center;">
+              <h1 style="color: #FCF9EF; margin: 0; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">Nouveau message depuis AB Odyssée</h1>
+              <p style="color: #B6B4AC; margin: 10px 0 0 0; font-size: 14px;">Formulaire de contact</p>
+            </td>
+          </tr>
+          
+          <!-- Content -->
+          <tr>
+            <td style="padding: 40px 30px;">
+              <div style="border-left: 4px solid #B48A3C; padding-left: 20px; margin-bottom: 30px;">
+                <h2 style="color: #091A30; margin: 0 0 10px 0; font-size: 20px; font-weight: 600;">Informations du contact</h2>
+              </div>
+              
+              <table role="presentation" style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
+                <tr>
+                  <td style="padding: 12px 0; border-bottom: 1px solid #E5E5E5;">
+                    <strong style="color: #091A30; font-size: 14px; display: block; margin-bottom: 5px;">👤 Nom complet</strong>
+                    <span style="color: #616972; font-size: 16px;">{{name}}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 0; border-bottom: 1px solid #E5E5E5;">
+                    <strong style="color: #091A30; font-size: 14px; display: block; margin-bottom: 5px;">📧 Email</strong>
+                    <a href="mailto:{{email}}" style="color: #B48A3C; font-size: 16px; text-decoration: none;">{{email}}</a>
+                  </td>
+                </tr>
+                {{#service}}
+                <tr>
+                  <td style="padding: 12px 0; border-bottom: 1px solid #E5E5E5;">
+                    <strong style="color: #091A30; font-size: 14px; display: block; margin-bottom: 5px;">🎯 Service demandé</strong>
+                    <span style="display: inline-block; background-color: #B48A3C; color: #FFFFFF; padding: 6px 12px; border-radius: 4px; font-size: 14px; font-weight: 500; margin-top: 5px;">{{service}}</span>
+                  </td>
+                </tr>
+                {{/service}}
+              </table>
+              
+              <div style="background-color: #F8F8F8; padding: 20px; border-radius: 6px; margin-top: 25px; border-left: 4px solid #B48A3C;">
+                <strong style="color: #091A30; font-size: 14px; display: block; margin-bottom: 10px;">💬 Message</strong>
+                <p style="color: #616972; font-size: 15px; line-height: 1.6; margin: 0; white-space: pre-wrap;">{{message}}</p>
+              </div>
+              
+              <div style="margin-top: 30px; padding-top: 25px; border-top: 2px solid #E5E5E5; text-align: center;">
+                <p style="color: #616972; font-size: 12px; margin: 0;">Message reçu le {{date}} à {{time}}</p>
+                <p style="color: #B6B4AC; font-size: 11px; margin: 10px 0 0 0; font-style: italic;">AB Odyssée - La visibilité attire, l'inoubliable fidélise.</p>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+

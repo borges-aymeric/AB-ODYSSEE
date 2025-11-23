@@ -58,19 +58,6 @@ Le serveur sera accessible sur `http://localhost:3000`
 
 La base de données SQLite (`crm.db`) sera créée automatiquement au premier démarrage du serveur.
 
-### ⚠️ Important : Persistance des données sur Render
-
-**Si vous déployez sur Render**, vous devez configurer un **disque persistant** pour que vos données survivent aux redéploiements. Sinon, toutes vos données seront perdues à chaque redéploiement.
-
-📖 **Consultez `GUIDE-PERSISTANCE-DONNEES.md` pour les instructions détaillées.**
-
-En résumé :
-1. Allez dans les paramètres de votre service sur Render
-2. Ajoutez un disque persistant monté sur `/opt/render/project/persistent`
-3. Redéployez votre service
-
-Le code détecte automatiquement le disque persistant et l'utilise s'il est disponible.
-
 ### Structure des tables
 
 #### Table `clients`
