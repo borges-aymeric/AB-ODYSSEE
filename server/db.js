@@ -107,6 +107,16 @@ const dbInterface = {
 
 // Initialiser la connexion à la base de données
 async function initDatabase() {
+  // Logs de debug pour vérifier la détection
+  console.log('🔍 Vérification de la configuration de la base de données...');
+  console.log('   DATABASE_URL définie:', !!process.env.DATABASE_URL);
+  if (process.env.DATABASE_URL) {
+    // Masquer le mot de passe dans les logs
+    const maskedUrl = process.env.DATABASE_URL.replace(/:[^:@]+@/, ':****@');
+    console.log('   URL (masquée):', maskedUrl);
+  }
+  console.log('   Type de base détecté:', usePostgreSQL ? 'PostgreSQL' : 'SQLite');
+  
   if (usePostgreSQL) {
     // Utiliser PostgreSQL
     const { Pool } = require('pg');
@@ -124,6 +134,7 @@ async function initDatabase() {
       return dbInterface;
     } catch (err) {
       console.error('❌ Erreur de connexion à PostgreSQL:', err.message);
+      console.error('   Détails:', err);
       throw err;
     }
   } else {

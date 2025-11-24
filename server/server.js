@@ -97,17 +97,32 @@ app.use(express.static(PUBLIC_DIR));
 
 // Initialisation de la base de données
 let db = null;
+let dbReady = false;
 
 // Initialiser la base de données de manière asynchrone
 (async () => {
   try {
+    console.log('🚀 Initialisation de la base de données...');
     db = await initDatabase();
     await initDatabaseTables();
+    dbReady = true;
+    console.log('✅ Base de données prête !');
+    
+    // Démarrer le serveur une fois la base prête
+    startServer();
   } catch (err) {
     console.error('❌ Erreur lors de l\'initialisation de la base de données:', err);
     process.exit(1);
   }
 })();
+
+// Fonction pour démarrer le serveur
+function startServer() {
+  app.listen(PORT, () => {
+    console.log(`✅ Serveur démarré sur http://localhost:${PORT}`);
+    console.log(`📊 Base de données: ${dbModule.dbType || 'Non définie'}`);
+  });
+}
 
 // Initialisation des tables
 async function initDatabaseTables() {
@@ -225,6 +240,14 @@ async function ensureDefaultAccounts() {
   }
 }
 
+// Middleware pour vérifier que la base de données est prête
+function requireDb(req, res, next) {
+  if (!dbReady) {
+    return res.status(503).json({ error: 'Base de données non initialisée. Veuillez réessayer dans quelques instants.' });
+  }
+  next();
+}
+
 // Middleware d'authentification
 function requireAuth(req, res, next) {
   if (req.session && req.session.authenticated && req.session.user) {
@@ -304,7 +327,7 @@ app.get('/api/auth/status', (req, res) => {
 });
 
 // Connexion
-app.post('/api/auth/login', loginLimiter, async (req, res) => {
+app.post('/api/auth/login', requireDb, loginLimiter, async (req, res) => {
   const { username, password } = req.body;
 
   console.log('🔐 Tentative de connexion pour:', username);
@@ -385,7 +408,7 @@ app.post('/api/auth/logout', (req, res) => {
 // Routes API pour les clients - PROTÉGÉES
 
 // Créer un nouveau client
-app.post('/api/clients', requireAuth, async (req, res) => {
+app.post('/api/clients', requireDb, requireAuth, async (req, res) => {
   const { nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type } = req.body;
 
   if (!nom || !prenom || !email || !service_demande) {
@@ -437,7 +460,7 @@ app.post('/api/clients', requireAuth, async (req, res) => {
 });
 
 // Obtenir tous les clients
-app.get('/api/clients', requireAuth, async (req, res) => {
+app.get('/api/clients', requireDb, requireAuth, async (req, res) => {
   try {
     const rows = await db.all(adaptSQL('SELECT id, nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by, date_creation, date_modification FROM clients ORDER BY date_creation DESC'), []);
     console.log(`📊 Récupération de ${rows.length} client(s) depuis la base de données`);
@@ -455,7 +478,7 @@ app.get('/api/clients', requireAuth, async (req, res) => {
 });
 
 // Obtenir un client par ID
-app.get('/api/clients/:id', requireAuth, async (req, res) => {
+app.get('/api/clients/:id', requireDb, requireAuth, async (req, res) => {
   const id = req.params.id;
   try {
     const row = await db.get(adaptSQL('SELECT * FROM clients WHERE id = ?'), [id]);
@@ -469,7 +492,7 @@ app.get('/api/clients/:id', requireAuth, async (req, res) => {
 });
 
 // Mettre à jour un client
-app.put('/api/clients/:id', requireAuth, async (req, res) => {
+app.put('/api/clients/:id', requireDb, requireAuth, async (req, res) => {
   const id = req.params.id;
   const { nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type } = req.body;
 
@@ -534,7 +557,7 @@ app.put('/api/clients/:id', requireAuth, async (req, res) => {
 });
 
 // Supprimer un client
-app.delete('/api/clients/:id', requireAuth, async (req, res) => {
+app.delete('/api/clients/:id', requireDb, requireAuth, async (req, res) => {
   const id = req.params.id;
   try {
     const result = await db.run(adaptSQL('DELETE FROM clients WHERE id = ?'), [id]);
@@ -550,7 +573,7 @@ app.delete('/api/clients/:id', requireAuth, async (req, res) => {
 // Routes API pour les échanges - PROTÉGÉES
 
 // Créer un nouvel échange
-app.post('/api/echanges', requireAuth, async (req, res) => {
+app.post('/api/echanges', requireDb, requireAuth, async (req, res) => {
   const { client_id, type, sujet, contenu } = req.body;
 
   if (!client_id || !type || !contenu) {
@@ -575,7 +598,7 @@ app.post('/api/echanges', requireAuth, async (req, res) => {
 });
 
 // Obtenir tous les échanges d'un client
-app.get('/api/clients/:id/echanges', requireAuth, async (req, res) => {
+app.get('/api/clients/:id/echanges', requireDb, requireAuth, async (req, res) => {
   const clientId = req.params.id;
   try {
     const rows = await db.all(adaptSQL('SELECT * FROM echanges WHERE client_id = ? ORDER BY date_creation DESC'), [clientId]);
@@ -586,7 +609,7 @@ app.get('/api/clients/:id/echanges', requireAuth, async (req, res) => {
 });
 
 // Obtenir tous les échanges
-app.get('/api/echanges', requireAuth, async (req, res) => {
+app.get('/api/echanges', requireDb, requireAuth, async (req, res) => {
   try {
     const rows = await db.all(adaptSQL(`
       SELECT e.*, c.nom as client_nom, c.prenom as client_prenom, c.email as client_email
@@ -601,7 +624,7 @@ app.get('/api/echanges', requireAuth, async (req, res) => {
 });
 
 // Mettre à jour un échange
-app.put('/api/echanges/:id', requireAuth, async (req, res) => {
+app.put('/api/echanges/:id', requireDb, requireAuth, async (req, res) => {
   const id = req.params.id;
   const { type, sujet, contenu } = req.body;
 
@@ -622,7 +645,7 @@ app.put('/api/echanges/:id', requireAuth, async (req, res) => {
 });
 
 // Supprimer un échange
-app.delete('/api/echanges/:id', requireAuth, async (req, res) => {
+app.delete('/api/echanges/:id', requireDb, requireAuth, async (req, res) => {
   const id = req.params.id;
   try {
     const result = await db.run(adaptSQL('DELETE FROM echanges WHERE id = ?'), [id]);
@@ -636,7 +659,7 @@ app.delete('/api/echanges/:id', requireAuth, async (req, res) => {
 });
 
 // Route pour obtenir un client avec tous ses échanges
-app.get('/api/clients/:id/complet', requireAuth, async (req, res) => {
+app.get('/api/clients/:id/complet', requireDb, requireAuth, async (req, res) => {
   const id = req.params.id;
   
   try {
@@ -835,10 +858,8 @@ app.post('/api/contact', async (req, res) => {
   }
 });
 
-// Démarrage du serveur
-app.listen(PORT, () => {
-  console.log(`Serveur démarré sur http://localhost:${PORT}`);
-});
+// Le serveur sera démarré après l'initialisation de la base de données
+// Voir la fonction startServer() ci-dessus
 
 // Fermeture propre de la base de données
 async function closeDatabase() {
