@@ -134,6 +134,7 @@ async function initDatabaseTables() {
       id SERIAL PRIMARY KEY,
       nom VARCHAR(255) NOT NULL,
       prenom VARCHAR(255) NOT NULL,
+      nom_entreprise VARCHAR(255),
       telephone VARCHAR(255),
       email VARCHAR(255) NOT NULL UNIQUE,
       siret VARCHAR(255),
@@ -172,6 +173,17 @@ async function initDatabaseTables() {
       }
     } else {
       await db.run(adaptSQL(`UPDATE clients SET created_by = 'admin' WHERE created_by IS NULL OR created_by = ''`));
+    }
+
+    // Migration : ajouter la colonne nom_entreprise si elle n'existe pas
+    const hasNomEntrepriseColumn = await columnExists('clients', 'nom_entreprise');
+    if (!hasNomEntrepriseColumn) {
+      try {
+        await db.run(adaptSQL(`ALTER TABLE clients ADD COLUMN nom_entreprise VARCHAR(255)`));
+        console.log('✅ Colonne nom_entreprise ajoutée');
+      } catch (alterErr) {
+        console.error('Erreur lors de l\'ajout de la colonne nom_entreprise:', alterErr.message);
+      }
     }
 
     // Table des échanges
@@ -409,7 +421,7 @@ app.post('/api/auth/logout', (req, res) => {
 
 // Créer un nouveau client
 app.post('/api/clients', requireDb, requireAuth, async (req, res) => {
-  const { nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type } = req.body;
+  const { nom, prenom, nom_entreprise, telephone, email, siret, tva_intracommunautaire, service_demande, type } = req.body;
 
   if (!nom || !prenom || !email || !service_demande) {
     return res.status(400).json({ error: 'Les champs nom, prénom, email et service demandé sont obligatoires.' });
@@ -437,18 +449,18 @@ app.post('/api/clients', requireDb, requireAuth, async (req, res) => {
   console.log('📝 Création d\'un nouveau client:', { nom, prenom, email, type: validType });
 
   try {
-    let insertSQL = adaptSQL(`INSERT INTO clients (nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+    let insertSQL = adaptSQL(`INSERT INTO clients (nom, prenom, nom_entreprise, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
     if (dbModule.dbType === 'postgresql') {
       insertSQL = insertSQL.replace(/;$/, ' RETURNING id');
     }
-    const result = await db.run(insertSQL, [nom, prenom, telephone || null, email, siret || null, tva_intracommunautaire || null, servicesText, validType, createdBy]);
+    const result = await db.run(insertSQL, [nom, prenom, nom_entreprise || null, telephone || null, email, siret || null, tva_intracommunautaire || null, servicesText, validType, createdBy]);
     
     console.log('✅ Client créé avec succès - ID:', result.lastID);
     res.status(201).json({ 
       id: result.lastID, 
       message: 'Client créé avec succès.',
-      client: { id: result.lastID, nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande }
+      client: { id: result.lastID, nom, prenom, nom_entreprise, telephone, email, siret, tva_intracommunautaire, service_demande }
     });
   } catch (err) {
     console.error('❌ Erreur lors de la création du client:', err.message);
@@ -462,7 +474,7 @@ app.post('/api/clients', requireDb, requireAuth, async (req, res) => {
 // Obtenir tous les clients
 app.get('/api/clients', requireDb, requireAuth, async (req, res) => {
   try {
-    const rows = await db.all(adaptSQL('SELECT id, nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by, date_creation, date_modification FROM clients ORDER BY date_creation DESC'), []);
+    const rows = await db.all(adaptSQL('SELECT id, nom, prenom, nom_entreprise, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by, date_creation, date_modification FROM clients ORDER BY date_creation DESC'), []);
     console.log(`📊 Récupération de ${rows.length} client(s) depuis la base de données`);
     // S'assurer que tous les clients ont un type
     rows.forEach(row => {
@@ -494,7 +506,7 @@ app.get('/api/clients/:id', requireDb, requireAuth, async (req, res) => {
 // Mettre à jour un client
 app.put('/api/clients/:id', requireDb, requireAuth, async (req, res) => {
   const id = req.params.id;
-  const { nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type } = req.body;
+  const { nom, prenom, nom_entreprise, telephone, email, siret, tva_intracommunautaire, service_demande, type } = req.body;
 
   if (!nom || !prenom || !email || !service_demande) {
     return res.status(400).json({ error: 'Les champs nom, prénom, email et service demandé sont obligatoires.' });
@@ -517,12 +529,12 @@ app.put('/api/clients/:id', requireDb, requireAuth, async (req, res) => {
     servicesText = service_demande;
   }
 
-  const updateParams = [nom, prenom, telephone || null, email, siret || null, tva_intracommunautaire || null, servicesText, validType, id];
+  const updateParams = [nom, prenom, nom_entreprise || null, telephone || null, email, siret || null, tva_intracommunautaire || null, servicesText, validType, id];
   
   try {
     const result = await db.run(
       adaptSQL(`UPDATE clients 
-       SET nom = ?, prenom = ?, telephone = ?, email = ?, siret = ?, tva_intracommunautaire = ?, service_demande = ?, type = ?, date_modification = CURRENT_TIMESTAMP
+       SET nom = ?, prenom = ?, nom_entreprise = ?, telephone = ?, email = ?, siret = ?, tva_intracommunautaire = ?, service_demande = ?, type = ?, date_modification = CURRENT_TIMESTAMP
        WHERE id = ?`),
       updateParams
     );
@@ -532,7 +544,7 @@ app.put('/api/clients/:id', requireDb, requireAuth, async (req, res) => {
     }
     
     // Vérifier immédiatement après l'UPDATE
-    const row = await db.get(adaptSQL('SELECT id, nom, prenom, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by, date_creation, date_modification FROM clients WHERE id = ?'), [id]);
+    const row = await db.get(adaptSQL('SELECT id, nom, prenom, nom_entreprise, telephone, email, siret, tva_intracommunautaire, service_demande, type, created_by, date_creation, date_modification FROM clients WHERE id = ?'), [id]);
     
     if (!row) {
       console.error('Client non trouvé après UPDATE');

@@ -137,13 +137,14 @@ function displayClients(clients) {
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div class="flex-1">
           <div class="flex items-center gap-3 mb-2 flex-wrap">
-            <h3 class="text-xl font-bold text-[#091A30]">${client.prenom} ${client.nom}</h3>
+            <h3 class="text-xl font-bold text-[#091A30]">${client.prenom} ${client.nom}${client.nom_entreprise ? ` - ${client.nom_entreprise}` : ''}</h3>
             ${services.map(service => {
               const colors = getServiceColor(service);
               return `<span class="px-2.5 py-1 ${colors.bg} ${colors.text} ${colors.border} border text-xs font-medium rounded-full whitespace-nowrap">${service}</span>`;
             }).join('')}
           </div>
           <div class="space-y-1 text-sm text-[#616972]">
+            ${client.nom_entreprise ? `<div class="flex items-center gap-2"><i data-lucide="building-2" class="w-4 h-4"></i> ${client.nom_entreprise}</div>` : ''}
             ${client.email ? `<div class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4"></i> ${client.email}</div>` : ''}
             ${client.telephone ? `<div class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4"></i> ${client.telephone}</div>` : ''}
             ${client.siret ? `<div class="flex items-center gap-2"><i data-lucide="building" class="w-4 h-4"></i> SIRET: ${client.siret}</div>` : ''}
@@ -182,6 +183,7 @@ function filterClients() {
     const matchesSearch = !search || 
       client.nom.toLowerCase().includes(search) ||
       client.prenom.toLowerCase().includes(search) ||
+      (client.nom_entreprise && client.nom_entreprise.toLowerCase().includes(search)) ||
       client.email.toLowerCase().includes(search) ||
       (client.service_demande && client.service_demande.toLowerCase().includes(search));
     
@@ -262,6 +264,10 @@ function displayClientModal(client) {
           <div>
             <label class="text-sm text-[#616972]">Prénom</label>
             <p class="font-medium text-[#091A30]">${client.prenom}</p>
+          </div>
+          <div class="md:col-span-2">
+            <label class="text-sm text-[#616972]">Nom de l'entreprise</label>
+            <p class="font-medium text-[#091A30]">${client.nom_entreprise || '-'}</p>
           </div>
           <div>
             <label class="text-sm text-[#616972]">Email</label>
@@ -398,6 +404,7 @@ function displayEditClientModal(client) {
   document.getElementById('edit-client-id').value = client.id;
   document.getElementById('edit-nom').value = client.nom || '';
   document.getElementById('edit-prenom').value = client.prenom || '';
+  document.getElementById('edit-nom-entreprise').value = client.nom_entreprise || '';
   document.getElementById('edit-email').value = client.email || '';
   document.getElementById('edit-telephone').value = sanitizePhoneValue(client.telephone);
   document.getElementById('edit-siret').value = client.siret || '';
@@ -436,6 +443,7 @@ async function handleEditClientSubmit(e) {
   const clientId = document.getElementById('edit-client-id').value;
   const nom = document.getElementById('edit-nom').value;
   const prenom = document.getElementById('edit-prenom').value;
+  const nom_entreprise = document.getElementById('edit-nom-entreprise').value;
   const email = document.getElementById('edit-email').value;
   const telephone = sanitizePhoneValue(document.getElementById('edit-telephone').value);
   const siret = document.getElementById('edit-siret').value;
@@ -460,6 +468,7 @@ async function handleEditClientSubmit(e) {
   const requestBody = {
     nom,
     prenom,
+    nom_entreprise: nom_entreprise || null,
     email,
     telephone: telephone || null,
     siret: siret || null,
