@@ -23,6 +23,7 @@
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
-    "sass": "^1.77.0"
+    "sass": "^1.77.0",
+    "tailwindcss": "^4.1.17"
   }
 }
