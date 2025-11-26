@@ -444,7 +444,10 @@ h1, h2, h3, h4, h5, h6 {
 .testimonial-stars i {
   stroke-width: 1.4px;
   stroke: currentColor;
-  fill: currentColor;
+  fill: currentColor !important;
+}
+.testimonial-stars i svg {
+  fill: currentColor !important;
 }
 .testimonial-stars .star-muted {
   color: rgba(157, 164, 174, 0.55);
