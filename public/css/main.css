@@ -5,6 +5,9 @@
   --grey-blue: #616972;
   --primary-darker: #050F1A;
 }
+input[type="checkbox"] {
+  accent-color: var(--accent-gold);
+}
 
 html {
   scroll-behavior: smooth;
