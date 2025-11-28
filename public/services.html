@@ -11,7 +11,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <link rel="stylesheet" href="css/main.css">
-  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: block; height: 0; width: 0;">
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="svg-hidden">
     <defs>
       <filter id="goo">
         <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur>
@@ -84,7 +84,7 @@
     <section id="services-hero" class="pt-40 pb-20 bg-gradient-to-br from-[#091A30] via-[#0D2440] to-[#091A30] text-white relative">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <h1 class="text-5xl md:text-6xl font-bold fade-in-up">Nos Services</h1>
-            <p class="text-xl text-white/80 mt-4 max-w-2xl fade-in-up" style="animation-delay: 0.1s;">
+            <p class="text-xl text-white/80 mt-4 max-w-2xl fade-in-up animation-delay-100">
               Découvrez nos services de communication digitale.
             </p>
         </div>
@@ -95,7 +95,7 @@
         <div id="services-grid" class="grid md:grid-cols-2 gap-8">
           <a href="#sites-web" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 overflow-hidden relative">
             <div class="p-8 relative z-10 service-card-content">
-              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #091A30;"><i data-lucide="globe" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group icon-bg-primary"><i data-lucide="globe" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
               <h3 class="service-card-title text-2xl font-bold mb-3">Création de sites web</h3>
               <p class="service-card-text">Sites vitrines et e-commerce sur mesure.</p>
             </div>
@@ -107,7 +107,7 @@
           </a>
           <a href="#identite" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 overflow-hidden relative">
             <div class="p-8 relative z-10 service-card-content">
-              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #B48A3C;"><i data-lucide="palette" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group icon-bg-accent"><i data-lucide="palette" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
               <h3 class="service-card-title text-2xl font-bold mb-3">Identité de marque</h3>
               <p class="service-card-text">Création d'identité visuelle complète : logo, charte graphique et storytelling.</p>
             </div>
@@ -119,7 +119,7 @@
           </a>
           <a href="#strategie" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 overflow-hidden relative">
             <div class="p-8 relative z-10 service-card-content">
-              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #091A30;"><i data-lucide="trending-up" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group icon-bg-primary"><i data-lucide="trending-up" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
               <h3 class="service-card-title text-2xl font-bold mb-3">Stratégie digitale</h3>
               <p class="service-card-text">Stratégie de communication digitale : positionnement, réseaux sociaux et création de contenu.</p>
             </div>
@@ -131,7 +131,7 @@
           </a>
           <a href="#diagnostic" class="service-card fade-in-up group block hover:shadow-xl transition-shadow duration-500 overflow-hidden relative">
             <div class="p-8 relative z-10 service-card-content">
-              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group" style="background-color: #B48A3C;"><i data-lucide="search" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
+              <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group icon-bg-accent"><i data-lucide="search" class="w-8 h-8 text-white transition-transform duration-300 group-hover:rotate-[15deg]"></i></div>
               <h3 class="service-card-title text-2xl font-bold mb-3">Diagnostic Web</h3>
               <p class="service-card-text">Audit complet de votre présence digitale avec recommandations personnalisées.</p>
             </div>
@@ -145,7 +145,7 @@
       </div>
     </section>
 
-    <section class="py-24" style="background: linear-gradient(to bottom, #FCF9EF 0%, white 15%);">
+    <section class="py-24 bg-gradient-beige-to-white">
       <div class="max-w-7xl mx-auto px-6 lg:px-8">
         <div class="text-center mb-16">
           <h2 class="text-4xl md:text-5xl font-bold text-[#091A30] mb-6 fade-in-up">Notre Méthode</h2>
@@ -153,7 +153,7 @@
         </div>
         <div id="values-grid" class="grid md:grid-cols-3 gap-6 lg:gap-8">
           <div class="value-card fade-in-up group relative">
-            <span class="absolute bottom-0 left-0 text-8xl md:text-9xl font-bold pointer-events-none pl-4 pb-4" style="-webkit-text-stroke: 2px rgba(9, 26, 48, 0.15); -webkit-text-fill-color: transparent; z-index: 0; line-height: 1;">1</span>
+            <span class="large-number-decoration large-number-decoration--primary">1</span>
             <div class="relative z-10">
               <div class="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#091A30]/10 to-[#091A30]/5 text-[#091A30] rounded-2xl mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-2 relative">
                 <i data-lucide="headphones" class="w-10 h-10 transition-transform duration-300 group-hover:rotate-[15deg] relative z-10"></i>
@@ -163,8 +163,8 @@
             </div>
             <div class="absolute inset-0 bg-gradient-to-br from-[#091A30]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
           </div>
-          <div class="value-card fade-in-up group relative" style="animation-delay: 0.1s;">
-            <span class="absolute bottom-0 left-0 text-8xl md:text-9xl font-bold pointer-events-none pl-4 pb-4" style="-webkit-text-stroke: 2px rgba(180, 138, 60, 0.15); -webkit-text-fill-color: transparent; z-index: 0; line-height: 1;">2</span>
+          <div class="value-card fade-in-up group relative animation-delay-100">
+            <span class="large-number-decoration large-number-decoration--accent">2</span>
             <div class="relative z-10">
               <div class="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#B48A3C]/15 to-[#B48A3C]/5 text-[#B48A3C] rounded-2xl mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-2 relative">
                 <i data-lucide="lightbulb" class="w-10 h-10 transition-transform duration-300 group-hover:rotate-[15deg] relative z-10"></i>
@@ -174,8 +174,8 @@
             </div>
             <div class="absolute inset-0 bg-gradient-to-br from-[#B48A3C]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20"></div>
           </div>
-          <div class="value-card fade-in-up group relative" style="animation-delay: 0.2s;">
-            <span class="absolute bottom-0 left-0 text-8xl md:text-9xl font-bold pointer-events-none pl-4 pb-4" style="-webkit-text-stroke: 2px rgba(9, 26, 48, 0.15); -webkit-text-fill-color: transparent; z-index: 0; line-height: 1;">3</span>
+          <div class="value-card fade-in-up group relative animation-delay-200">
+            <span class="large-number-decoration large-number-decoration--primary">3</span>
             <div class="relative z-10">
               <div class="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#091A30]/10 to-[#091A30]/5 text-[#091A30] rounded-2xl mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-2 relative">
                 <i data-lucide="rocket" class="w-10 h-10 transition-transform duration-300 group-hover:rotate-[15deg] relative z-10"></i>
@@ -288,7 +288,7 @@
 
     <section class="py-24 bg-white">
       <div class="max-w-4xl mx-auto px-6 lg:px-8">
-        <div class="service-card p-12 md:p-16 fade-in-up relative text-center" style="overflow: visible !important;">
+        <div class="service-card p-12 md:p-16 fade-in-up relative text-center service-card-overflow-visible">
           <div class="service-card-content">
             <h2 class="service-card-title text-4xl md:text-5xl font-bold mb-6">Vous avez un projet ?</h2>
             
@@ -303,7 +303,7 @@
                   fill="none" 
                   stroke-linecap="round"
                   stroke-linejoin="round"
-                  style="filter: drop-shadow(0 2px 3px rgba(180, 138, 60, 0.4));"
+                  class="drop-shadow-accent"
                 />
                 <path 
                   d="M 0 30 Q 80 15, 150 30 Q 220 45, 300 30 Q 380 15, 450 30 Q 520 45, 600 30" 
@@ -336,7 +336,7 @@
     </section>
   </main>
 
-  <footer class="bg-[#091A30] text-white relative" style="z-index: 10; position: relative;">
+  <footer class="bg-[#091A30] text-white relative footer-with-z-index">
     <div class="max-w-7xl mx-auto px-6 lg:px-8 py-12">
       <div class="grid md:grid-cols-4 gap-8 mb-8">
         <div class="md:col-span-2">

@@ -9,13 +9,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
-    .slogan-text {
-      font-family: 'Great Vibes', cursive !important;
-      font-weight: 400 !important;
-    }
-  </style>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://unpkg.com/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -85,7 +78,7 @@
     <section id="about-hero" class="pt-40 pb-20 bg-gradient-to-br from-[#091A30] via-[#0D2440] to-[#091A30] text-white relative">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <h1 class="text-5xl md:text-6xl font-bold text-white fade-in-up">Notre Histoire</h1>
-            <p class="text-xl text-white/80 mt-4 max-w-2xl fade-in-up" style="animation-delay: 0.1s;">
+            <p class="text-xl text-white/80 mt-4 max-w-2xl fade-in-up animation-delay-100">
               Nous sommes plus qu'une agence. Nous sommes votre partenaire dans l'aventure digitale.
             </p>
         </div>
@@ -106,14 +99,14 @@
               <p>Notre mission est de transformer votre vision digitale en réalité concrète, avec des résultats mesurables et une approche transparente.</p>
             </div>
           </div>
-          <div class="fade-in-up" style="animation-delay: 0.2s;">
+          <div class="fade-in-up animation-delay-200">
             <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Équipe AB Odyssée - Agence communication digitale TPE PME France Moyen-Orient" class="rounded-lg shadow-2xl object-cover w-full h-full aspect-square">
           </div>
         </div>
       </div>
     </section>
 
-    <section class="py-24" style="background: linear-gradient(to bottom, white 0%, #FCF9EF 15%);">
+    <section class="py-24 bg-gradient-white-to-beige">
       <div class="max-w-7xl mx-auto px-6 lg:px-8">
         <div class="text-center mb-16">
           <h2 class="text-4xl md:text-5xl font-bold text-[#091A30] mb-6 fade-in-up">Notre ADN</h2>
@@ -130,7 +123,7 @@
             </div>
             <div class="absolute inset-0 bg-gradient-to-br from-[#B48A3C]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           </div>
-          <div class="value-card fade-in-up group relative" style="animation-delay: 0.1s;">
+          <div class="value-card fade-in-up group relative animation-delay-100">
             <div class="relative z-10">
               <div class="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#B48A3C]/15 to-[#B48A3C]/5 text-[#B48A3C] rounded-2xl mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-2">
                 <i data-lucide="compass" class="w-10 h-10 transition-transform duration-300 group-hover:rotate-[15deg]"></i>
@@ -140,7 +133,7 @@
             </div>
             <div class="absolute inset-0 bg-gradient-to-br from-[#B48A3C]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           </div>
-          <div class="value-card fade-in-up group relative" style="animation-delay: 0.2s;">
+          <div class="value-card fade-in-up group relative animation-delay-200">
             <div class="relative z-10">
               <div class="flex items-center justify-center w-20 h-20 bg-gradient-to-br from-[#B48A3C]/15 to-[#B48A3C]/5 text-[#B48A3C] rounded-2xl mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-105 group-hover:-translate-y-2">
                 <i data-lucide="zap" class="w-10 h-10 transition-transform duration-300 group-hover:rotate-[15deg]"></i>
@@ -168,7 +161,7 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           <!-- Amine -->
           <div class="team-card fade-in-up group relative h-full" data-member="amine">
-            <div class="team-card-inner relative rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-pointer h-full flex flex-col" style="transform-style: preserve-3d; background: linear-gradient(150deg, #0A1730 8%, #132A50 50%, #264572 92%); border: 1px solid rgba(255, 255, 255, 0.06);">
+            <div class="team-card-inner relative rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-pointer h-full flex flex-col">
               <div class="team-card-content relative z-10 flex flex-col flex-grow">
                 <img src="https://ui-avatars.com/api/?name=Amine&background=B48A3C&color=fff&size=128&bold=true" alt="Amine" class="w-32 h-32 mx-auto mb-6 rounded-full object-cover shadow-xl border-2 border-[#B48A3C]/30">
                 <h3 class="text-2xl font-bold text-[#FCF9EF] mb-2 text-center">Amine</h3>
@@ -180,7 +173,7 @@
 
           <!-- Aymeric -->
           <div class="team-card fade-in-up group relative h-full" data-member="aymeric">
-            <div class="team-card-inner relative rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-pointer h-full flex flex-col" style="transform-style: preserve-3d; background: linear-gradient(150deg, #0A1730 8%, #132A50 50%, #264572 92%); border: 1px solid rgba(255, 255, 255, 0.06);">
+            <div class="team-card-inner relative rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-pointer h-full flex flex-col">
               <div class="team-card-content relative z-10 flex flex-col flex-grow">
                 <img src="https://ui-avatars.com/api/?name=Aymeric&background=091A30&color=fff&size=128&bold=true" alt="Aymeric" class="w-32 h-32 mx-auto mb-6 rounded-full object-cover shadow-xl border-2 border-[#B48A3C]/30">
                 <h3 class="text-2xl font-bold text-[#FCF9EF] mb-2 text-center">Aymeric</h3>
@@ -192,7 +185,7 @@
 
           <!-- Yanis -->
           <div class="team-card fade-in-up group relative h-full" data-member="yanis">
-            <div class="team-card-inner relative rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-pointer h-full flex flex-col" style="transform-style: preserve-3d; background: linear-gradient(150deg, #0A1730 8%, #132A50 50%, #264572 92%); border: 1px solid rgba(255, 255, 255, 0.06);">
+            <div class="team-card-inner relative rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-pointer h-full flex flex-col">
               <div class="team-card-content relative z-10 flex flex-col flex-grow">
                 <img src="https://ui-avatars.com/api/?name=Yanis&background=091A30&color=fff&size=128&bold=true" alt="Yanis" class="w-32 h-32 mx-auto mb-6 rounded-full object-cover shadow-xl border-2 border-[#B48A3C]/30">
                 <h3 class="text-2xl font-bold text-[#FCF9EF] mb-2 text-center">Yanis</h3>
@@ -204,7 +197,7 @@
 
           <!-- Sam -->
           <div class="team-card fade-in-up group relative h-full" data-member="sam">
-            <div class="team-card-inner relative rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-pointer h-full flex flex-col" style="transform-style: preserve-3d; background: linear-gradient(150deg, #0A1730 8%, #132A50 50%, #264572 92%); border: 1px solid rgba(255, 255, 255, 0.06);">
+            <div class="team-card-inner relative rounded-2xl p-8 shadow-lg transition-all duration-500 cursor-pointer h-full flex flex-col">
               <div class="team-card-content relative z-10 flex flex-col flex-grow">
                 <img src="https://ui-avatars.com/api/?name=Sam&background=B48A3C&color=fff&size=128&bold=true" alt="Sam" class="w-32 h-32 mx-auto mb-6 rounded-full object-cover shadow-xl border-2 border-[#B48A3C]/30">
                 <h3 class="text-2xl font-bold text-[#FCF9EF] mb-2 text-center">Sam</h3>

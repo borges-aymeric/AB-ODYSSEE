@@ -1,0 +1,95 @@
+// Utilities SCSS - Styles utilitaires et classes réutilisables
+
+@use 'variables' as *;
+
+// Animation delays
+.animation-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+// Background gradients
+.bg-gradient-beige-to-white {
+  background: linear-gradient(to bottom, #{$beige-light} 0%, white 15%);
+}
+
+.bg-gradient-white-to-beige {
+  background: linear-gradient(to bottom, white 0%, #{$beige-light} 15%);
+}
+
+// Service card specific styles
+.service-card-contact {
+  border-top: 6px solid #{$accent-gold};
+  border-radius: 24px;
+}
+
+// Icon background colors
+.icon-bg-primary {
+  background-color: #{$primary-dark};
+}
+
+.icon-bg-accent {
+  background-color: #{$accent-gold};
+}
+
+// Large number decorations
+.large-number-decoration {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 8rem;
+  line-height: 1;
+  font-weight: bold;
+  pointer-events: none;
+  padding-left: 1rem;
+  padding-bottom: 1rem;
+  z-index: 0;
+  
+  @media (min-width: 768px) {
+    font-size: 9rem;
+  }
+  
+  &--primary {
+    -webkit-text-stroke: 2px rgba(9, 26, 48, 0.15);
+    -webkit-text-fill-color: transparent;
+  }
+  
+  &--accent {
+    -webkit-text-stroke: 2px rgba(180, 138, 60, 0.15);
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+// Team card styles
+.team-card-inner {
+  transform-style: preserve-3d;
+  background: linear-gradient(150deg, #0A1730 8%, #132A50 50%, #264572 92%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+// Service card overflow
+.service-card-overflow-visible {
+  overflow: visible !important;
+}
+
+// Footer z-index
+.footer-with-z-index {
+  z-index: 10;
+  position: relative;
+}
+
+// SVG hidden
+.svg-hidden {
+  display: block;
+  height: 0;
+  width: 0;
+}
+
+// Drop shadow filter
+.drop-shadow-accent {
+  filter: drop-shadow(0 2px 3px rgba(180, 138, 60, 0.4));
+}
+
