@@ -243,25 +243,40 @@ async function ensureDefaultAccounts() {
   const defaultAccounts = [];
   
   // Parser les comptes depuis les variables d'environnement
+  console.log('🔍 Parsing ADMIN_ACCOUNTS...');
   const accountsConfig = process.env.ADMIN_ACCOUNTS.split(',');
-  for (const accountConfig of accountsConfig) {
-    const parts = accountConfig.split(':');
-    if (parts.length >= 3) {
-      const username = parts[0].trim();
-      const password = parts[1].trim();
-      const email = parts.slice(2).join(':').trim(); // Permet les emails avec des : (comme dans les URLs)
-      
-      if (username && password && email) {
-        defaultAccounts.push({ 
-          username: username, 
-          password: password, 
-          email: email
-        });
-      } else {
-        console.warn(`⚠️  Format invalide pour un compte: ${accountConfig}. Format attendu: username:password:email`);
-      }
+  console.log(`📋 ${accountsConfig.length} compte(s) trouvé(s) dans ADMIN_ACCOUNTS`);
+  
+  for (let i = 0; i < accountsConfig.length; i++) {
+    const accountConfig = accountsConfig[i].trim();
+    if (!accountConfig) {
+      console.warn(`⚠️  Compte #${i + 1} vide, ignoré`);
+      continue;
+    }
+    
+    // Split par ':' mais prendre en compte que l'email peut contenir des caractères spéciaux
+    // Format attendu: username:password:email
+    const firstColon = accountConfig.indexOf(':');
+    const secondColon = accountConfig.indexOf(':', firstColon + 1);
+    
+    if (firstColon === -1 || secondColon === -1) {
+      console.warn(`⚠️  Format invalide pour le compte #${i + 1}: "${accountConfig}". Format attendu: username:password:email`);
+      continue;
+    }
+    
+    const username = accountConfig.substring(0, firstColon).trim();
+    const password = accountConfig.substring(firstColon + 1, secondColon).trim();
+    const email = accountConfig.substring(secondColon + 1).trim();
+    
+    if (username && password && email) {
+      defaultAccounts.push({ 
+        username: username, 
+        password: password, 
+        email: email
+      });
+      console.log(`✅ Compte parsé: ${username} (${email})`);
     } else {
-      console.warn(`⚠️  Format invalide pour un compte: ${accountConfig}. Format attendu: username:password:email`);
+      console.warn(`⚠️  Format invalide pour le compte #${i + 1}: champs manquants (username: ${!!username}, password: ${!!password}, email: ${!!email})`);
     }
   }
   
@@ -272,9 +287,10 @@ async function ensureDefaultAccounts() {
 
   for (const account of defaultAccounts) {
     try {
-      const row = await db.get(adaptSQL('SELECT id FROM admins WHERE username = ?'), [account.username]);
+      const row = await db.get(adaptSQL('SELECT id, password_hash FROM admins WHERE username = ?'), [account.username]);
       
       if (!row) {
+        // Créer le compte
         const hashedPassword = await bcrypt.hash(account.password, 10);
         let insertSQL = adaptSQL('INSERT INTO admins (username, password_hash, email) VALUES (?, ?, ?)');
         // Pour PostgreSQL, ajouter RETURNING id
@@ -282,13 +298,31 @@ async function ensureDefaultAccounts() {
           insertSQL = insertSQL.replace(/;$/, ' RETURNING id');
         }
         const result = await db.run(insertSQL, [account.username, hashedPassword, account.email]);
-        // SÉCURITÉ : Ne jamais afficher le mot de passe dans les logs
         console.log(`✅ Compte administrateur "${account.username}" créé avec succès`);
       } else {
-        console.log(`ℹ️  Le compte "${account.username}" existe déjà, ignoré`);
+        // Le compte existe déjà - mettre à jour le mot de passe si nécessaire
+        // Vérifier si le mot de passe actuel correspond
+        const passwordMatches = await bcrypt.compare(account.password, row.password_hash);
+        
+        if (!passwordMatches) {
+          // Mettre à jour le mot de passe avec le nouveau hash
+          const newHashedPassword = await bcrypt.hash(account.password, 10);
+          await db.run(adaptSQL('UPDATE admins SET password_hash = ?, email = ? WHERE username = ?'), 
+            [newHashedPassword, account.email, account.username]);
+          console.log(`✅ Mot de passe mis à jour pour le compte "${account.username}"`);
+        } else {
+          // Mettre à jour l'email si nécessaire
+          if (row.email !== account.email) {
+            await db.run(adaptSQL('UPDATE admins SET email = ? WHERE username = ?'), 
+              [account.email, account.username]);
+            console.log(`✅ Email mis à jour pour le compte "${account.username}"`);
+          } else {
+            console.log(`ℹ️  Le compte "${account.username}" existe déjà avec les mêmes identifiants`);
+          }
+        }
       }
     } catch (err) {
-      console.error(`❌ Erreur lors de la création du compte ${account.username}:`, err.message);
+      console.error(`❌ Erreur lors de la gestion du compte ${account.username}:`, err.message);
     }
   }
 }
