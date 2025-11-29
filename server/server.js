@@ -225,12 +225,50 @@ async function initDatabaseTables() {
   }
 }
 
-// Créer les comptes par défaut
+// Créer les comptes administrateurs
+// SÉCURITÉ : Aucun compte en dur dans le code. Tous les comptes doivent être configurés via ADMIN_ACCOUNTS
 async function ensureDefaultAccounts() {
-  const defaultAccounts = [
-    { username: 'admin', password: 'Admin123!', email: 'admin@abodyssee.fr' },
-    { username: 'commercial', password: 'Commercial123!', email: 'commercial@abodyssee.fr' }
-  ];
+  // Les comptes doivent être configurés via la variable d'environnement ADMIN_ACCOUNTS
+  // Format: ADMIN_ACCOUNTS=username1:password1:email1,username2:password2:email2
+  // Aucun compte par défaut n'est créé automatiquement pour des raisons de sécurité
+  
+  if (!process.env.ADMIN_ACCOUNTS) {
+    console.log('ℹ️  ADMIN_ACCOUNTS non configuré. Aucun compte administrateur ne sera créé automatiquement.');
+    console.log('ℹ️  Pour créer des comptes, configurez ADMIN_ACCOUNTS dans server/.env');
+    console.log('ℹ️  Format: ADMIN_ACCOUNTS=username:password:email,username2:password2:email2');
+    console.log('ℹ️  En production, configurez cette variable dans les variables d\'environnement de votre hébergeur.');
+    return;
+  }
+  
+  const defaultAccounts = [];
+  
+  // Parser les comptes depuis les variables d'environnement
+  const accountsConfig = process.env.ADMIN_ACCOUNTS.split(',');
+  for (const accountConfig of accountsConfig) {
+    const parts = accountConfig.split(':');
+    if (parts.length >= 3) {
+      const username = parts[0].trim();
+      const password = parts[1].trim();
+      const email = parts.slice(2).join(':').trim(); // Permet les emails avec des : (comme dans les URLs)
+      
+      if (username && password && email) {
+        defaultAccounts.push({ 
+          username: username, 
+          password: password, 
+          email: email
+        });
+      } else {
+        console.warn(`⚠️  Format invalide pour un compte: ${accountConfig}. Format attendu: username:password:email`);
+      }
+    } else {
+      console.warn(`⚠️  Format invalide pour un compte: ${accountConfig}. Format attendu: username:password:email`);
+    }
+  }
+  
+  if (defaultAccounts.length === 0) {
+    console.warn('⚠️  Aucun compte valide trouvé dans ADMIN_ACCOUNTS');
+    return;
+  }
 
   for (const account of defaultAccounts) {
     try {
@@ -244,10 +282,13 @@ async function ensureDefaultAccounts() {
           insertSQL = insertSQL.replace(/;$/, ' RETURNING id');
         }
         const result = await db.run(insertSQL, [account.username, hashedPassword, account.email]);
-        console.log(`⚠️  COMPTE "${account.username}" CRÉÉ - Username: ${account.username} / Password: ${account.password} ⚠️`);
+        // SÉCURITÉ : Ne jamais afficher le mot de passe dans les logs
+        console.log(`✅ Compte administrateur "${account.username}" créé avec succès`);
+      } else {
+        console.log(`ℹ️  Le compte "${account.username}" existe déjà, ignoré`);
       }
     } catch (err) {
-      console.error(`Erreur lors de la gestion du compte ${account.username}:`, err.message);
+      console.error(`❌ Erreur lors de la création du compte ${account.username}:`, err.message);
     }
   }
 }
